@@ -3,15 +3,9 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserInfo;
 use Illuminate\Http\Request;
 
-// index() ：抓取所有資料的列表
-// show() ：抓取指定 id 的資料
-// store() ：新增資料
-// update() ：更新資料
-// destory() ：刪除資料
-// create() ：抓取新增的頁面
-// edit() ：抓取編輯的頁面
 class UserInfoController extends Controller
 {
     /**
@@ -21,7 +15,8 @@ class UserInfoController extends Controller
      */
     public function index()
     {
-        //
+        //抓取所有資料的列表
+        return response()->json(UserInfo::all(), 200);
     }
 
     /**
@@ -32,7 +27,10 @@ class UserInfoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //新增資料
+        $userInfo = UserInfo::create($request->all());
+
+        return response()->json($userInfo, 201);
     }
 
     /**
@@ -43,7 +41,9 @@ class UserInfoController extends Controller
      */
     public function show($id)
     {
-        //
+
+        //抓取指定 id 的資料
+        return response()->json(UserInfo::find($id), 200);
     }
 
     /**
@@ -55,7 +55,12 @@ class UserInfoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        //更新資料
+        $userInfo = UserInfo::findOrFail($id);
+        $userInfo->update($request->all());
+
+        return response()->json($userInfo, 200);
     }
 
     /**
@@ -66,6 +71,9 @@ class UserInfoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //刪除資料
+        UserInfo::find($id)->delete();
+
+        return response()->json(null, 204);
     }
 }
