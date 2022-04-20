@@ -1,17 +1,20 @@
 <?php
-	include_once "db.php";
-	session_start();
-	$uid = $_GET["uid"];
-	$artno = $_GET["artno"];
+include_once "db.php";
+session_start();
+$uid = $_GET["uid"];
+$artno = $_GET["artno"];
 
-	global $db;
-	$sql = $db->prepare("SELECT * FROM `article` WHERE user_no = '$uid' and article_no = '$artno'");
-	$sql->execute();
-	$row = $sql->fetch();
+global $db;
+$sql = $db->prepare("SELECT * FROM `article` WHERE user_no = :uid and article_no = :artno");
+$sql->execute(array(
+    'uid' => $uid,
+    'artno' => $artno,
+));
+$row = $sql->fetch();
 
-	if($_SESSION["user_id"]!=$row['user_no']){
-    	header("Location: login.php");
-    }
+if ($_SESSION["user_id"] != $row['user_no']) {
+    header("Location: login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,46 +35,52 @@
                     </li>
                 </ul>
                 <label>Hi!
-                    <?php 
-                        global $db;
-                        $usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '$uid'");
-                        $usql->execute();
-                        $urow = $usql->fetchColumn();
-                        echo $urow;
-                    ?>
+<?php
+global $db;
+$usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :uid");
+$usql->execute(array(
+    'uid' => $uid,
+));
+$urow = $usql->fetchColumn();
+echo $urow;
+?>
                 </label>
                 <a href="config.php?method=logout">登出</a>
             </div>
         </div>
     </nav>
     <div class="container">
-		<form role="form" action="art.php?method=update&uid=<?php echo $row["user_no"]?>&artno=<?php echo $row["article_no"]?>" method="post">
+		<form role="form" action="art.php?method=update&uid=<?php echo $row["user_no"] ?>&artno=<?php echo $row["article_no"] ?>" method="post">
         	<div class="mb-3">
 				<a>建立時間：<?php echo $row['create_time']; ?></a>
 				<a>最後修改時間：<?php echo $row['update_time']; ?></a>
 				<a>作者：
-					<?php 
-						global $db;
-						$usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '{$row['user_no']}'");
-						$usql->execute();
-						$urow = $usql->fetchColumn();
-						echo $urow;
-					?>
-				</a>  
-			</div>    
+<?php
+$artuid = $row['user_no'];
+global $db;
+$authorsql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :artuid");
+$authorsql->execute(
+    array(
+        'artuid' => $artuid,
+    ));
+$authorrow = $authorsql->fetchColumn();
+echo $authorrow;
+?>
+				</a>
+			</div>
 			<div class="mb-3">
                 <label class="form-label">標題</label>
-                <textarea class="form-control" rows="3" id="title" placeholder="title" name="title"><?php echo $row["article_title"]?></textarea>
+                <textarea class="form-control" rows="3" id="title" placeholder="title" name="title"><?php echo $row["article_title"] ?></textarea>
             </div>
-			
+
             <div class="mb-3">
             <label class="form-label">內容</label>
-                <textarea class="form-control" rows="3" id="content" name="content"><?php echo $row["article_content"]?></textarea>
+                <textarea class="form-control" rows="3" id="content" name="content"><?php echo $row["article_content"] ?></textarea>
             </div>
 
 			<button type="submit" class="btn btn-primary">修改</button>
         </form>
     </div>
-	
+
 </body>
 </html>

@@ -1,19 +1,24 @@
 <?php
-	include_once "db.php";
-	session_start();
-	$uid = $_GET["uid"];
-	$artno = $_GET["artno"];
-	$msgno = $_GET["msgno"];
-	$loginid = $_GET["loginid"];
+include_once "db.php";
+session_start();
+$uid = $_GET["uid"];
+$artno = $_GET["artno"];
+$msgno = $_GET["msgno"];
+$loginid = $_GET["loginid"];
 
-	global $db;
-	$sql = $db->prepare("SELECT * FROM `message` WHERE user_no = '$loginid' and article_no = '$artno' and message_no = '$msgno'");
-	$sql->execute();
-	$row = $sql->fetch();
+global $db;
+$sql = $db->prepare("SELECT * FROM `message`
+WHERE user_no = :loginid and article_no = :artno and message_no = :msgno");
+$sql->execute(array(
+    'loginid' => $loginid,
+    'artno' => $artno,
+    'msgno' => $msgno,
+));
+$row = $sql->fetch();
 
-	if($_SESSION["user_id"]!=$loginid){
-    	header("Location: login.php");
-    }
+if ($_SESSION["user_id"] != $loginid) {
+    header("Location: login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,43 +39,43 @@
                     </li>
                 </ul>
                 <label>Hi!
-                    <?php 
-                        global $db;
-                        $usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '$uid'");
-                        $usql->execute();
-                        $urow = $usql->fetchColumn();
-                        echo $urow;
-                    ?>
+<?php
+global $db;
+$usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :loginid");
+$usql->execute(array(
+    'loginid' => $loginid,
+));
+$urow = $usql->fetchColumn();
+echo $urow;
+?>
                 </label>
                 <a href="config.php?method=logout">登出</a>
             </div>
         </div>
     </nav>
     <div class="container">
-		<form role="form" action="mes.php?method=update&uid=<?php echo $uid?>&loginid=<?php echo $loginid ?>&artno=<?php echo $row["article_no"]?>&msgno=<?php echo $row["message_no"]?>" method="post">
+		<form role="form" action="mes.php?method=update&uid=<?php echo $uid ?>&loginid=<?php echo $loginid ?>&artno=<?php echo $row["article_no"] ?>&msgno=<?php echo $row["message_no"] ?>" method="post">
         	<div class="mb-3">
-			<?php 
-			// echo "uid=".$uid;
-			// echo "loginid=".$loginid;
-			// echo "article_no=".$row["article_no"];
-			// echo "message_no=".$row["message_no"];
-			?>
 				<a>建立時間：<?php echo $row['create_time']; ?></a>
 				<a>最後修改時間：<?php echo $row['update_time']; ?></a>
 				<a>作者：
-					<?php 
-						global $db;
-						$usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '{$row['user_no']}'");
-						$usql->execute();
-						$urow = $usql->fetchColumn();
-						echo $urow;
-					?>
-				</a>  
-			</div>    
-			
+<?php
+$mesuid = $row['user_no'];
+global $db;
+$authorsql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :mesuid");
+$authorsql->execute(
+    array(
+        'mesuid' => $mesuid,
+    ));
+$authorrow = $authorsql->fetchColumn();
+echo $authorrow;
+?>
+				</a>
+			</div>
+
             <div class="mb-3">
             <label class="form-label">內容</label>
-                <textarea class="form-control" rows="3" id="content" name="content"><?php echo $row["message_content"]?></textarea>
+                <textarea class="form-control" rows="3" id="content" name="content"><?php echo $row["message_content"] ?></textarea>
             </div>
 
 			<button type="submit" class="btn btn-primary">修改</button>

@@ -26,10 +26,10 @@
     <div class="container">
         <ul class="nav justify-content-center">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/signup">註冊</a>
+                <a class="nav-link active" aria-current="page" href="signup">註冊</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/login">登入</a>
+                <a class="nav-link" href="login">登入</a>
             </li>
         </ul>
     </div>

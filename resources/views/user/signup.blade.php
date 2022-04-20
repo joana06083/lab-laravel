@@ -1,7 +1,8 @@
 @include('blade.navbar')
 @section('navbar')
 <div class="container">
-<form role="form" action="" method="post" class="row g-3 needs-validation" novalidate>
+<form role="form" action="user/signup" method="post" class="row g-3 needs-validation" novalidate>
+@csrf
     <!--
         @{{ '123' }}：blade 不執行 echo，直接顯示 @ 符號後的內容。
         {{ '<h1>333</h1>' }}：HTML有效的輸出。

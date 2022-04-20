@@ -18,10 +18,10 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/signup', function () {
-    return view('signup');
+Route::get('user/signup', function () {
+    return view('user/signup');
 });
 
-Route::get('/login', function () {
-    return view('login');
+Route::get('user/login', function () {
+    return view('user/login');
 });

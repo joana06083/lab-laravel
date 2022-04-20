@@ -2,6 +2,7 @@
 @section('navbar')
 <div class="container">
     <form role="form" action="config.php?method=login" method="post" class="row g-3 needs-validation" novalidate >
+    @csrf
         <div  class="row mb-3">
             <label for="account" class="col-sm-2 col-form-label">帳號 :</label>
             <input type="text" class="form-control" id="account" placeholder="account" name="account" />

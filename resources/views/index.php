@@ -28,8 +28,8 @@
                 </div>
                 <a class="nav-link" href="config.php?method=logout">登出</a>
                 <?php } else {?>
-                    <a class="nav-link" href="/signup">註冊</a>
-                    <a class="nav-link" href="/login">登入</a>
+                    <a class="nav-link" href="user/signup">註冊</a>
+                    <a class="nav-link" href="user/login">登入</a>
                 <?php }?>
             </div>
         </div>

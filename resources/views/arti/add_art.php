@@ -1,9 +1,9 @@
 <?php
-    include_once "db.php";
-    session_start();
-    if(!isset($_SESSION["user_id"])){
-    	header("Location: login.php");
-    }
+include_once "db.php";
+session_start();
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,13 +24,16 @@
                 </li>
             </ul>
             <label>Hi!
-                <?php 
-                    global $db;
-                    $sql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '{$_SESSION['user_id']}'");
-                    $sql->execute();
-                    $row = $sql->fetchColumn();
-                    echo $row;
-                ?>
+<?php
+$uid = $_SESSION["user_id"];
+global $db;
+$sql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :uid");
+$sql->execute(array(
+    'uid' => $uid,
+));
+$row = $sql->fetchColumn();
+echo $row;
+?>
             </label>
             <a href="config.php?method=logout">登出</a>
         </div>

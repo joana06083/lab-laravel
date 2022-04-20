@@ -21,5 +21,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 
-Route::get('/user', [UserInfoController::class, 'index']);
-Route::post('/user', [UserInfoController::class, 'index']);
+// 透過GET方法，導向「/user」，執行UserInfoController的function，並回傳某個畫面
+// user使用者route
+Route::get('user', [UserInfoController::class, 'index']);
+Route::get('user/{id}', [UserInfoController::class, 'show’']);
+Route::post('user/signup', [UserInfoController::class, 'store']);
+Route::put('user/{id}', [UserInfoController::class, 'update']);
+Route::delete('user/{id}', [UserInfoController::class, 'destroy']);
