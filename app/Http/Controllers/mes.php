@@ -20,33 +20,21 @@ switch ($_GET["method"]) {
 //add
 function add()
 {
-    $uid = $_GET["uid"];
-    $loginid = $_GET["loginid"];
-    $artno = $_GET["artno"];
-    $content = $_POST["content"];
+    ['uid' => $uid, 'loginid' => $loginid, 'artno' => $artno] = $_GET;
+    ['content' => $content] = $_POST;
     $msgno = date('YmdHis', time());
 
     global $db;
     if ($uid != $loginid) {
         $sql = $db->prepare("INSERT INTO `message` (message_no, message_content,user_no,article_no)
             VALUES (:msgno , :content,:loginid,:artno)");
-        $sql->execute(array(
-            'msgno' => $msgno,
-            'content' => $content,
-            'loginid' => $loginid,
-            'artno' => $artno,
-        ));
-        print_r($sql);
+        $sql->execute(['msgno' => $msgno, 'content' => $content, 'loginid' => $loginid, 'artno' => $artno]);
     } else {
         $sql = $db->prepare("INSERT INTO `message` (message_no, message_content,user_no,article_no)
             VALUES (:msgno , :content,:uid,:artno)");
-        $sql->execute(array(
-            'msgno' => $msgno,
-            'content' => $content,
-            'uid' => $uid,
-            'artno' => $artno,
-        ));
+        $sql->execute(['msgno' => $msgno, 'content' => $content, 'uid' => $uid, 'artno' => $artno]);
     }
+
     echo "<script type='text/javascript'>";
     echo "alert('新增留言成功');";
     echo "location.href='art_index.php?uid=" . $uid . "&artno=" . $artno . "&loginid=" . $loginid . "'";
@@ -56,33 +44,19 @@ function add()
 //update
 function update()
 {
-    $uid = $_GET["uid"];
-    $loginid = $_GET["loginid"];
-    $artno = $_GET["artno"];
-    $msgno = $_GET["msgno"];
-    $content = $_POST["content"];
+    ['uid' => $uid, 'loginid' => $loginid, 'artno' => $artno, 'msgno' => $msgno] = $_GET;
+    ['content' => $content] = $_POST;
 
     global $db;
     if ($uid != $loginid) {
         $sql = $db->prepare("UPDATE `message` SET  message_content = :content
         WHERE user_no = :loginid and article_no = :artno and message_no = :msgno ");
-        $sql->execute(array(
-            'content' => $content,
-            'loginid' => $loginid,
-            'artno' => $artno,
-            'msgno' => $msgno,
-        ));
-        $sql->execute();
+        $sql->execute(['content' => $content, 'loginid' => $loginid, 'artno' => $artno, 'msgno' => $msgno]);
 
     } else {
         $sql = $db->prepare("UPDATE `message` SET  message_content = :content
         WHERE user_no = :uid and article_no = :artno and message_no = :msgno ");
-        $sql->execute(array(
-            'content' => $content,
-            'uid' => $uid,
-            'artno' => $artno,
-            'msgno' => $msgno,
-        ));
+        $sql->execute(['content' => $content, 'uid' => $uid, 'artno' => $artno, 'msgno' => $msgno]);
     }
 
     echo "<script type='text/javascript'>";
@@ -94,19 +68,12 @@ function update()
 //delete
 function del()
 {
-    $uid = $_GET["uid"];
-    $loginid = $_GET["loginid"];
-    $artno = $_GET["artno"];
-    $msgno = $_GET["msgno"];
+    ['uid' => $uid, 'loginid' => $loginid, 'artno' => $artno, 'msgno' => $msgno] = $_GET;
 
     global $db;
     $sql = $db->prepare("DELETE FROM `message`
     WHERE user_no = :loginid and article_no = :artno and message_no = :msgno");
-    $sql->execute(array(
-        'loginid' => $loginid,
-        'artno' => $artno,
-        'msgno' => $msgno,
-    ));
+    $sql->execute(['loginid' => $loginid, 'artno' => $artno, 'msgno' => $msgno]);
 
     echo "<script type='text/javascript'>";
     echo "alert('刪除留言成功');";

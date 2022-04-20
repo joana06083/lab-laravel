@@ -1,19 +1,12 @@
 <?php
 include_once "db.php";
 session_start();
-$uid = $_GET["uid"];
-$artno = $_GET["artno"];
-$msgno = $_GET["msgno"];
-$loginid = $_GET["loginid"];
+['uid' => $uid, 'loginid' => $loginid, 'artno' => $artno, 'msgno' => $msgno] = $_GET;
 
 global $db;
 $sql = $db->prepare("SELECT * FROM `message`
 WHERE user_no = :loginid and article_no = :artno and message_no = :msgno");
-$sql->execute(array(
-    'loginid' => $loginid,
-    'artno' => $artno,
-    'msgno' => $msgno,
-));
+$sql->execute(['loginid' => $loginid, 'artno' => $artno, 'msgno' => $msgno]);
 $row = $sql->fetch();
 
 if ($_SESSION["user_id"] != $loginid) {
@@ -42,9 +35,7 @@ if ($_SESSION["user_id"] != $loginid) {
 <?php
 global $db;
 $usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :loginid");
-$usql->execute(array(
-    'loginid' => $loginid,
-));
+$usql->execute(['loginid' => $loginid]);
 $urow = $usql->fetchColumn();
 echo $urow;
 ?>
@@ -63,10 +54,7 @@ echo $urow;
 $mesuid = $row['user_no'];
 global $db;
 $authorsql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :mesuid");
-$authorsql->execute(
-    array(
-        'mesuid' => $mesuid,
-    ));
+$authorsql->execute(['mesuid' => $mesuid]);
 $authorrow = $authorsql->fetchColumn();
 echo $authorrow;
 ?>

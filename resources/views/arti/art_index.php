@@ -1,19 +1,13 @@
 <?php
 include_once "db.php";
 session_start();
-$uid = $_GET["uid"];
-if (empty($_SESSION["user_id"]) == false) {
+['uid' => $uid, 'artno' => $artno] = $_GET;
+if (isset($_SESSION["user_id"])) {
     $loginid = $_GET["loginid"];
-} else {
-    $loginid = $_GET["uid"];
 }
-$artno = $_GET["artno"];
 
 $sql = $db->prepare("SELECT * FROM `article` WHERE user_no = :uid and article_no = :artno");
-$sql->execute(array(
-    'uid' => $uid,
-    'artno' => $artno,
-));
+$sql->execute(['uid' => $uid, 'artno' => $artno]);
 $row = $sql->fetch();
 ?>
 
@@ -35,18 +29,21 @@ $row = $sql->fetch();
                     <a class="nav-link active" href="index.php" style="color:blue;">Home</a>
                     </li>
                 </ul>
-                <label>Hi!
-<?php
+                <?php if (empty($_SESSION["user_id"]) == false) {?>
+            <div>Hi!
+    <?php
 global $db;
-$usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :loginid");
-$usql->execute(array(
-    'loginid' => $loginid,
-));
-$urow = $usql->fetchColumn();
-echo $urow;
-?>
-                </label>
-                <a href="config.php?method=logout">登出</a>
+    $usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :loginid");
+    $usql->execute(['loginid' => $loginid]);
+    $urow = $usql->fetchColumn();
+    echo $urow;
+    ?>
+            </div>
+            <a class="nav-link" href="config.php?method=logout">登出</a>
+            <?php } else {?>
+                <a class="nav-link" href="signup.php">註冊</a>
+                <a class="nav-link" href="login.php">登入</a>
+            <?php }?>
             </div>
         </div>
     </nav>
@@ -64,9 +61,7 @@ echo $urow;
 <?php
 global $db;
 $authorsql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :uid");
-$authorsql->execute(array(
-    'uid' => $uid,
-));
+$authorsql->execute(['uid' => $uid]);
 $authorrow = $authorsql->fetchColumn();
 echo $authorrow;
 ?>
@@ -81,7 +76,7 @@ echo $authorrow;
 
 
     <!-- 新增留言 -->
-
+    <?php if (isset($_SESSION["user_id"])) {?>
     <form role="form" action="mes.php?method=add&uid=<?php echo $uid ?>&loginid=<?php echo $loginid ?>&artno=<?php echo $row["article_no"] ?>" method="post">
         <div class="mb-3">
         <label for="content" class="form-label">留言內容</label>
@@ -89,16 +84,14 @@ echo $authorrow;
         </div>
         <button type="submit" class="btn btn-primary">新增</button>
     </form>
-
+    <?php }?>
 
 
     <hr/>
     <!-- 留言內容 -->
     <?php
 $messql = $db->prepare("SELECT * FROM `message` WHERE article_no = :artno");
-$messql->execute(array(
-    'artno' => $artno,
-));
+$messql->execute(['artno' => $artno]);
 $mesrow = $messql->fetchAll();
 
 foreach ($mesrow as $mesarr) {
@@ -110,9 +103,7 @@ foreach ($mesrow as $mesarr) {
 $mesuid = $mesarr["user_no"];
     global $db;
     $sql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :mesuid");
-    $sql->execute(array(
-        'mesuid' => $mesuid,
-    ));
+    $sql->execute(['mesuid' => $mesuid]);
     $row = $sql->fetchColumn();
     echo $row;
 

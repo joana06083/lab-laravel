@@ -51,9 +51,8 @@ function img()
 //add
 function add()
 {
-    $uid = $_SESSION["user_id"];
-    $title = $_POST["title"];
-    $content = $_POST["content"];
+    ['title' => $title, 'content' => $content] = $_POST;
+    ['user_id' => $uid] = $_SESSION;
     $artno = date('YmdHis', time());
 
     //定義變數，儲存檔案上傳路徑
@@ -67,13 +66,7 @@ function add()
     global $db;
     $sql = $db->prepare("INSERT INTO `article` (article_no, article_title, article_content,user_no,imgurl)
         VALUES (:artno , :title , :content , :uid , :imgurl )");
-    $sql->execute(array(
-        'artno' => $artno,
-        'title' => $title,
-        'content' => $content,
-        'uid' => $uid,
-        'imgurl' => $imgurl,
-    ));
+    $sql->execute(['artno' => $artno, 'title' => $title, 'content' => $content, 'uid' => $uid, 'imgurl' => $imgurl]);
 
     echo "<script type='text/javascript'>";
     echo "alert('新增文章成功');";
@@ -84,21 +77,15 @@ function add()
 //update
 function update()
 {
-    $uid = $_GET["uid"];
-    $artno = $_GET["artno"];
-    $title = $_POST["title"];
-    $content = $_POST["content"];
+    ['title' => $title, 'content' => $content] = $_POST;
+    ['uid' => $uid, 'artno' => $artno] = $_GET;
 
     global $db;
     $sql = $db->prepare("UPDATE `article`
     SET article_title = :title, article_content = :content
     WHERE user_no = :uid and article_no = :artno ");
-    $sql->execute(array(
-        'title' => $title,
-        'content' => $content,
-        'uid' => $uid,
-        'artno' => $artno,
-    ));
+    $sql->execute(['title' => $title, 'content' => $content, 'uid' => $uid, 'artno' => $artno]);
+
     echo "<script type='text/javascript'>";
     echo "alert('編輯文章成功');";
     echo "location.href='index.php';";
@@ -108,15 +95,12 @@ function update()
 //delete
 function del()
 {
-    $uid = $_GET["uid"];
-    $artno = $_GET["artno"];
+    ['uid' => $uid, 'artno' => $artno] = $_GET;
 
     global $db;
     $sql = $db->prepare("DELETE FROM `article` WHERE user_no = :uid and article_no = :artno");
-    $sql->execute(array(
-        'uid' => $uid,
-        'artno' => $artno,
-    ));
+    $sql->execute(['uid' => $uid, 'artno' => $artno]);
+
     echo "<script type='text/javascript'>";
     echo "alert('刪除文章成功');";
     echo "location.href='index.php';";

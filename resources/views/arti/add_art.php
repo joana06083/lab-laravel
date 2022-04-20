@@ -25,12 +25,10 @@ if (!isset($_SESSION["user_id"])) {
             </ul>
             <label>Hi!
 <?php
-$uid = $_SESSION["user_id"];
+['user_id' => $uid] = $_SESSION;
 global $db;
 $sql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :uid");
-$sql->execute(array(
-    'uid' => $uid,
-));
+$sql->execute(['uid' => $uid]);
 $row = $sql->fetchColumn();
 echo $row;
 ?>

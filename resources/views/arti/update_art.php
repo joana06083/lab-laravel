@@ -1,15 +1,11 @@
 <?php
 include_once "db.php";
 session_start();
-$uid = $_GET["uid"];
-$artno = $_GET["artno"];
+['uid' => $uid, 'artno' => $artno] = $_GET;
 
 global $db;
 $sql = $db->prepare("SELECT * FROM `article` WHERE user_no = :uid and article_no = :artno");
-$sql->execute(array(
-    'uid' => $uid,
-    'artno' => $artno,
-));
+$sql->execute(['uid' => $uid, 'artno' => $artno]);
 $row = $sql->fetch();
 
 if ($_SESSION["user_id"] != $row['user_no']) {
@@ -38,9 +34,7 @@ if ($_SESSION["user_id"] != $row['user_no']) {
 <?php
 global $db;
 $usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :uid");
-$usql->execute(array(
-    'uid' => $uid,
-));
+$usql->execute(['uid' => $uid]);
 $urow = $usql->fetchColumn();
 echo $urow;
 ?>
@@ -59,10 +53,7 @@ echo $urow;
 $artuid = $row['user_no'];
 global $db;
 $authorsql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :artuid");
-$authorsql->execute(
-    array(
-        'artuid' => $artuid,
-    ));
+$authorsql->execute(['artuid' => $artuid]);
 $authorrow = $authorsql->fetchColumn();
 echo $authorrow;
 ?>
