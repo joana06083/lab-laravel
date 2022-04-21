@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\UserAuthController;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,15 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/', function () {
-    // return view('welcome');
-    return view('index');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('user/signup', function () {
-    return view('user/signup');
-});
-
-Route::get('user/login', function () {
-    return view('user/login');
-});
+//顯示網站首頁驗證使用者是否登入
+Route::get('index', [UserAuthController::class, 'index']);
+//顯示登入畫面,處理登入請求
+Route::get('login', [UserAuthController::class, 'login']);
+Route::post('check', [UserAuthController::class, 'check'])->name('user.check');
+//顯示註冊畫面,處理註冊新增資料
+Route::get('register', [UserAuthController::class, 'register']);
+Route::post('create', [UserAuthController::class, 'create'])->name('user.create');
+//處理登出請求
+Route::get('logout', [UserAuthController::class, 'logout']);
