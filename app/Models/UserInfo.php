@@ -11,6 +11,6 @@ class UserInfo extends Model
     public $timestamps = false; //沒有設定時間 created_at 或 updated_at 的欄位，不需要時間戳記
     //
     protected $fillable =
-        ['userNo', 'userName', 'account', 'password', 'sex', 'email'];
+        ['userNo', 'userName', 'password', 'sex', 'email'];
     // protected $guarded = ['password'];
 }

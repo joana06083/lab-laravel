@@ -24,7 +24,7 @@
                 </form>
                 <?php if (empty($_SESSION["user_id"]) == false) {?>
                 <div>Hi!
-
+                    <!-- <?php echo $username ?> -->
                 </div>
                 <a class="nav-link" href="config.php?method=logout">登出</a>
                 <?php } else {?>
