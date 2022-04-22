@@ -55,8 +55,9 @@ class UserAuthController extends Controller
             'password' => 'required|min:5|max:25',
         ]);
         // 檢驗完成寫入資料庫
-        $user = UserInfo::where('userNo', '=', $request->account)->first();
+        $user = UserInfo::where('userNo', $request->account)->first();
 
+        // return $user;
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('LoggedUser', $user->userNo);
@@ -71,9 +72,8 @@ class UserAuthController extends Controller
     //顯示登入畫面
     public function index()
     {
-
         if (session()->has('LoggedUser')) {
-            $user = UserInfo::where('userNo', '=', session('LoggedUser'))->first();
+            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data = [
                 'LoggedUserInfo' => $user,
             ];

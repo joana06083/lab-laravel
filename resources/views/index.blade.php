@@ -14,7 +14,7 @@
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index" style="color:blue;">Home</a>
+                        <a class="nav-link active" href="/" style="color:blue;">Home</a>
                     </li>
                 </ul>
 
@@ -22,7 +22,6 @@
                     <input class="form-control me-2" type="search" id="search" placeholder="search" name="search"/>
                     <button type="submit" class="btn btn-primary">Search</button>
                 </form>
-
 
                 @if(!empty($LoggedUserInfo))
                     <div>Hi!{{$LoggedUserInfo->userName}}</div>

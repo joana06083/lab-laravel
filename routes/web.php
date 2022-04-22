@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 //顯示網站首頁驗證使用者是否登入
-Route::get('index', [UserAuthController::class, 'index']);
+Route::get('/', [UserAuthController::class, 'index']);
 //顯示登入畫面,處理登入請求
 Route::get('login', [UserAuthController::class, 'login']);
 Route::post('check', [UserAuthController::class, 'check'])->name('user.check');
