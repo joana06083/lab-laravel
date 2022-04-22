@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,13 @@ Route::get('register', [UserAuthController::class, 'register']);
 Route::post('create', [UserAuthController::class, 'create'])->name('user.create');
 //處理登出請求
 Route::get('logout', [UserAuthController::class, 'logout']);
+
+// 文章route
+// Route::get('', [ArticleController::class, 'index']);
+Route::get('art/create', [ArticleController::class, 'create']);
+Route::get('art/edit', [ArticleController::class, 'edit']);
+Route::get('art/show’', [ArticleController::class, 'show’']);
+
+Route::post('art/store', [ArticleController::class, 'store'])->name('art.create');
+Route::put('art/update', [ArticleController::class, 'update']);
+Route::delete('art/destroy', [ArticleController::class, 'destroy']);

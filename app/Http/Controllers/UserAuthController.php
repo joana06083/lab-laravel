@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArticleInfo;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -72,18 +73,18 @@ class UserAuthController extends Controller
     //顯示登入畫面
     public function index()
     {
+        $data = [
+            'ArtInfo' => ArticleInfo::all(),
+            'LoggedUserInfo' => [],
+        ];
         if (session()->has('LoggedUser')) {
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-            $data = [
-                'LoggedUserInfo' => $user,
-            ];
-        } else {
-            $data = [
-                'LoggedUserInfo' => [],
-            ];
+            $data['LoggedUserInfo'] = $user;
         }
+
         return view('index', $data);
     }
+
     //處理登出請求
     public function logout()
     {

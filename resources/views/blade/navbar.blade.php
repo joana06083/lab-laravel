@@ -22,6 +22,6 @@
             </div>
         </div>
     </nav>
-            @yield('navbar')
+    @yield('navbar')
 </body>
 </html>
