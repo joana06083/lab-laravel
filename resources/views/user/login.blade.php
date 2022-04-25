@@ -2,33 +2,55 @@
 @section('navbar')
 
 <div class="container">
-    <ul class="nav justify-content-center">
-        <li class="nav-item">
-            <a class="nav-link" href="login">登入</a>
-        </li>
-    </ul>
-</div>
-<div class="container">
-    <form role="form" action="{{route('user.check')}}" method="post" class="row g-3 needs-validation" novalidate >
-    @csrf
-        <div class="results">
-            @if(Session::get('Fail'))
-                <div class="alert alert-danger">
-                    {{Session::get('Fail')}}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">登入</div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{route('user.check')}}">
+                        @csrf
+                        <div class="results">
+                            @if(Session::get('Fail'))
+                                <div class="alert alert-danger">
+                                    {{Session::get('Fail')}}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="row mb-3">
+                            <label for="account" class="col-md-4 col-form-label text-md-end">帳號 ：</label>
+
+                            <div class="col-md-6">
+                                <input id="account" type="text" class="form-control @error('email') is-invalid @enderror" name="account" value="{{ old('account') }}" required autocomplete="account" autofocus>
+                                <span class="text-danger">@error('account'){{$message}} @enderror </span>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="password" class="col-md-4 col-form-label text-md-end">密碼 ：</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <span class="text-danger">@error('password'){{$message}} @enderror </span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    登入
+                                </button>
+
+                                <a href="register" class="btn btn-link" style="text-decoration: none;">
+                                    新增一個帳號！
+                                </a>
+
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            @endif
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="account" class="col-sm-2 col-form-label">帳號 :</label>
-            <input type="text" class="form-control" id="account" name="account" value="{{old('account')}}" placeholder="account"/>
-            <span class="text-danger">@error('account'){{$message}} @enderror </span>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="col-sm-2 col-form-label">密碼 :</label>
-            <input  type="password" class="form-control" id="password" name="password" placeholder="Password"/>
-            <span class="text-danger">@error('password'){{$message}} @enderror </span>
-        </div>
-        <button type="submit" class="btn btn-outline-primary">登入</button>
-        <a href="register">新增一個帳號！</a>
-    </form>
+    </div>
 </div>

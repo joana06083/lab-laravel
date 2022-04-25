@@ -1,25 +1,34 @@
-
 @include('blade.indexNav')
+<br>
+
+@if(Session::get('addSuccess'))
+<script type="text/javascript">
+alert("文章新增成功！");
+</script>
+@elseif(Session::get('modifySuccess'))
+<script type="text/javascript">
+alert("文章修改成功！");
+</script>
+@elseif(Session::get('delSuccess'))
+<script type="text/javascript">
+alert("文章刪除成功！");
+</script>
+@endif
+@foreach ($ArtInfo as $art)
 
 <div class="container">
-    <ul class="nav justify-content">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="art/create">新增文章</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="art/edit">更新文章</a>
-        </li>
-    </ul>
-</div>
-@foreach ($ArtInfo as $art)
-<div class="container">
-    <ol>
-        <li><a href="">文章標題：{{$art->articleTitle}}</a></li>
-        <li><a>作者：{{$art->userNo}}</a></li>
-        <li><a>最後修改時間：{{$art->updateTime}}</a></li>
-        <li><a href="">編輯</a></li>
-        <li><a href="">刪除</a></li>
-    </ol>
+    <label>文章標題：</label>
+    <a href="" style="text-decoration: none;">{{$art->articleTitle}}</a>
+    <a>作者：{{$art->userNo}}</a>
+    <a>最後修改時間：{{$art->updateTime}}</a>
+
+    <a href="{{ route('art.edit', $art->articleNo)}}" style="text-decoration: none;">編輯</a>
+    <form role="form" action="{{ route('art.destroy', $art->articleNo)}}" method="post">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-danger" type="submit">刪除</button>
+    </form>
+
     <hr/>
 </div>
 @endforeach

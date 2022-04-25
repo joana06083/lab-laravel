@@ -15,10 +15,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        // $arts = ArticleInfo::all();
-        // // return $arts;
 
-        // return view('index', $arts);
     }
 
     /**
@@ -50,7 +47,6 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         // 檢驗文章內容
-        // return $request->input();
         $request->validate([
             'title' => 'required|min:5|max:50',
             'content' => 'required|min:5',
@@ -68,12 +64,16 @@ class ArticleController extends Controller
         $art->articleNo = date('YmdHis', time());
         $art->articleTitle = $request->title;
         $art->articleContent = $request->content;
-        $art->imgUrl = 'public/Image/' . $data['image'];
-        $art->userNo = 'admin';
+        $art->userNo = $request->userNo;
+        if (isset($data['image'])) {
+            $art->imgUrl = 'public/Image/' . $data['image'];
+        } else {
+            $art->imgUrl = null;
+        }
         $query = $art->save();
 
         if ($query) {
-            return back()->with('Success', '文章新增成功！');
+            return redirect('/')->with('addSuccess', 'article successfully add!');
         } else {
             return back()->with('Fail', '文章新增失敗！');
         }
@@ -96,10 +96,11 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // 顯示特定文章修改頁面
     public function edit($id)
     {
-        //
-        return view('article.update');
+        $artvalue = ArticleInfo::findOrFail($id);
+        return view('article.update', compact('artvalue'));
 
     }
 
@@ -112,7 +113,15 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //檢核修改內容
+        $validatedData = $request->validate([
+            'articleTitle' => 'required|min:5|max:50',
+            'articleContent' => 'required|min:5',
+        ]);
+
+        $results = ArticleInfo::where('articleNo', $id);
+        $results->update($validatedData);
+        return redirect('/')->with('modifySuccess', 'article successfully modify!');
     }
 
     /**
@@ -124,5 +133,9 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         //
+        $result = ArticleInfo::findOrFail($id);
+        $result->delete();
+
+        return redirect('/')->with('delSuccess', 'article successfully deleted!');
     }
 }

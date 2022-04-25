@@ -2,19 +2,19 @@
 <div class="container">
     <br>
     <h4>新增文章</h4>
-    <form role="form" action="{{route('art.create')}}" enctype="multipart/form-data" method="post">
+    <form role="form" action="{{route('art.store')}}" enctype="multipart/form-data" method="post">
     @csrf
         <div class="results">
-            @if(Session::get('Success'))
-                <div class="alert alert-success">
-                    {{Session::get('Success')}}
-                </div>
-            @endif
             @if(Session::get('Fail'))
                 <div class="alert alert-danger">
                     {{Session::get('Fail')}}
                 </div>
             @endif
+        </div>
+        <div style="display: none;"　>
+            <label for="title" class="form-label">登入人員</label>
+            <input class="form-control" rows="3" id="userNo" name="userNo" value="{{$LoggedUserInfo->userNo}}">
+            </input>
         </div>
         <div class="mb-3">
             <label for="title" class="form-label">標題</label>

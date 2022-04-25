@@ -6,49 +6,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/resources/css/app.css">
     <title>首頁</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/" style="color:blue;">Home</a>
+                        <a class="nav-link active" href="/" style="color:black;">Home</a>
                     </li>
                 </ul>
-                @section('search')
+
                 <form class="d-flex" action="/" method="POST">
                     <input class="form-control me-2" type="search" id="search" placeholder="search" name="search"/>
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="submit" class="btn btn-outline-secondary">Search</button>
                 </form>
-                @endsection
 
                 @if(!empty($LoggedUserInfo))
-                    <div>Hi!{{$LoggedUserInfo->userName}}</div>
-                    <a class="nav-link" href="/logout">登出</a>
+                    <ul class="nav justify-content">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page"
+                            href="{{ route('art.create')}}">新增文章</a>
+                        </li>
+                    </ul>
+                    <div>Hi! {{$LoggedUserInfo->userName}}</div>
+                    <a href="/logout" class="nav-link" style="color:black;">登出</a>
                 @else
-                    <a class="nav-link" href="register">註冊</a>
-                    <a class="nav-link" href="login">登入</a>
-
+                    <a href="register" class="nav-link" style="color:black;">註冊</a>
+                    <a href="login" class="nav-link" style="color:black;">登入</a>
                 @endif
             </div>
         </div>
     </nav>
-    @section('artCreate')
-    <div class="container">
-        <ul class="nav justify-content">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="art/create/">新增文章</a>
-            </li>
-        </ul>
-    </div>
-    @endsection
-
+    <br>
 
     <!-- 新增留言 -->
     @section('mesCreate')
-    <form role="form" action="mes.php?method=add&uid=&loginid=&artno=" method="post">
+    <form role="form" action="" method="post">
         <div class="mb-3">
         <label for="content" class="form-label">留言內容</label>
         <textarea class="form-control" rows="3" id="content" name="content"></textarea>
@@ -63,8 +59,8 @@
     <div>
         <a>留言者：</a>
         <a>最後修改時間：</a>
-        <a href="update_mes.php?uid=&loginid=&artno=&msgno=">編輯</a>
-        <a href="mes.php?method=del&uid=&loginid=&artno=&msgno=">刪除</a>
+        <a href="">編輯</a>
+        <a href="">刪除</a>
     </div>
     <div>
         <a>留言內容 ：</a>
