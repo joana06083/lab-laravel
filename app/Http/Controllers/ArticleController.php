@@ -66,7 +66,7 @@ class ArticleController extends Controller
         $art->articleContent = $request->content;
         $art->userNo = $request->userNo;
         if (isset($data['image'])) {
-            $art->imgUrl = 'public/Image/' . $data['image'];
+            $art->imgUrl = 'Image/' . $data['image'];
         } else {
             $art->imgUrl = null;
         }
@@ -87,20 +87,38 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+        // 顯示特定文章頁面
+        if (session()->has('LoggedUser')) {
+            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
+            $artvalue = ArticleInfo::findOrFail($id);
 
+            $data = [
+                'LoggedUserInfo' => $user,
+                'artvalue' => $artvalue,
+            ];
+            return view('article.show', $data);
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // 顯示特定文章修改頁面
+
     public function edit($id)
     {
-        $artvalue = ArticleInfo::findOrFail($id);
-        return view('article.update', compact('artvalue'));
+        // 顯示特定文章修改頁面
+        if (session()->has('LoggedUser')) {
+            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
+            $artvalue = ArticleInfo::findOrFail($id);
+
+            $data = [
+                'LoggedUserInfo' => $user,
+                'artvalue' => $artvalue,
+            ];
+            return view('article.update', $data);
+        }
 
     }
 

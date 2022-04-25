@@ -7,7 +7,7 @@
         <div class="mb-3">
             <a>建立時間：{{$artvalue->createTime}}</a>
             <a>最後修改時間：{{$artvalue->updateTime}}</a>
-            <a>作者：{{$artvalue->userNo}}</a>
+            <a>作者：{{$LoggedUserInfo->userName}}</a>
         </div>
         <div class="mb-3">
             <label class="form-label">標題</label>

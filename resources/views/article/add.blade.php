@@ -11,7 +11,7 @@
                 </div>
             @endif
         </div>
-        <div style="display: none;"　>
+        <div style="display: none;">
             <label for="title" class="form-label">登入人員</label>
             <input class="form-control" rows="3" id="userNo" name="userNo" value="{{$LoggedUserInfo->userNo}}">
             </input>
