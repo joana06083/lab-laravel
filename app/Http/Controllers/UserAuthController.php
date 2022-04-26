@@ -70,7 +70,7 @@ class UserAuthController extends Controller
             return back()->with('Fail', '登入失敗！此帳號未註冊！');
         }
     }
-    //顯示登入畫面
+    //顯示首頁畫面
     public function index()
     {
         $data = [

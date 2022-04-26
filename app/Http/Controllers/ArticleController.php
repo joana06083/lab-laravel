@@ -3,21 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\ArticleInfo;
+use App\Models\MessageInfo;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -88,16 +79,17 @@ class ArticleController extends Controller
     public function show($id)
     {
         // 顯示特定文章頁面
+        $data = [
+            'ArtLists' => ArticleInfo::where('articleNo', $id)->first(),
+            'MesLists' => MessageInfo::where('articleNo', $id)->get(),
+            'LoggedUserInfo' => [],
+        ];
+
         if (session()->has('LoggedUser')) {
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-            $artvalue = ArticleInfo::findOrFail($id);
-
-            $data = [
-                'LoggedUserInfo' => $user,
-                'artvalue' => $artvalue,
-            ];
-            return view('article.show', $data);
+            $data['LoggedUserInfo'] = $user;
         }
+        return view('article.show', $data);
     }
     /**
      * Show the form for editing the specified resource.
@@ -150,10 +142,10 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $result = ArticleInfo::findOrFail($id);
-        $result->delete();
+        //刪除文章＋刪除留言(關聯Article＆message)
+        $artresult = ArticleInfo::findOrFail($id);
+        $artresult->delete();
 
-        return redirect('/')->with('delSuccess', 'article successfully deleted!');
+        return redirect('/')->with('delSuccess', 'article/message successfully deleted!');
     }
 }

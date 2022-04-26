@@ -41,30 +41,5 @@
     </nav>
     <br>
 
-    <!-- 新增留言 -->
-    @section('mesCreate')
-    <form role="form" action="" method="post">
-        <div class="mb-3">
-        <label for="content" class="form-label">留言內容</label>
-        <textarea class="form-control" rows="3" id="content" name="content"></textarea>
-    </div>
-        <button type="submit" class="btn btn-primary">新增</button>
-    </form>
-    <hr/>
-    @endsection
-
-    @section('mesInfo')
-    <!-- 留言內容 -->
-    <div>
-        <a>留言者：</a>
-        <a>最後修改時間：</a>
-        <a href="">編輯</a>
-        <a href="">刪除</a>
-    </div>
-    <div>
-        <a>留言內容 ：</a>
-    </div>
-    <hr/>
-    @endsection
 </body>
 </html>

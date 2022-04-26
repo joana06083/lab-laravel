@@ -11,7 +11,7 @@ alert("文章修改成功！");
 </script>
 @elseif(Session::get('delSuccess'))
 <script type="text/javascript">
-alert("文章刪除成功！");
+alert("文章/留言刪除成功！");
 </script>
 @endif
 @foreach ($ArtInfo as $art)
@@ -24,11 +24,13 @@ alert("文章刪除成功！");
             <a href="{{ route('art.show', $art->articleNo)}}" style="text-decoration: none;">{{$art->articleTitle}}</a>
             <a>作者：{{$art->userNo}}</a>
             <a>最後修改時間：{{$art->updateTime}}</a>
-            @if($art->userNo==$LoggedUserInfo->userNo)
-            <a class="btn btn-primary" href="{{ route('art.edit', $art->articleNo)}}" style="text-decoration: none;">編輯</a>
-            @csrf
-            @method('DELETE')
-            <button class="btn btn-danger" type="submit">刪除</button>
+            @if(!empty($LoggedUserInfo))
+                @if($art->userNo==$LoggedUserInfo->userNo)
+                <a class="btn btn-primary" href="{{ route('art.edit', $art->articleNo)}}" style="text-decoration: none;">編輯</a>
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-danger" type="submit">刪除</button>
+                @endif
             @endif
         </li>
     </form>
