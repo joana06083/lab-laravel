@@ -9,7 +9,7 @@ alert("留言新增成功！");
 alert("留言修改成功！");
 </script>
 @elseif(Session::get('delMesSuccess'))
-<script type="text/javascript">ㄋ
+<script type="text/javascript">
 alert("留言刪除成功！");
 </script>
 @endif
@@ -65,12 +65,9 @@ alert("留言刪除成功！");
             <a class="btn btn-primary" href="{{ route('mes.edit', $mes->messageNo)}}">編輯</a>
             @csrf
             @method('DELETE')
-            <div style="display: none;">
-                <label for="articleNo" class="form-label">文章代號</label>
-                <input class="form-control" rows="3" id="articleNo" name="articleNo" value="{{$mes->articleNo}}">
-                </input>
-            </div>
-            <a class="btn btn-danger" type="submit">刪除</a>
+
+            <input id="articleNo" name="articleNo" value="{{$mes->articleNo}}" style="display: none;"></input>
+            <button class="btn btn-danger" type="submit">刪除</button>
         </form>
         @endif
     @endif

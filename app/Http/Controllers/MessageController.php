@@ -93,13 +93,14 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //刪除留言
-        // $result = MessageInfo::findOrFail($id);
-        // $result->delete();
 
-        // return redirect('/art/' . $id)->with('delMesSuccess', 'article successfully deleted!');
+        $result = MessageInfo::findOrFail($id);
+        $result->delete();
+
+        return redirect('/art/' . $request->articleNo)->with('delMesSuccess', 'article successfully deleted!');
 
     }
 }
