@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ArticleInfo;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserAuthController extends Controller
@@ -55,10 +56,10 @@ class UserAuthController extends Controller
             'account' => 'required|min:5|max:25',
             'password' => 'required|min:5|max:25',
         ]);
+
         // 檢驗完成寫入資料庫
         $user = UserInfo::where('userNo', $request->account)->first();
 
-        // return $user;
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('LoggedUser', $user->userNo);
@@ -71,10 +72,34 @@ class UserAuthController extends Controller
         }
     }
     //顯示首頁畫面
+    public function search(Request $request)
+    {
+
+        $searchvalue = '%' . $request->search . '%';
+        $data = [
+            'ArtInfo' => ArticleInfo::
+                leftJoin('userData', 'article.userNo', 'userData.userNo')
+                ->where('articleTitle', 'like', $searchvalue)
+                ->orWhere('updateTime', 'like', $searchvalue)
+                ->orWhere('userName', 'like', $searchvalue)
+                ->get(),
+            'LoggedUserInfo' => [],
+        ];
+        if (session()->has('LoggedUser')) {
+            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
+            $data['LoggedUserInfo'] = $user;
+        }
+        return view('index', $data);
+    }
+
+    //顯示首頁畫面
     public function index()
     {
+        $ArtInfo = DB::table('article')
+            ->leftJoin('userData', 'article.userNo', 'userData.userNo')
+            ->get();
         $data = [
-            'ArtInfo' => ArticleInfo::all(),
+            'ArtInfo' => $ArtInfo,
             'LoggedUserInfo' => [],
         ];
         if (session()->has('LoggedUser')) {

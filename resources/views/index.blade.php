@@ -14,15 +14,23 @@ alert("文章修改成功！");
 alert("文章/留言刪除成功！");
 </script>
 @endif
-@foreach ($ArtInfo as $art)
 
 <div class="container">
-
+    <form class="d-flex" action="/search" method="post">
+    @csrf
+        <input class="form-control me-2" type="search" id="search" placeholder="search" name="search"/>
+        <button type="submit" class="btn btn-secondary">search</button>
+    </form>
+</div>
+<br>
+@foreach ($ArtInfo as $art)
+<div class="container">
     <form role="form" action="{{ route('art.destroy', $art->articleNo)}}" method="post">
         <li>
             <label>文章標題：</label>
             <a href="{{ route('art.show', $art->articleNo)}}" style="text-decoration: none;">{{$art->articleTitle}}</a>
-            <a>作者：{{$art->userNo}}</a>
+            <a>作者：{{ $art->userName}}
+            </a>
             <a>最後修改時間：{{$art->updateTime}}</a>
             @if(!empty($LoggedUserInfo))
                 @if($art->userNo==$LoggedUserInfo->userNo)
@@ -34,7 +42,6 @@ alert("文章/留言刪除成功！");
             @endif
         </li>
     </form>
-
     <hr/>
 </div>
 @endforeach

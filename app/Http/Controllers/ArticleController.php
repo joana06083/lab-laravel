@@ -80,8 +80,10 @@ class ArticleController extends Controller
     {
         // 顯示特定文章頁面
         $data = [
-            'ArtLists' => ArticleInfo::where('articleNo', $id)->first(),
-            'MesLists' => MessageInfo::where('articleNo', $id)->get(),
+            'ArtLists' => ArticleInfo::where('articleNo', $id)
+                ->leftJoin('userData', 'article.userNo', 'userData.userNo')->first(),
+            'MesLists' => MessageInfo::where('articleNo', $id)
+                ->leftJoin('userData', 'message.userNo', 'userData.userNo')->get(),
             'LoggedUserInfo' => [],
         ];
 

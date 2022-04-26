@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// use App\Models\ArticleInfo;
 use App\Models\MessageInfo;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
@@ -48,6 +47,7 @@ class MessageController extends Controller
             return back()->with('Fail', '留言新增失敗！');
         }
     }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -93,10 +93,9 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy($id)
     {
         //刪除留言
-        return redirect('/');
         // $result = MessageInfo::findOrFail($id);
         // $result->delete();
 

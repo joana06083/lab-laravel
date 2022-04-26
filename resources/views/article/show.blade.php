@@ -18,7 +18,7 @@ alert("留言刪除成功！");
     <br>
     <h4>{{$ArtLists->articleTitle}}</h4>
         <div class="mb-3">
-            <label class="form-label">作者：{{$ArtLists->userNo}}</label>
+            <label class="form-label">作者：{{$ArtLists->userName}}</label>
             <label class="form-label">建立時間：{{$ArtLists->createTime}}</label>
             <label class="form-label">更新時間：{{$ArtLists->updateTime}}</label>
         </div>
@@ -43,7 +43,7 @@ alert("留言刪除成功！");
     <h5>留言區</h5>
     @foreach ($MesLists as $mes)
     <div class="mb-3">
-        <a>留言者：{{$mes->userNo}}</a>
+        <a>留言者：{{$mes->userName}}</a>
         <a>建立時間：{{$mes->createTime}}</a>
         <a>最後修改時間：{{$mes->updateTime}}</a>
     </div>
@@ -61,13 +61,17 @@ alert("留言刪除成功！");
 
     @if(!empty($LoggedUserInfo))
         @if($mes->userNo==$LoggedUserInfo->userNo)
-            {{$mes->messageNo}}
+        <form role="form" action="{{ route('mes.destroy', $mes->messageNo)}}" method="post">
             <a class="btn btn-primary" href="{{ route('mes.edit', $mes->messageNo)}}">編輯</a>
-            <form role="form" action="{{ route('mes.destroy', $mes->messageNo)}}" method="post">
             @csrf
             @method('DELETE')
-                <a class="btn btn-danger" type="submit">刪除</a>
-            </form>
+            <div style="display: none;">
+                <label for="articleNo" class="form-label">文章代號</label>
+                <input class="form-control" rows="3" id="articleNo" name="articleNo" value="{{$mes->articleNo}}">
+                </input>
+            </div>
+            <a class="btn btn-danger" type="submit">刪除</a>
+        </form>
         @endif
     @endif
     <hr>
@@ -85,8 +89,10 @@ alert("留言刪除成功！");
             @endif
         </div>
         <div style="display: none;">
+            @if(!empty($LoggedUserInfo))
             <label for="userNo" class="form-label">登入人員</label>
             <input class="form-control" rows="3" id="userNo" name="userNo" value="{{$LoggedUserInfo->userNo}}">
+            @endif
             <label for="articleNo" class="form-label">文章代號</label>
             <input class="form-control" rows="3" id="articleNo" name="articleNo" value="{{$ArtLists->articleNo}}">
         </div>
