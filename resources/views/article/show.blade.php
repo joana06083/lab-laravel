@@ -74,6 +74,7 @@ alert("留言刪除成功！");
     <hr>
     @endforeach
 </div>
+@if(!empty($LoggedUserInfo))
 <!-- 新增留言 -->
 <div class="container">
     <form role="form" action="{{route('mes.store')}}" enctype="multipart/form-data" method="post">
@@ -106,3 +107,4 @@ alert("留言刪除成功！");
         <button type="submit" class="btn btn-primary">新增</button>
     </form>
 </div>
+@endif

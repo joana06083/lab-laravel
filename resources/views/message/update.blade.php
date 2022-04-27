@@ -1,6 +1,8 @@
 @include('blade.indexNav')
 
 <div class="container">
+    <br>
+    <h4>修改留言</h4>
     <form role="form" action="{{ route('mes.update', $mesInfo->messageNo ) }}" method="post">
         @csrf
         @method('PATCH')

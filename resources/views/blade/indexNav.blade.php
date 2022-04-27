@@ -9,31 +9,28 @@
     <title>首頁</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/" style="color:black;">Home</a>
-                    </li>
-                </ul>
-
-                @if(!empty($LoggedUserInfo))
-                    <label>Hi! {{$LoggedUserInfo->userName}}</label>
-                    &nbsp;
-                    <a class="btn btn-primary" aria-current="page"
-                    href="{{ route('art.create')}}">新增文章</a>
-                    &nbsp;
-                    <a href="/logout" class="btn btn-secondary" >登出</a>
-                @else
-                    <a href="/register" class="btn btn-primary">註冊</a>
-                    &nbsp;
-                    <a href="/login" class="btn btn-secondary">登入</a>
-                @endif
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light container-fluid" style="position: fixed;">
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/" style="color:black;">Home</a>
+                </li>
+            </ul>
+            @if(!empty($LoggedUserInfo))
+                <label>Hi! {{$LoggedUserInfo->userName}}</label>
+                &nbsp;
+                <a class="btn btn-primary" aria-current="page"
+                href="{{ route('art.create')}}">新增文章</a>
+                &nbsp;
+                <a href="/logout" class="btn btn-secondary" >登出</a>
+            @else
+                <a href="/register" class="btn btn-primary">註冊</a>
+                &nbsp;
+                <a href="/login" class="btn btn-secondary">登入</a>
+            @endif
         </div>
     </nav>
     <br>
-
+    <br>
 </body>
 </html>

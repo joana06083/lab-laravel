@@ -1,6 +1,8 @@
 @include('blade.indexNav')
 
 <div class="container">
+    <br>
+    <h4>修改文章</h4>
     <form role="form" action="{{ route('art.update', $artvalue->articleNo ) }}" method="post">
         @csrf
         @method('PATCH')
