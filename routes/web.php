@@ -1,5 +1,7 @@
 <?php
 
+// use App\Http\Controllers\ArticleController;
+// use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,11 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [UserAuthController::class, 'index']);
 
 //顯示註冊畫面,處理註冊新增資料
-Route::get('register', [UserAuthController::class, 'register']);
+Route::middleware('user.login')->get('register', [UserAuthController::class, 'register']);
 Route::post('create', [UserAuthController::class, 'create'])->name('user.create');
 
 //顯示登入畫面,處理登入請求
-Route::get('login', [UserAuthController::class, 'login']);
+Route::middleware('user.login')->get('login', [UserAuthController::class, 'login']);
 Route::post('check', [UserAuthController::class, 'check'])->name('user.check');
 
 //處理查詢請求
@@ -33,5 +35,4 @@ Route::get('logout', [UserAuthController::class, 'logout']);
 
 // 文章/留言 route
 Route::resource('art', 'ArticleController');
-
 Route::resource('mes', 'MessageController');

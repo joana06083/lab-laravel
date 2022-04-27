@@ -113,6 +113,6 @@ class UserAuthController extends Controller
     public function logout()
     {
         session()->flush();
-        return redirect('login');
+        return redirect('login')->with('logout', 'logout successfully !');
     }
 }

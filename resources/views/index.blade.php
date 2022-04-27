@@ -12,7 +12,12 @@ alert("文章修改成功！");
 <script type="text/javascript">
 alert("文章/留言刪除成功！");
 </script>
+@elseif(Session::get('login'))
+<script type="text/javascript">
+alert("已登入！即將導回首頁！");
+</script>
 @endif
+
 <br>
 <br>
 <div class="container">
