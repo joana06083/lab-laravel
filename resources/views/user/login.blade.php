@@ -1,5 +1,5 @@
 @include('blade.navbar')
-@section('navbar')
+
 
 <div class="container">
     <div class="row justify-content-center">

@@ -1,5 +1,4 @@
 @include('blade.indexNav')
-<br>
 
 @if(Session::get('addSuccess'))
 <script type="text/javascript">
@@ -14,7 +13,8 @@ alert("文章修改成功！");
 alert("文章/留言刪除成功！");
 </script>
 @endif
-
+<br>
+<br>
 <div class="container">
     <form class="d-flex" action="/search" method="post">
     @csrf
