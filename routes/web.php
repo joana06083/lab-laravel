@@ -32,7 +32,6 @@ Route::post('search', [UserAuthController::class, 'search']);
 Route::get('logout', [UserAuthController::class, 'logout']);
 
 // 文章/留言 route
-Route::middleware('user.logout')->resource('art', 'ArticleController')
-    ->only(['create', 'store', 'edit', 'update', 'destroy']);
+Route::middleware('user.logout')->resource('art', 'ArticleController')->except(['show']);
 Route::resource('art', 'ArticleController')->only(['show']);
 Route::middleware('user.logout')->resource('mes', 'MessageController');
