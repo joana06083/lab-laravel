@@ -1,4 +1,9 @@
 @include('blade.navbar')
+@if(Session::get('logout'))
+<script type="text/javascript">
+alert("目前為未登入狀態！請先登入！!");
+</script>
+@endif
 
 <div class="container">
     <div class="row justify-content-center">

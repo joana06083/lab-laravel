@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +32,7 @@ Route::post('search', [UserAuthController::class, 'search']);
 Route::get('logout', [UserAuthController::class, 'logout']);
 
 // 文章/留言 route
-Route::get('art/{id}', [ArticleController::class, 'show']);
-
-Route::middleware('user.logout')->resource('art', 'ArticleController');
+Route::middleware('user.logout')->resource('art', 'ArticleController')
+    ->only(['create', 'store', 'edit', 'update', 'destroy']);
+Route::resource('art', 'ArticleController')->only(['show']);
 Route::middleware('user.logout')->resource('mes', 'MessageController');
