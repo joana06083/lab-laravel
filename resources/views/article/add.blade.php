@@ -1,11 +1,5 @@
 @include('blade.indexNav')
-@if(Session::get('logout'))
-<script type="text/javascript">
-alert("目前為未登入狀態！即將導向登入頁！");
-location.reload('login')
-</script>
-@endif
-123
+
 <div class="container">
     <br>
     <h4>新增文章</h4>

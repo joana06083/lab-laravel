@@ -1,7 +1,6 @@
 <?php
 
-// use App\Http\Controllers\ArticleController;
-// use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,5 +33,7 @@ Route::post('search', [UserAuthController::class, 'search']);
 Route::get('logout', [UserAuthController::class, 'logout']);
 
 // 文章/留言 route
-Route::resource('art', 'ArticleController');
-Route::resource('mes', 'MessageController');
+Route::get('art/{id}', [ArticleController::class, 'show']);
+
+Route::middleware('user.logout')->resource('art', 'ArticleController');
+Route::middleware('user.logout')->resource('mes', 'MessageController');
