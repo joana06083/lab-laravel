@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Route;
 //顯示網站首頁驗證使用者是否登入
 Route::get('/', [UserAuthController::class, 'index']);
 
-//顯示註冊畫面,處理註冊新增資料
-Route::middleware('user.login')->get('register', [UserAuthController::class, 'register']);
+//顯示註冊畫面,處理註冊新增資料&顯示登入畫面,處理登入請求
+Route::middleware('user.login')->group(function () {
+    Route::get('register', [UserAuthController::class, 'register']);
+    Route::get('login', [UserAuthController::class, 'login']);
+});
 Route::post('create', [UserAuthController::class, 'create'])->name('user.create');
-
-//顯示登入畫面,處理登入請求
-Route::middleware('user.login')->get('login', [UserAuthController::class, 'login']);
 Route::post('check', [UserAuthController::class, 'check'])->name('user.check');
 
 //處理查詢請求
