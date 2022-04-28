@@ -1,4 +1,6 @@
-@include('blade.indexNav')
+@extends('blade.navbar')
+
+@section('title', '首頁')
 
 @if(session('Success'))
 <script type="text/javascript">
@@ -14,8 +16,7 @@
 </script>
 @endif
 
-<br>
-<br>
+@section('content')
 <div class="container">
     <form class="d-flex" action="/search" method="post">
     @csrf
@@ -29,13 +30,13 @@
     <form role="form" action="{{ route('art.destroy', $art->articleNo)}}" method="post">
         <li>
             <label>文章標題：</label>
-            <a href="{{ route('art.show', $art->articleNo)}}" style="text-decoration: none;">{{$art->articleTitle}}</a>
+            <a href="{{ route('art.show', $art->articleNo)}}">{{$art->articleTitle}}</a>
             <a>作者：{{ $art->userName}}
             </a>
             <a>最後修改時間：{{$art->updateTime}}</a>
             @if(!empty($LoggedUserInfo))
                 @if($art->userNo==$LoggedUserInfo->userNo)
-                <a class="btn btn-primary" href="{{ route('art.edit', $art->articleNo)}}" style="text-decoration: none;">編輯</a>
+                <a class="btn btn-primary" href="{{ route('art.edit', $art->articleNo)}}" >編輯</a>
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-danger" type="submit">刪除</button>
@@ -46,3 +47,4 @@
     <hr/>
 </div>
 @endforeach
+@endsection

@@ -1,4 +1,6 @@
-@include('blade.indexNav')
+@extends('blade.navbar')
+
+@section('title', '修改文章')
 
 @if(session('Fail'))
 <div class="alert alert-danger">
@@ -6,8 +8,8 @@
 </div>
 @endif
 
+@section('content')
 <div class="container">
-    <br>
     <h4>修改文章</h4>
     <form role="form" action="{{ route('art.update', $artvalue->articleNo ) }}" method="post">
         @csrf
@@ -32,3 +34,4 @@
         <button type="submit" class="btn btn-primary">修改</button>
     </form>
 </div>
+@endsection

@@ -1,4 +1,6 @@
-@include('blade.indexNav')
+@extends('blade.navbar')
+
+@section('title', $ArtLists->articleTitle)
 
 @if(session('Success'))
 <script type="text/javascript">
@@ -10,9 +12,9 @@
 </script>
 @endif
 
+@section('content')
 <!-- 文章內文 -->
 <div class="container">
-    <br>
     <h4>{{$ArtLists->articleTitle}}</h4>
         <div class="mb-3">
             <label class="form-label">作者：{{$ArtLists->userName}}</label>
@@ -104,3 +106,4 @@
     </form>
 </div>
 @endif
+@endsection
