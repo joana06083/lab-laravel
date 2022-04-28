@@ -26,7 +26,7 @@ Route::post('create', [UserAuthController::class, 'create'])->name('user.create'
 Route::post('check', [UserAuthController::class, 'check'])->name('user.check');
 
 //處理查詢請求
-Route::post('search', [UserAuthController::class, 'search']);
+Route::match(['get', 'post'], 'search', [UserAuthController::class, 'search']);
 
 //處理登出請求
 Route::get('logout', [UserAuthController::class, 'logout']);

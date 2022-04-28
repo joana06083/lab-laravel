@@ -81,7 +81,7 @@ class UserAuthController extends Controller
                 ->where('articleTitle', 'like', $searchvalue)
                 ->orWhere('updateTime', 'like', $searchvalue)
                 ->orWhere('userName', 'like', $searchvalue)
-                ->get(),
+                ->paginate(10),
             'LoggedUserInfo' => [],
         ];
         if (session()->has('LoggedUser')) {
@@ -97,7 +97,7 @@ class UserAuthController extends Controller
     {
         $ArtInfo = DB::table('article')
             ->leftJoin('userData', 'article.userNo', 'userData.userNo')
-            ->get();
+            ->paginate(10);
         $data = [
             'ArtInfo' => $ArtInfo,
             'LoggedUserInfo' => [],

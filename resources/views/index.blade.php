@@ -45,6 +45,12 @@
         </li>
     </form>
     <hr/>
+
 </div>
 @endforeach
+
+<div class="col-md-7 offset-md-5">
+{{ $ArtInfo->links() }}
+</div>
+
 @endsection
