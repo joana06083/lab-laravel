@@ -10,15 +10,14 @@
                     <form method="POST" action="{{route('user.create')}}">
                         @csrf
                         <div class="results">
-                            @if(Session::get('Success'))
-                                <div class="alert alert-success">
-                                    {{Session::get('Success')}}
-                                </div>
-                            @endif
-                            @if(Session::get('Fail'))
-                                <div class="alert alert-danger">
-                                    {{Session::get('Fail')}}
-                                </div>
+                            @if(session('Success'))
+                            <div class="alert alert-success">
+                                {{ session('Success') }}
+                            </div>
+                            @elseif(session('Fail'))
+                            <div class="alert alert-danger">
+                                {{ session('Fail') }}
+                            </div>
                             @endif
                         </div>
                         <div class="row mb-3">

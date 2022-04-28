@@ -1,20 +1,16 @@
 @include('blade.indexNav')
 
-@if(Session::get('addSuccess'))
+@if(session('Success'))
 <script type="text/javascript">
-alert("文章新增成功！");
+    alert("{{ session('Success') }}");
 </script>
-@elseif(Session::get('modifySuccess'))
+@elseif(session('Fail'))
 <script type="text/javascript">
-alert("文章修改成功！");
+    alert("{{ session('Fail') }}");
 </script>
-@elseif(Session::get('delSuccess'))
+@elseif(session('login'))
 <script type="text/javascript">
-alert("文章/留言刪除成功！");
-</script>
-@elseif(Session::get('login'))
-<script type="text/javascript">
-alert("已登入！即將導回首頁！");
+    alert("{{ session('login') }}");
 </script>
 @endif
 

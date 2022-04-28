@@ -19,7 +19,7 @@ class CheckLogout
 
         if (empty(session('LoggedUser'))) {
             //已登出狀態導回登入頁
-            return redirect('login')->with('logout', '目前為未登入狀態！請先登入！!');
+            return redirect('login')->with('logout', 'Currently not logged in! Please login first!');
         }
         return $next($request);
     }

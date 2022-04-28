@@ -6,9 +6,9 @@
     <form role="form" action="{{route('art.store')}}" enctype="multipart/form-data" method="post">
     @csrf
         <div class="results">
-            @if(Session::get('Fail'))
+            @if(session('Fail'))
                 <div class="alert alert-danger">
-                    {{Session::get('Fail')}}
+                    {{ session('Fail') }}
                 </div>
             @endif
         </div>

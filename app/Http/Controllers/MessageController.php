@@ -42,9 +42,9 @@ class MessageController extends Controller
         $query = $mes->save();
 
         if ($query) {
-            return redirect('/art/' . $request->articleNo)->with('addMesSuccess', 'message successfully add!');
+            return redirect('/art/' . $request->articleNo)->with('Success', 'Message successfully add!');
         } else {
-            return back()->with('Fail', '留言新增失敗！');
+            return back()->with('Fail', 'Message failfully add!');
         }
     }
 
@@ -84,7 +84,12 @@ class MessageController extends Controller
         ]);
         $results = MessageInfo::where('messageNo', $id);
         $results->update($validatedData);
-        return redirect('/art/' . $request->articleNo)->with('modifyMesSuccess', 'message successfully modify!');
+
+        if ($results) {
+            return redirect('/art/' . $request->articleNo)->with('Success', 'Message successfully modify!');
+        } else {
+            return back()->with('Fail', 'Message failfully modify!');
+        }
     }
 
     /**
@@ -100,7 +105,10 @@ class MessageController extends Controller
         $result = MessageInfo::findOrFail($id);
         $result->delete();
 
-        return redirect('/art/' . $request->articleNo)->with('delMesSuccess', 'article successfully deleted!');
-
+        if ($result) {
+            return redirect('/art/' . $request->articleNo)->with('Success', 'Message successfully deleted!');
+        } else {
+            return back()->with('Fail', 'Message failfully deleted!');
+        }
     }
 }

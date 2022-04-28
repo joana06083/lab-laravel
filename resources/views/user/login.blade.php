@@ -1,7 +1,8 @@
 @include('blade.navbar')
-@if(Session::get('logout'))
+
+@if(session('logout'))
 <script type="text/javascript">
-alert("目前為未登入狀態！請先登入！!");
+    alert("{{ session('logout') }}");
 </script>
 @endif
 
@@ -15,10 +16,10 @@ alert("目前為未登入狀態！請先登入！!");
                     <form method="POST" action="{{route('user.check')}}">
                         @csrf
                         <div class="results">
-                            @if(Session::get('Fail'))
-                                <div class="alert alert-danger">
-                                    {{Session::get('Fail')}}
-                                </div>
+                            @if(session('Fail'))
+                            <div class="alert alert-danger">
+                                {{ session('Fail') }}
+                            </div>
                             @endif
                         </div>
                         <div class="row mb-3">

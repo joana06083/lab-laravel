@@ -18,7 +18,7 @@ class CheckLogin
     {
         if (!empty(session('LoggedUser'))) {
             //已登入狀態導回首頁
-            return redirect('/')->with('login', '已登入！即將導回首頁！');
+            return redirect('/')->with('login', 'Signed in! Coming back to the homepage soon!');
         }
         return $next($request);
     }

@@ -64,9 +64,9 @@ class ArticleController extends Controller
         $query = $art->save();
 
         if ($query) {
-            return redirect('/')->with('addSuccess', 'article successfully add!');
+            return redirect('/')->with('Success', 'Article successfully add!');
         } else {
-            return back()->with('Fail', '文章新增失敗！');
+            return back()->with('Fail', 'Article failfully add!');
         }
     }
 
@@ -133,7 +133,11 @@ class ArticleController extends Controller
 
         $results = ArticleInfo::where('articleNo', $id);
         $results->update($validatedData);
-        return redirect('/')->with('modifySuccess', 'article successfully modify!');
+        if ($results) {
+            return redirect('/')->with('Success', 'Article successfully modify!');
+        } else {
+            return back()->with('Fail', 'Article failfully modify!');
+        }
     }
 
     /**
@@ -147,7 +151,10 @@ class ArticleController extends Controller
         //刪除文章＋刪除留言(關聯Article＆message)
         $artresult = ArticleInfo::findOrFail($id);
         $artresult->delete();
-
-        return redirect('/')->with('delSuccess', 'article/message successfully deleted!');
+        if ($artresult) {
+            return redirect('/')->with('Success', 'Article successfully deleted!');
+        } else {
+            return back()->with('Fail', 'Article failfully deleted!');
+        }
     }
 }

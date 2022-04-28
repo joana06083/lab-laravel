@@ -1,18 +1,15 @@
 @include('blade.indexNav')
 
-@if(Session::get('addMesSuccess'))
+@if(session('Success'))
 <script type="text/javascript">
-alert("留言新增成功！");
+    alert("{{ session('Success') }}");
 </script>
-@elseif(Session::get('modifyMesSuccess'))
+@elseif(session('Fail'))
 <script type="text/javascript">
-alert("留言修改成功！");
-</script>
-@elseif(Session::get('delMesSuccess'))
-<script type="text/javascript">
-alert("留言刪除成功！");
+    alert("{{ session('Fail') }}");
 </script>
 @endif
+
 <!-- 文章內文 -->
 <div class="container">
     <br>

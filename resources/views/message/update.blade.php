@@ -1,5 +1,11 @@
 @include('blade.indexNav')
 
+@if(session('Fail'))
+<script type="text/javascript">
+    alert("{{ session('Fail') }}");
+</script>
+@endif
+
 <div class="container">
     <br>
     <h4>修改留言</h4>

@@ -1,5 +1,11 @@
 @include('blade.indexNav')
 
+@if(session('Fail'))
+<div class="alert alert-danger">
+    {{ session('Fail') }}
+</div>
+@endif
+
 <div class="container">
     <br>
     <h4>修改文章</h4>

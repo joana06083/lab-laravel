@@ -43,9 +43,9 @@ class UserAuthController extends Controller
         $query = $user->save();
 
         if ($query) {
-            return back()->with('Success', '註冊成功！');
+            return back()->with('Success', 'Registration success！');
         } else {
-            return back()->with('Fail', '註冊失敗！');
+            return back()->with('Fail', 'Registration failed!');
         }
     }
     //處理登入請求
@@ -63,12 +63,12 @@ class UserAuthController extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('LoggedUser', $user->userNo);
-                return redirect('/');
+                return redirect('/')->with('Success', 'Login successfully!');
             } else {
-                return back()->with('Fail', '登入失敗！此帳號未註冊！');
+                return back()->with('Fail', 'Login failfully!Password error!');
             }
         } else {
-            return back()->with('Fail', '登入失敗！此帳號未註冊！');
+            return back()->with('Fail', 'Login failfully!This account is not registered！');
         }
     }
     //顯示首頁查詢後畫面
@@ -88,6 +88,7 @@ class UserAuthController extends Controller
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data['LoggedUserInfo'] = $user;
         }
+
         return view('index', $data);
     }
 
@@ -113,6 +114,6 @@ class UserAuthController extends Controller
     public function logout()
     {
         session()->flush();
-        return redirect('login')->with('logout', 'logout successfully !');
+        return redirect('login')->with('logout', 'Logout Successfully !');
     }
 }
