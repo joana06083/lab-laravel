@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\ArticleInfo;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserAuthController extends Controller
@@ -95,9 +94,7 @@ class UserAuthController extends Controller
     //顯示首頁畫面
     public function index()
     {
-        $ArtInfo = DB::table('article')
-            ->leftJoin('userData', 'article.userNo', 'userData.userNo')
-            ->paginate(10);
+        $ArtInfo = ArticleInfo::leftJoin('userData', 'article.userNo', 'userData.userNo')->paginate(10);
         $data = [
             'ArtInfo' => $ArtInfo,
             'LoggedUserInfo' => [],

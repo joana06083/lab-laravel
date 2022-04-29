@@ -91,6 +91,7 @@ class ArticleController extends Controller
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data['LoggedUserInfo'] = $user;
         }
+
         return view('article.show', $data);
     }
     /**

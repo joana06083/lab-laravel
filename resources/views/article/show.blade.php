@@ -39,6 +39,12 @@
 <!-- 留言內容 -->
 <div class="container">
     <h5>留言區</h5>
+
+    @if(sizeof($MesLists)==0)
+    <div>此篇文章沒有任何留言</div>
+    <hr>
+    @endif
+
     @foreach ($MesLists as $mes)
     <div class="mb-3">
         <a>留言者：{{$mes->userName}}</a>
@@ -72,9 +78,11 @@
     <hr>
     @endforeach
 </div>
+
 @if(!empty($LoggedUserInfo))
 <!-- 新增留言 -->
 <div class="container">
+    <h5>新增留言</h5>
     <form role="form" action="{{route('mes.store')}}" enctype="multipart/form-data" method="post">
     @csrf
         <div class="results">
