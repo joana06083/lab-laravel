@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use app\Models\ArticleInfo;
-use App\Support\DripEmailer;
+use App\Jobs\artInsertList;
 use Illuminate\Console\Command;
 
 class SendArtList extends Command
@@ -13,14 +12,16 @@ class SendArtList extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+
+    //command 指令 example php artisan articleInsert:userNo userNo
+    protected $signature = 'articleInsert:userNo{userNo}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send drip artList';
+    protected $description = 'command description';
 
     /**
      * 創建命令
@@ -30,6 +31,7 @@ class SendArtList extends Command
     public function __construct()
     {
         parent::__construct();
+        printf("%s: created a worker start\n", now()->format('Y-m-d H:i:s'));
     }
 
     /**
@@ -37,8 +39,19 @@ class SendArtList extends Command
      *
      * @return int
      */
-    public function handle(DripEmailer $drip)
+    public function handle()
     {
-        $drip->send(ArticleInfo::find($this->argument('art')));
+        $userNo = $this->argument('userNo');
+        $this->info('Hello ' . $userNo);
+        if ($this->confirm('Do you wish to continue inserting data? [Y|N]')) {
+            $this->info('Start insert into article');
+
+            // using queue job
+            artInsertList::dispatch()->onQueue('artInsertList');
+
+        } else {
+            $this->info('End');
+        }
     }
+
 }

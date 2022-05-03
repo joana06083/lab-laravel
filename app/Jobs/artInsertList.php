@@ -8,11 +8,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Redis;
+
+// use Illuminate\Support\Facades\Redis;
 
 class artInsertList implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     public $artdetails;
     /**
      * Create a new job instance.
@@ -32,14 +34,23 @@ class artInsertList implements ShouldQueue
      */
     public function handle()
     {
-        Redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
-            info('获取锁 ...');
+        //redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
+        //處理任務
+        printf('ArtInserList job ...');
+        ArticleInfo::insert([
+            'articleNo' => date('YmdHis', time()),
+            'articleTitle' => '12345666',
+            'articleContent' => '12345666',
+            'userNo' => 'admin',
 
-            // 处理任务 ...
-        }, function () {
-            // 无法获取锁 ...
+        ]);
 
-            return $this->release(5);
-        });
+        // artInsertList::dispatch()->onQueue('insertArt');
+        return response('artdetails sent successfully');
+        // }, function () {
+
+        //     return $this->release(5);
+        // });
+
     }
 }
