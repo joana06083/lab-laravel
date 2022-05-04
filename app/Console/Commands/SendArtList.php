@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\artInsertList;
+// use App\Jobs\artInsertList;
+use App\Models\ArticleInfo;
 use Illuminate\Console\Command;
 
 class SendArtList extends Command
@@ -14,7 +15,7 @@ class SendArtList extends Command
      */
 
     //command 指令 example php artisan articleInsert:userNo userNo
-    protected $signature = 'articleInsert:userNo{userNo}';
+    protected $signature = 'articleInsert:userNo{userNo} {count}';
 
     /**
      * The console command description.
@@ -42,12 +43,24 @@ class SendArtList extends Command
     public function handle()
     {
         $userNo = $this->argument('userNo');
-        $this->info('Hello ' . $userNo);
+        $count = $this->argument('count');
+
+        $this->info('Hello ' . $userNo . '!開始寫入資料共' . $count . '筆');
+        $this->info('Start insert into article');
         if ($this->confirm('Do you wish to continue inserting data? [Y|N]')) {
-            $this->info('Start insert into article');
+            // command inserinto article
+            for ($i = 1; $i <= $count; $i++) {
+                ArticleInfo::insert([
+                    'articleNo' => date('YmdHis', time()) . $i,
+                    'articleTitle' => '寫入資料第' . $i . '筆',
+                    'articleContent' => '寫入資料測試內容' . $i,
+                    'userNo' => $userNo,
+                ]);
+            }
+            $this->info('Insert into article success!');
 
             // using queue job
-            artInsertList::dispatch()->onQueue('artInsertList');
+            // artInsertList::dispatch($userNo, $count)->onConnection('database')->onQueue('artInsertList');
 
         } else {
             $this->info('End');

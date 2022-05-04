@@ -49,7 +49,8 @@
 </div>
 @endforeach
 
-<div class="col-md-7 offset-md-5">
+
+<div class="col-md-12">
 {{ $ArtInfo->links() }}
 </div>
 
