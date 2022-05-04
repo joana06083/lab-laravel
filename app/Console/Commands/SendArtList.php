@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-// use App\Jobs\artInsertList;
-use App\Models\ArticleInfo;
+use App\Jobs\artInsertList;
+// use App\Models\ArticleInfo;
 use Illuminate\Console\Command;
 
 class SendArtList extends Command
@@ -48,19 +48,19 @@ class SendArtList extends Command
         $this->info('Hello ' . $userNo . '!開始寫入資料共' . $count . '筆');
         $this->info('Start insert into article');
         if ($this->confirm('Do you wish to continue inserting data? [Y|N]')) {
-            // command inserinto article
-            for ($i = 1; $i <= $count; $i++) {
-                ArticleInfo::insert([
-                    'articleNo' => date('YmdHis', time()) . $i,
-                    'articleTitle' => '寫入資料第' . $i . '筆',
-                    'articleContent' => '寫入資料測試內容' . $i,
-                    'userNo' => $userNo,
-                ]);
-            }
-            $this->info('Insert into article success!');
 
-            // using queue job
-            // artInsertList::dispatch($userNo, $count)->onConnection('database')->onQueue('artInsertList');
+            // using queue job 1000為單位
+            $unit = 1000;
+            $int = intval($count / $unit);
+            $others = $count % $unit;
+
+            if ($others > 0) {
+                artInsertList::dispatch($userNo, $others, $int + 1)->onQueue('artInsertList');
+            }
+            for ($i = 1; $i <= $int; $i++) {
+
+                artInsertList::dispatch($userNo, $unit, $i)->onQueue('artInsertList');
+            }
 
         } else {
             $this->info('End');

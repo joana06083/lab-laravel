@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use app\Models\ArticleInfo;
+use App\Models\ArticleInfo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,16 +15,24 @@ class artInsertList implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $artdetails;
+    protected $userNo;
+    protected $count;
+    protected $others;
+
     /**
      * Create a new job instance.
      * @param  \App\Models\ArticleInfo  $artdetails
      * @return void
      */
-    public function __construct(ArticleInfo $artdetails)
+    public function __construct($userNo, $count, $others)
     {
-        //
-        $this->artdetails = $artdetails->withoutRelations();
+        printf("created a job!");
+        // printf("\nuserNo = " . $userNo);
+        // printf("\ncount = " . $count . "\n");
+        $this->userNo = $userNo;
+        $this->count = $count;
+        $this->others = $others;
+
     }
 
     /**
@@ -34,23 +42,15 @@ class artInsertList implements ShouldQueue
      */
     public function handle()
     {
-        //redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
-        //處理任務
-        printf('ArtInserList job ...');
-        ArticleInfo::insert([
-            'articleNo' => date('YmdHis', time()),
-            'articleTitle' => '12345666',
-            'articleContent' => '12345666',
-            'userNo' => 'admin',
-
-        ]);
-
-        // artInsertList::dispatch()->onQueue('insertArt');
-        return response('artdetails sent successfully');
-        // }, function () {
-
-        //     return $this->release(5);
-        // });
+        for ($i = 1; $i <= $this->count; $i++) {
+            ArticleInfo::insert([
+                'articleNo' => date('YmdHis', time()) . $this->others . $i,
+                'articleTitle' => $this->userNo . '寫入資料第' . $i . '筆',
+                'articleContent' => $this->userNo . '寫入資料測試內容' . $i,
+                'userNo' => $this->userNo,
+            ]);
+        }
+        printf("Insert into article success!");
 
     }
 }
