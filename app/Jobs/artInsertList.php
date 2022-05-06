@@ -27,8 +27,6 @@ class artInsertList implements ShouldQueue
     public function __construct($userNo, $count, $others)
     {
         printf("created a job!");
-        // printf("\nuserNo = " . $userNo);
-        // printf("\ncount = " . $count . "\n");
         $this->userNo = $userNo;
         $this->count = $count;
         $this->others = $others;
@@ -42,15 +40,22 @@ class artInsertList implements ShouldQueue
      */
     public function handle()
     {
+        $arrData = [];
         for ($i = 1; $i <= $this->count; $i++) {
-            ArticleInfo::insert([
-                'articleNo' => date('YmdHis', time()) . $this->others . $i,
-                'articleTitle' => $this->userNo . '寫入資料第' . $i . '筆',
-                'articleContent' => $this->userNo . '寫入資料測試內容' . $i,
-                'userNo' => $this->userNo,
-            ]);
+            $articleNo = date('YmdHis', time()) . $this->others . $i;
+            $articleTitle = $this->userNo . '寫入資料第' . $i . '筆';
+            $articleContent = $this->userNo . '寫入資料測試內容' . $i;
+            $userNo = $this->userNo;
+            array_push($arrData, [
+                'articleNo' => $articleNo,
+                'articleTitle' => $articleTitle,
+                'articleContent' => $articleContent,
+                'userNo' => $userNo]
+            );
         }
-        printf("Insert into article success!");
+
+        ArticleInfo::insert($arrData);
+        printf("Insert into article " . $this->count . " success!");
 
     }
 }
