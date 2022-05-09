@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Jobs\artInsertList;
-// use App\Models\ArticleInfo;
 use Illuminate\Console\Command;
 
 class SendArtList extends Command
@@ -48,20 +47,23 @@ class SendArtList extends Command
         $this->info('Hello ' . $userNo . '!開始寫入資料共' . $count . '筆');
         $this->info('Start insert into article');
         if ($this->confirm('Do you wish to continue inserting data? [Y|N]')) {
-
-            // using queue job 1000為單位
-            $unit = 1000;
-            $int = intval($count / $unit);
-            $others = $count % $unit;
-
-            if ($others > 0) {
-                artInsertList::dispatch($userNo, $others, $int + 1)->onQueue('artInsertList');
+            $arrData = [];
+            for ($i = 1; $i <= $count; $i++) {
+                $articleNo = date('YmdHis', time()) . $i;
+                $articleTitle = $userNo . '寫入資料第' . $i . '筆';
+                $articleContent = $userNo . '寫入資料測試內容' . $i;
+                $userNo = $userNo;
+                array_push($arrData, [
+                    'articleNo' => $articleNo,
+                    'articleTitle' => $articleTitle,
+                    'articleContent' => $articleContent,
+                    'userNo' => $userNo]
+                );
             }
-            for ($i = 1; $i <= $int; $i++) {
-
-                artInsertList::dispatch($userNo, $unit, $i)->onQueue('artInsertList');
+            $arrlist = array_chunk($arrData, 1000, true);
+            foreach ($arrlist as $key => $value) {
+                artInsertList::dispatch($value)->onQueue('artInsertList');
             }
-
         } else {
             $this->info('End');
         }
