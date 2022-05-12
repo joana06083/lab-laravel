@@ -33,7 +33,7 @@
                         <label for="account" class="col-md-4 col-form-label text-md-end">帳號 ：</label>
 
                         <div class="col-md-6">
-                            <input id="account" type="text" class="form-control @error('email') is-invalid @enderror" name="account" value="{{ old('account') }}" required autocomplete="account" autofocus>
+                            <input id="account" type="text" class="form-control @error('account') is-invalid @enderror" name="account" value="{{ old('account') }}" required autocomplete="account" autofocus>
                             <span class="text-danger">@error('account'){{$message}} @enderror </span>
 
                         </div>

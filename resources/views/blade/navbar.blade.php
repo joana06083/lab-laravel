@@ -16,14 +16,15 @@
                     <a class="nav-link active" href="/" style="color:black;">Home</a>
                 </li>
             </ul>
-
             <div>
             @section('loginnav')
+
                 @if(!empty($LoggedUserInfo))
                 <label>Hi! {{$LoggedUserInfo->userName}}</label>
                 &nbsp;
-                <a class="btn btn-primary" aria-current="page"
-                href="{{ route('art.create')}}">新增文章</a>
+                @if(!empty($UsrBalance))
+                    <a href="transferIndex" class="btn btn-primary">額度：{{$UsrBalance['Balance']}} {{$UsrBalance['Currency']}}</a>
+                @endif
                 &nbsp;
                 <a href="/logout" class="btn btn-secondary" >登出</a>
                 @else

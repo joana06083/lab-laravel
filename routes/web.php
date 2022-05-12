@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\coinsController;
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +24,7 @@ Route::middleware('user.login')->group(function () {
     Route::get('register', [UserAuthController::class, 'register']);
     Route::get('login', [UserAuthController::class, 'login']);
 });
+
 Route::post('create', [UserAuthController::class, 'create'])->name('user.create');
 Route::post('check', [UserAuthController::class, 'check'])->name('user.check');
 
@@ -35,3 +38,10 @@ Route::get('logout', [UserAuthController::class, 'logout']);
 Route::middleware('user.logout')->resource('art', 'ArticleController')->except(['show']);
 Route::resource('art', 'ArticleController')->only(['show']);
 Route::middleware('user.logout')->resource('mes', 'MessageController');
+
+//處理進入遊戲大廳請求
+Route::post('GameIndex', [GameController::class, 'GameIndex']);
+
+//處理轉帳請求
+Route::middleware('user.logout')->get('transferIndex', [coinsController::class, 'index']);
+Route::post('transfer', [coinsController::class, 'transfer']);

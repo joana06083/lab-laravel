@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ArticleInfo;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -62,6 +61,23 @@ class UserAuthController extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('LoggedUser', $user->userNo);
+
+                //call CreateSession api
+                $website = 'bbinbgp';
+                $uppername = 'dpidtest';
+                $username = $request->account;
+                $KeyB = '4GZ2qQ';
+                date_default_timezone_set("America/New_York");
+                $Date = date("Ymd");
+                $key = "11" . md5($website . $username . $KeyB . $Date, false) . "2222222";
+                $url = "http://apollo.vir777.net/app/WebService/JSON/display.php/CreateSession?website=" . $website . "&username=" . $username . "&uppername=" . $uppername . "&key=" . $key;
+
+                //Response
+                $json = file_get_contents($url);
+                $json_data = json_decode($json, true);
+                $sessionid = $json_data['data']['sessionid'];
+                session()->put('ApiData', $sessionid);
+
                 return redirect('/')->with('Success', 'Login successfully!');
             } else {
                 return back()->with('Fail', 'Login failfully!Password error!');
@@ -70,40 +86,90 @@ class UserAuthController extends Controller
             return back()->with('Fail', 'Login failfully!This account is not registered！');
         }
     }
-    //顯示首頁查詢後畫面
-    public function search(Request $request)
-    {
-        $searchvalue = '%' . $request->search . '%';
-        $data = [
-            'ArtInfo' => ArticleInfo::
-                leftJoin('userData', 'article.userNo', 'userData.userNo')
-                ->where('articleTitle', 'like', $searchvalue)
-                ->orWhere('updateTime', 'like', $searchvalue)
-                ->orWhere('userName', 'like', $searchvalue)
-                ->paginate(10),
-            'LoggedUserInfo' => [],
-        ];
-        if (session()->has('LoggedUser')) {
-            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-            $data['LoggedUserInfo'] = $user;
-        }
-
-        return view('index', $data);
-    }
 
     //顯示首頁畫面
     public function index()
     {
-        $ArtInfo = ArticleInfo::leftJoin('userData', 'article.userNo', 'userData.userNo')->paginate(10);
         $data = [
-            'ArtInfo' => $ArtInfo,
             'LoggedUserInfo' => [],
         ];
         if (session()->has('LoggedUser')) {
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-            $data['LoggedUserInfo'] = $user;
+            //call CheckUsrBalance api
+            $website = 'bbinbgp';
+            $uppername = 'dpidtest';
+            $username = session('LoggedUser');
+            $KeyB = 'D5zIM6';
+            date_default_timezone_set("America/New_York");
+            $Date = date("Ymd");
+            $key = "1" . md5($website . $username . $KeyB . $Date, false) . "2222";
+            $url = "http://apollo.vir777.net/app/WebService/JSON/display.php/CheckUsrBalance?website=" . $website . "&username=" . $username . "&uppername=" . $uppername . "&key=" . $key;
+
+            // CheckUsrBalance Response
+            $json = file_get_contents($url);
+            $json_data = json_decode($json, true);
+
+            $data = [
+                'LoggedUserInfo' => $user,
+                'ApiData' => session('ApiData'),
+                'UsrBalance' => [
+                    "Currency" => $json_data['data'][0]['Currency'], //幣別
+                    "Balance" => $json_data['data'][0]['Balance'], //額度
+                    "TotalBalance" => $json_data['data'][0]['TotalBalance'], //總額度
+                ],
+            ];
         }
 
+        return view('index', $data);
+    }
+    //顯示首頁查詢後畫面
+    public function search(Request $request)
+    {
+        $data = [
+            'LoggedUserInfo' => [],
+            'GameTypeList' => [],
+        ];
+        if (session()->has('LoggedUser')) {
+
+            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
+            //call CheckUsrBalance api
+            $website = 'bbinbgp';
+            $uppername = 'dpidtest';
+            $username = session('LoggedUser');
+            $KeyB = 'D5zIM6';
+            date_default_timezone_set("America/New_York");
+            $Date = date("Ymd");
+            $key = "1" . md5($website . $username . $KeyB . $Date, false) . "2222";
+            $url = "http://apollo.vir777.net/app/WebService/JSON/display.php/CheckUsrBalance?website=" . $website . "&username=" . $username . "&uppername=" . $uppername . "&key=" . $key;
+
+            // CheckUsrBalance Response
+            $json = file_get_contents($url);
+            $json_data = json_decode($json, true);
+
+            //call GetGameTypeList api
+            $game_KeyB = '601gyM';
+            $lang = $request->lang;
+            $gamekind = $request->gamekind;
+            $game_Date = date("Ymd");
+            $game_key = "11111111" . md5($website . $game_KeyB . $game_Date, false) . "2222";
+            $game_url = "http://apollo.vir777.net/app/WebService/JSON/display.php/GetGameTypeList?website=" .
+                $website . "&lang=" . $lang . "&gamekind=" . $gamekind . "&key=" . $game_key;
+
+            // GetGameTypeList Response
+            $game_json = file_get_contents($game_url);
+            $game_json_data = json_decode($game_json, true);
+            $data = [
+                'LoggedUserInfo' => $user,
+                'ApiData' => session('ApiData'),
+                'UsrBalance' => [
+                    "Currency" => $json_data['data'][0]['Currency'], //幣別
+                    "Balance" => $json_data['data'][0]['Balance'], //額度
+                    "TotalBalance" => $json_data['data'][0]['TotalBalance'], //總額度
+                ],
+                'GameTypeList' => $game_json_data['data'],
+                'gamekind' => $gamekind,
+            ];
+        }
         return view('index', $data);
     }
 
