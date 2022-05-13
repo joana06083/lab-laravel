@@ -150,8 +150,7 @@ class UserAuthController extends Controller
             $game_KeyB = '601gyM';
             $lang = $request->lang;
             $gamekind = $request->gamekind;
-            $game_Date = date("Ymd");
-            $game_key = "11111111" . md5($website . $game_KeyB . $game_Date, false) . "2222";
+            $game_key = "11111111" . md5($website . $game_KeyB . $Date, false) . "2222";
             $game_url = "http://apollo.vir777.net/app/WebService/JSON/display.php/GetGameTypeList?website=" .
                 $website . "&lang=" . $lang . "&gamekind=" . $gamekind . "&key=" . $game_key;
 

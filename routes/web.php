@@ -41,6 +41,8 @@ Route::middleware('user.logout')->resource('mes', 'MessageController');
 
 //處理進入遊戲大廳請求
 Route::post('GameIndex', [GameController::class, 'GameIndex']);
+Route::post('WagersRecordIndex', [GameController::class, 'WagersRecordIndex']);
+Route::post('WagersRecord', [GameController::class, 'WagersRecord']);
 
 //處理轉帳請求
 Route::middleware('user.logout')->get('transferIndex', [coinsController::class, 'index']);

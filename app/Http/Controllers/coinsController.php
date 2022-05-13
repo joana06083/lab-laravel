@@ -29,18 +29,19 @@ class coinsController extends Controller
             'action' => $action, 'remit' => $remit,
         ] = $request;
 
-        $remitno = 1; //int(19)( 1~9223372036854775806)來做設定
+        $remitno = date('YmdHis', time()) . sprintf("%05d", rand(0, 99999)); //int(19)( 1~9223372036854775806)來做設定
         $KeyB = 'yb89lxTRVB';
         date_default_timezone_set("America/New_York");
         $Date = date("Ymd");
         $key = "11" . md5($website . $username . $remitno . $KeyB . $Date, false) . "222";
-        // $url = "http://apollo.vir777.net/app/WebService/JSON/display.php/CheckUsrBalance?website="
-        //     . $website . "&username=" . $username . "&uppername=" . $uppername . "&key=" . $key;
-
-        // // CheckUsrBalance Response
-        // $json = file_get_contents($url);
-        // $json_data = json_decode($json, true);
-
-        // return $json_data;
+        $url = "http://apollo.vir777.net/app/WebService/JSON/display.php/Transfer?website=" . $website . "&username=" . $username . "&uppername=" . $uppername . "&remitno=" . $remitno . "&action=" . $action . "&remit=" . $remit . "&key=" . $key;
+        // CheckUsrBalance Response
+        $json = file_get_contents($url);
+        $json_data = json_decode($json, true);
+        if ($json_data['data']['Code'] == 11100) {
+            return redirect('/')->with('Success', 'Transfer successfully!');
+        } else {
+            return redirect('/')->with('Fail', 'Transfer failfully!Message：' . $json_data['data']['Message']);
+        }
     }
 }

@@ -23,7 +23,9 @@
                 <label>Hi! {{$LoggedUserInfo->userName}}</label>
                 &nbsp;
                 @if(!empty($UsrBalance))
-                    <a href="transferIndex" class="btn btn-primary">額度：{{$UsrBalance['Balance']}} {{$UsrBalance['Currency']}}</a>
+                    <a href="transferIndex" class="btn btn-primary">
+                        額度：{{$UsrBalance['Balance']}} {{$UsrBalance['Currency']}}
+                    </a>
                 @endif
                 &nbsp;
                 <a href="/logout" class="btn btn-secondary" >登出</a>
