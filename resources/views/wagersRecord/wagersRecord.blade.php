@@ -45,25 +45,46 @@
 </form>
 
 <!-- 明細 -->
-@foreach($RecordInfo as $rec)
+@if(!empty($RecordInfo))
 <div class="container">
-<li>
-    <a>{{$rec['WagersID']}}</a>
-    <a>{{$rec['WagersDate']}}</a>
-    <a>{{$rec['SerialID']}}</a>
-    <a>{{$rec['Result']}}</a>
-    <a>{{$rec['BetAmount']}}</a>
-    <a>{{$rec['Commissionable']}}</a>
-    <a>{{$rec['Payoff']}}</a>
-    <a>{{$rec['Currencyc']}}</a>
-    <a>{{$rec['ExchangeRate']}}</a>
-    <a>{{$rec['ModifiedDate']}}</a>
-    <a>{{$rec['Origin']}}</a>
-    <a>{{$rec['Star']}}</a>
-    <a>{{$rec['userNo']}}</a>
-
-</li>
-
+<table class="table table-hover table align-middle" style="table-layout:fixed;word-break:break-all;">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">#</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    @foreach($RecordInfo as $rec)
+    <tbody>
+        <tr>
+            <th>{{$rec['WagersID']}}</th>
+            <td>{{$rec['WagersDate']}}</td>
+            <td>{{$rec['SerialID']}}</td>
+            <td>{{$rec['Result']}}</td>
+            <td>{{$rec['BetAmount']}}</td>
+            <td>{{$rec['Commissionable']}}</td>
+            <td>{{$rec['Payoff']}}</td>
+            <td>{{$rec['Currencyc']}}</td>
+            <td>{{$rec['ExchangeRate']}}</td>
+            <td>{{$rec['ModifiedDate']}}</td>
+            <td>{{$rec['Origin']}}</td>
+            <td>{{$rec['Star']}}</td>
+            <td>{{$rec['userNo']}}</td>
+        </tr>
+    </tbody>
+    @endforeach
+    </table>
 </div>
-@endforeach
+@endif
 @endsection
