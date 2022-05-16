@@ -16,6 +16,8 @@
 <form  method="post" action="/WagersRecord">
     @csrf
     <input id="gamekind" name="gamekind" type="text" value="{{$gamekind}}" style="display: none;">
+    <input id="lang" name="lang" type="text" value="{{$lang}}"  style="display: none;">
+
     <div class="d-flex bd-highlight">
         <div class="flex-fill bd-highlight">
             <select class="form-select" id="action" name="action" >
@@ -50,19 +52,19 @@
 <table class="table table-hover table align-middle" style="table-layout:fixed;word-break:break-all;">
     <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">#</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col">注單號碼</th>
+            <th scope="col">下注時間</th>
+            <th scope="col">遊戲種類</th>
+            <th scope="col">注單結果</th>
+            <th scope="col">下注金額</th>
+            <th scope="col">派彩金額(不包含本金)</th>
+            <th scope="col">幣別</th>
+            <th scope="col">與人民幣的匯率</th>
+            <th scope="col">會員有效投注額</th>
+            <th scope="col">注單變更時間</th>
+            <th scope="col">下單裝置</th>
+            <th scope="col">連消次數</th>
+            <th scope="col">帳號</th>
         </tr>
     </thead>
     @foreach($RecordInfo as $rec)

@@ -46,4 +46,4 @@ Route::post('WagersRecord', [GameController::class, 'WagersRecord']);
 
 //處理轉帳請求
 Route::middleware('user.logout')->get('transferIndex', [coinsController::class, 'index']);
-Route::post('transfer', [coinsController::class, 'transfer']);
+Route::post('transfer', [coinsController::class, 'getTransfer']);

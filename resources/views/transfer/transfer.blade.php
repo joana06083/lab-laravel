@@ -28,10 +28,6 @@
                         <div class="alert alert-danger">{{ session('Fail') }}</div>
                         @endif
                     </div>
-                    <div style="display: none;">
-                        <input id="website" name="website" type="text" value="bbinbgp" readonly="true">
-                        <input id="uppername" name="uppername" type="text" value="dpidtest" readonly="true">
-                    </div>
                     <div class="row mb-3">
                         <label for="account" class="col-md-4 col-form-label text-md-end">帳號 ：</label>
                         <div class="col-md-6">
