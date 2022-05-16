@@ -5,7 +5,15 @@
 
 @section('loginnav')
 
-@if(session('logout'))
+@if(session('Success'))
+<script type="text/javascript">
+    alert("{{ session('Success') }}");
+</script>
+@elseif(session('Fail'))
+<script type="text/javascript">
+    alert("{{ session('Fail') }}");
+</script>
+@elseif(session('logout'))
 <script type="text/javascript">
     alert("{{ session('logout') }}");
 </script>
@@ -21,13 +29,6 @@
             <div class="card-body">
                 <form method="POST" action="/transfer">
                     @csrf
-                    <div class="results">
-                        @if(session('Success'))
-                        <div class="alert alert-success">{{ session('Success') }}</div>
-                        @elseif(session('Fail'))
-                        <div class="alert alert-danger">{{ session('Fail') }}</div>
-                        @endif
-                    </div>
                     <div class="row mb-3">
                         <label for="account" class="col-md-4 col-form-label text-md-end">帳號 ：</label>
                         <div class="col-md-6">
@@ -50,7 +51,7 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-8 offset-md-4">
+                        <div class="col-md-7 offset-md-5">
                             <button type="submit" class="btn btn-primary">存入/提出額度</button>
                         </div>
                     </div>

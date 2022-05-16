@@ -75,22 +75,6 @@ trait ApiTraits
         return $json_data['data'];
     }
 
-    public function GameUrl($gamekind, $lang, $sessionid, $gametype)
-    {
-        $website = 'bbinbgp';
-        date_default_timezone_set("America/New_York");
-        $Date = date("Ymd");
-        $KeyB = '09fJb0vYem';
-        $key = "11111111" . md5($website . $KeyB . $Date, false) . "2222";
-        $url = "http://apollo.vir777.net/app/WebService/JSON/display.php/GameUrlBy" . $gamekind . "?website=" . $website . "&lang=" . $lang .
-            "&sessionid=" . $sessionid . "&gametype=" . $gametype . "&key=" . $key;
-        //Response
-        $json = file_get_contents($url);
-        $json_data = json_decode($json, true);
-
-        return $json_data['data'][0]['html5'];
-    }
-
     public function GetWagersRecord($gamekind, $gametype, $date, $action)
     {
         $website = 'bbinbgp';

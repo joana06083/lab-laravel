@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 //顯示網站首頁驗證使用者是否登入
 Route::get('/', [UserAuthController::class, 'index']);
-
+//處理登出請求
+Route::get('logout', [UserAuthController::class, 'logout']);
 //顯示註冊畫面,處理註冊新增資料&顯示登入畫面,處理登入請求
 Route::middleware('user.login')->group(function () {
     Route::get('register', [UserAuthController::class, 'register']);
@@ -31,9 +32,6 @@ Route::post('check', [UserAuthController::class, 'check'])->name('user.check');
 
 //處理查詢請求
 Route::match(['get', 'post'], 'search', [UserAuthController::class, 'search']);
-
-//處理登出請求
-Route::get('logout', [UserAuthController::class, 'logout']);
 
 // 文章/留言 route
 Route::middleware('user.logout')->resource('art', 'ArticleController')->except(['show']);
