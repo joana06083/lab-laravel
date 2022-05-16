@@ -3,6 +3,7 @@
 use App\Http\Controllers\coinsController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\WagersRecordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,11 +40,13 @@ Route::middleware('user.logout')->resource('art', 'ArticleController')->except([
 Route::resource('art', 'ArticleController')->only(['show']);
 Route::middleware('user.logout')->resource('mes', 'MessageController');
 
-//處理進入遊戲大廳請求
-Route::post('GameIndex', [GameController::class, 'GameIndex']);
-Route::post('WagersRecordIndex', [GameController::class, 'WagersRecordIndex']);
-Route::post('WagersRecord', [GameController::class, 'WagersRecord']);
-
 //處理轉帳請求
 Route::middleware('user.logout')->get('transferIndex', [coinsController::class, 'index']);
 Route::post('transfer', [coinsController::class, 'getTransfer']);
+
+//處理進入遊戲大廳請求
+Route::post('GameIndex', [GameController::class, 'GameIndex']);
+//明細
+Route::post('WagersRecordIndex', [WagersRecordController::class, 'WagersRecordIndex']);
+Route::post('WagersRecord', [WagersRecordController::class, 'WagersRecord']);
+Route::post('WagersRecordDetail', [WagersRecordController::class, 'WagersRecordDetail']);

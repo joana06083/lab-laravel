@@ -18,7 +18,6 @@
 
 @section('content')
 <!-- 選擇遊戲類型/語言 -->
-{{$ApiData}}
 <h5>選擇遊戲類型/語言</h5>
 <form  method="post" action="search">
     @csrf
