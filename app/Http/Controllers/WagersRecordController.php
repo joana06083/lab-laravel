@@ -10,44 +10,47 @@ use Illuminate\Http\Request;
 class WagersRecordController extends Controller
 {
     use ApiTraits;
+    public function dateList()
+    {
+        //date
+        $datelist = [];
+        for ($i = 0; $i <= 6; $i++) {
+            array_push($datelist, date('Y-m-d', strtotime("-{$i} day")));
+        }
+        return $datelist;
+    }
 
     public function WagersRecordIndex(Request $request)
     {
         ['gamekind' => $gamekind, 'lang' => $lang] = $request;
-
         $data = [
             'LoggedUserInfo' => [],
-            'GameTypeList' => [],
             'DateList' => [],
         ];
         if (session()->has('LoggedUser')) {
-
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-            //date
-            $datelist = [];
-            for ($i = 0; $i <= 6; $i++) {
-                array_push($datelist, date('Y-m-d', strtotime("-{$i} day")));
-            }
-
             $data = [
                 'LoggedUserInfo' => $user,
                 'ApiData' => session('ApiData'),
                 'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
                 'GameTypeList' => $this->GetGameTypeList($lang, $gamekind),
                 'gamekind' => $gamekind,
-                'DateList' => $datelist,
+                'DateList' => $this->dateList(),
                 'lang' => $lang,
             ];
         }
-        return view('wagersRecord/wagersRecord', $data);
+        if (!isset($data['GameTypeList']['result'])) {
+            return view('wagersRecord/wagersRecord', $data);
+        } else {
+            return redirect('/')->with('Fail', $data['GameTypeList']['data']['Message']);
+        }
     }
     public function WagersRecord(Request $request)
     {
-
         ['gamekind' => $gamekind, 'gametype' => $gametype, 'date' => $date, 'action' => $action, 'lang' => $lang] = $request;
-
         $recordData = [];
         $arr = $this->GetWagersRecord($gamekind, $gametype, $date, $action);
+        return $arr;
         foreach ($arr as $key => $value) {
             $data = [
                 'WagersID' => $value['WagersID'],
@@ -77,14 +80,6 @@ class WagersRecordController extends Controller
         //導回查詢畫面
         if (session()->has('LoggedUser')) {
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-
-            //date
-            $datelist = [];
-            for ($i = 0; $i <= 6; $i++) {
-                array_push($datelist, date('Y-m-d', strtotime("-{$i} day")));
-            }
-
-            //明細
             if ($action == 'BetTime') {
                 $recordInfo = wagersRecordInfo::whereBetween('WagersDate', [$date . ' 00:00:00', $date . ' 23:59:59'])
                     ->where('GameType', $gametype)->get();
@@ -98,7 +93,7 @@ class WagersRecordController extends Controller
                 'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
                 'GameTypeList' => $this->GetGameTypeList($lang, $gamekind),
                 'gamekind' => $gamekind,
-                'DateList' => $datelist,
+                'DateList' => $this->dateList(),
                 'RecordInfo' => $recordInfo,
                 'lang' => $lang,
             ];
@@ -111,7 +106,6 @@ class WagersRecordController extends Controller
         ['gamekind' => $gamekind, 'lang' => $lang, 'username' => $username,
             'wagersid' => $wagersid, 'gametype' => $gametype] = $request;
         return redirect($this->GetWagersRecordDetail($gamekind, $lang, $username, $wagersid, $gametype));
-
     }
 
 }

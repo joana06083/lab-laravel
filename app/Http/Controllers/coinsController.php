@@ -13,13 +13,11 @@ class coinsController extends Controller
     public function index()
     {
         $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-
         $data = [
             'LoggedUserInfo' => $user,
             'ApiData' => session('ApiData'),
             'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
         ];
-
         return view('transfer/transfer', $data);
     }
     //處理轉帳請求

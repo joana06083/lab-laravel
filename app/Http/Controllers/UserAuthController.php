@@ -89,7 +89,6 @@ class UserAuthController extends Controller
         ];
         if (session()->has('LoggedUser')) {
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-
             $data = [
                 'LoggedUserInfo' => $user,
                 'ApiData' => session('ApiData'),
@@ -116,7 +115,13 @@ class UserAuthController extends Controller
                 'gamekind' => $request->gamekind,
             ];
         }
-        return view('index', $data);
+
+        if (!isset($data['GameTypeList']['result'])) {
+            return view('index', $data);
+        } else {
+            return redirect('/')->with('Fail', $data['GameTypeList']['data']['Message']);
+        }
+
     }
 
 }
