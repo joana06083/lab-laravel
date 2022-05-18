@@ -53,7 +53,7 @@
     <button type="submit" class="btn btn-primary">查詢</button>
 </div>
 </form>
-
+{{$sessionId}}
 <!-- 取得明細 -->
 <form  method="post" action="WagersRecordIndex">
     @csrf

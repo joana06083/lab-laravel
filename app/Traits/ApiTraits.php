@@ -14,26 +14,30 @@ trait ApiTraits
             'uppername' => 'dpidtest',
             'Date' => date("Ymd"),
         ];
-
         return $data;
     }
-
+    public function Api($apiName, $data)
+    {
+        $response = Http::get('http://apollo.vir777.net/app/WebService/JSON/display.php/' . $apiName . '?', $data);
+        $json_data = json_decode($response->body());
+        return $json_data;
+    }
+    //user
     public function CreateSession($request)
     {
         $param = $this->param();
         $username = $request;
+        $apiName = 'CreateSession';
         $KeyB = '4GZ2qQ';
         $key = "11" . md5($param['website'] . $username . $KeyB . $param['Date'], false) . "2222222";
-        $response = Http::get(
-            'http://apollo.vir777.net/app/WebService/JSON/display.php/CreateSession?',
-            [
-                'website' => $param['website'],
-                'username' => $username,
-                'uppername' => $param['uppername'],
-                'key' => $key,
-            ]);
-        $json_data = json_decode($response->body());
-        $sessionid = $json_data->data->sessionid;
+        $data = [
+            'website' => $param['website'],
+            'username' => $username,
+            'uppername' => $param['uppername'],
+            'key' => $key,
+        ];
+
+        $sessionid = $this->Api($apiName, $data)->data->sessionid;
         session()->put('sessionId', $sessionid);
     }
 
@@ -41,109 +45,124 @@ trait ApiTraits
     {
         $param = $this->param();
         $username = $request;
+        $apiName = 'CheckUsrBalance';
         $KeyB = 'D5zIM6';
         $key = "1" . md5($param['website'] . $username . $KeyB . $param['Date'], false) . "2222";
-        $response = Http::get(
-            'http://apollo.vir777.net/app/WebService/JSON/display.php/CheckUsrBalance?',
-            [
-                'website' => $param['website'],
-                'username' => $username,
-                'uppername' => $param['uppername'],
-                'key' => $key,
-            ]);
-        $json_data = json_decode($response->body());
-        return $json_data->data[0];
+        $data = [
+            'website' => $param['website'],
+            'username' => $username,
+            'uppername' => $param['uppername'],
+            'key' => $key,
+        ];
+        return $this->Api($apiName, $data)->data[0];
     }
 
     public function Transfer($request)
     {
         $param = $this->param();
         ['account' => $username, 'action' => $action, 'remit' => $remit] = $request;
+        $apiName = 'Transfer';
         $remitno = date('YmdHis', time()) . sprintf("%05d", rand(0, 99999)); //int(19)( 1~9223372036854775806)來做設定
         $KeyB = 'yb89lxTRVB';
         $key = "11" . md5($param['website'] . $username . $remitno . $KeyB . $param['Date'], false) . "222";
-        $response = Http::get(
-            'http://apollo.vir777.net/app/WebService/JSON/display.php/Transfer?',
-            [
-                'website' => $param['website'],
-                'username' => $username,
-                'uppername' => $param['uppername'],
-                'remitno' => $remitno,
-                'action' => $action,
-                'remit' => $remit,
-                'key' => $key,
-            ]);
-        $json_data = json_decode($response->body());
-        return $json_data->data;
+        $data = [
+            'website' => $param['website'],
+            'username' => $username,
+            'uppername' => $param['uppername'],
+            'remitno' => $remitno,
+            'action' => $action,
+            'remit' => $remit,
+            'key' => $key,
+        ];
+        return $this->Api($apiName, $data)->data;
     }
-
+    //game
     public function GetGameTypeList($request)
     {
-        ['lang' => $lang, 'gamekind' => $gamekind] = $request;
         $param = $this->param();
+        ['lang' => $lang, 'gamekind' => $gamekind] = $request;
+        $apiName = 'GetGameTypeList';
         $KeyB = '601gyM';
         $key = "11111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222";
-        $response = Http::get(
-            'http://apollo.vir777.net/app/WebService/JSON/display.php/GetGameTypeList?',
-            [
-                'website' => $param['website'],
-                'lang' => $lang,
-                'gamekind' => $gamekind,
-                'key' => $key,
-            ]);
-        $json_data = json_decode($response->body());
+        $data = [
+            'website' => $param['website'],
+            'lang' => $lang,
+            'gamekind' => $gamekind,
+            'key' => $key,
+        ];
 
-        if ($json_data->result == false) {
-            return $json_data;
+        if ($this->Api($apiName, $data)->result == false) {
+            return $this->Api($apiName, $data);
         } else {
-            return $json_data->data;
+            return $this->Api($apiName, $data)->data;
         }
 
     }
-
-    public function GetWagersRecord($request)
+    public function GameUrlBy($request)
     {
-        ['gamekind' => $gamekind, 'gametype' => $gametype, 'action' => $action,
-            'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
         $param = $this->param();
-        $KeyB = '7uK3nZ6Y9';
-        $key = "1111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222222";
-        $response = Http::get(
-            'http://apollo.vir777.net/app/WebService/JSON/display.php/WagersRecordBy' . $gamekind . '?',
-            [
+        ['gamekind' => $gamekind, 'lang' => $lang, 'SessionID' => $sessionid, 'GameType' => $gametype] = $request;
+        $apiName = 'GameUrlBy' . $gamekind;
+        $KeyB = '09fJb0vYem';
+        $key = "11111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222";
+
+        if ($gamekind == '3' || $gamekind == '75' || $gamekind == '93') {
+            $data = [
                 'website' => $param['website'],
-                'action' => $action,
-                'uppername' => $param['uppername'],
-                'date' => $date,
-                'starttime' => $starttime,
-                'endtime' => $endtime,
+                'lang' => $lang,
+                'sessionid' => $sessionid,
+                'key' => $key,
+            ];
+        } else {
+            $data = [
+                'website' => $param['website'],
+                'lang' => $lang,
+                'sessionid' => $sessionid,
                 'gametype' => $gametype,
                 'key' => $key,
-            ]);
-        $json_data = json_decode($response->body());
+            ];
+        }
 
-        return $json_data->data;
+        return $this->Api($apiName, $data);
+    }
+    //wager
+    public function GetWagersRecord($request)
+    {
+        $param = $this->param();
+        ['gamekind' => $gamekind, 'gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
+        $apiName = 'WagersRecordBy' . $gamekind;
+        $KeyB = '7uK3nZ6Y9';
+        $key = "1111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222222";
+        $data = [
+            'website' => $param['website'],
+            'action' => $action,
+            'uppername' => $param['uppername'],
+            'date' => $date,
+            'starttime' => $starttime,
+            'endtime' => $endtime,
+            'gametype' => $gametype,
+            'key' => $key,
+        ];
+
+        return $this->Api($apiName, $data)->data;
     }
 
     public function GetWagersRecordDetail($request)
     {
-        ['gamekind' => $gamekind, 'lang' => $lang, 'username' => $username,
-            'wagersid' => $wagersid, 'gametype' => $gametype] = $request;
         $param = $this->param();
+        ['gamekind' => $gamekind, 'lang' => $lang, 'username' => $username, 'wagersid' => $wagersid, 'gametype' => $gametype] = $request;
+        $apiName = 'GetWagersSubDetailUrlBy' . $gamekind;
         $KeyB = '51Rk82i';
         $key = "111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222222";
-        $response = Http::get(
-            'http://apollo.vir777.net/app/WebService/JSON/display.php/GetWagersSubDetailUrlBy' . $gamekind . '?',
-            [
-                'website' => $param['website'],
-                'wagersid' => $wagersid,
-                'lang' => $lang,
-                'username' => $username,
-                'gametype' => $gametype,
-                'key' => $key,
-            ]);
-        $json_data = json_decode($response->body());
-        foreach ($json_data->data as $arr => $value) {
+        $data = [
+            'website' => $param['website'],
+            'wagersid' => $wagersid,
+            'lang' => $lang,
+            'username' => $username,
+            'gametype' => $gametype,
+            'key' => $key,
+        ];
+        foreach ($this->Api($apiName, $data)->data as $arr => $value) {
             return $value;
         }
     }
