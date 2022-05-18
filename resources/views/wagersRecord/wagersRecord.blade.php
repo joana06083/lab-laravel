@@ -34,13 +34,18 @@
             </select>
         </div>
         @endif
-
         <div class="flex-fill bd-highlight">
             <select id="date" name="date" class="form-control">
                 @foreach($DateList as $key =>$value)
                 <option>{{$DateList[$key]}}</option>
                 @endforeach
             </select>
+        </div>
+        <div class="flex-fill bd-highlight">
+            <input id="starttime" name="starttime" type="text" class="form-control" value="00:00:00" placeholder="00:00:00"/>
+        </div>
+        <div class="flex-fill bd-highlight">
+            <input id="endtime" name="endtime" type="text" class="form-control" value="23:59:59" placeholder="23:59:59"/>
         </div>
         <button type="submit" class="btn btn-secondary"> 查詢 </button>
     </div>

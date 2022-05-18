@@ -83,23 +83,29 @@ trait ApiTraits
         return $json_data['data'];
     }
 
-    public function GetWagersRecord($gamekind, $gametype, $date, $action)
+    public function GetWagersRecord($request)
     {
+        ['gamekind' => $gamekind, 'gametype' => $gametype, 'action' => $action,
+            'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
         $param = $this->param();
         $KeyB = '7uK3nZ6Y9';
         $key = "1111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222222";
+
         $url = "http://apollo.vir777.net/app/WebService/JSON/display.php/WagersRecordBy" . $gamekind .
-            "?website=" . $param['website'] . "&action=" . $action . "&uppername=dpidtest" .
-            "&date=" . $date . "&starttime=00:00:00&endtime=23:59:59" . "&gametype=" . $gametype . "&key=" . $key;
+            "?website=" . $param['website'] . "&action=" . $action . "&uppername=" . $param['uppername'] .
+            "&date=" . $date . "&starttime=" . $starttime . "&endtime=" . $endtime . "&gametype=" . $gametype . "&key=" . $key;
+
         //Response
         $json = file_get_contents($url);
         $json_data = json_decode($json, true);
-        return $url;
+
         return $json_data['data'];
     }
 
-    public function GetWagersRecordDetail($gamekind, $lang, $username, $wagersid, $gametype)
+    public function GetWagersRecordDetail($request)
     {
+        ['gamekind' => $gamekind, 'lang' => $lang, 'username' => $username,
+            'wagersid' => $wagersid, 'gametype' => $gametype] = $request;
         $param = $this->param();
         $KeyB = '51Rk82i';
         $key = "111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222222";
