@@ -24,7 +24,7 @@
                 &nbsp;
                 @if(!empty($UsrBalance))
                     <a href="transferIndex" class="btn btn-primary">
-                        額度：{{$UsrBalance['Balance']}} {{$UsrBalance['Currency']}}
+                        額度：{{$UsrBalance->Balance}}{{$UsrBalance->Currency}}
                     </a>
                 @endif
                 &nbsp;

@@ -91,7 +91,7 @@ class UserAuthController extends Controller
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data = [
                 'LoggedUserInfo' => $user,
-                'ApiData' => session('ApiData'),
+                'sessionId' => session('sessionId'),
                 'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
             ];
         }
@@ -109,17 +109,16 @@ class UserAuthController extends Controller
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data = [
                 'LoggedUserInfo' => $user,
-                'ApiData' => session('ApiData'),
+                'sessionId' => session('sessionId'),
                 'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
-                'GameTypeList' => $this->GetGameTypeList($request->lang, $request->gamekind),
+                'GameTypeList' => $this->GetGameTypeList($request),
                 'gamekind' => $request->gamekind,
             ];
         }
-
-        if (!isset($data['GameTypeList']['result'])) {
+        if (!isset($data['GameTypeList']->result)) {
             return view('index', $data);
         } else {
-            return redirect('/')->with('Fail', $data['GameTypeList']['data']['Message']);
+            return redirect('/')->with('Fail', $data['GameTypeList']->data->Message);
         }
 
     }

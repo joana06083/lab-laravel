@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class GameController extends Controller
 {
@@ -17,23 +18,35 @@ class GameController extends Controller
         $KeyB = '09fJb0vYem';
         $key = "11111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222";
 
-        if ($gamekind == 3 || $gamekind == 75 || $gamekind == 93) {
-            $url = "http://apollo.vir777.net/app/WebService/JSON/display.php/GameUrlBy" . $gamekind .
-                "?website=" . $param['website'] . "&lang=" . $lang . "&sessionid=" . $sessionid . "&key=" . $key;
+        if ($gamekind == '3' || $gamekind == '75' || $gamekind == '93') {
+            $response = Http::get(
+                'http://apollo.vir777.net/app/WebService/JSON/display.php/GameUrlBy' . $gamekind . '?',
+                [
+                    'website' => $param['website'],
+                    'lang' => $lang,
+                    'sessionid' => $sessionid,
+                    'key' => $key,
+                ]);
         } else {
-            $url = "http://apollo.vir777.net/app/WebService/JSON/display.php/GameUrlBy" . $gamekind .
-                "?website=" . $param['website'] . "&lang=" . $lang . "&sessionid=" . $sessionid . "&gametype=" . $gametype . "&key=" . $key;
+            $response = Http::get(
+                'http://apollo.vir777.net/app/WebService/JSON/display.php/GameUrlBy' . $gamekind . '?',
+                [
+                    'website' => $param['website'],
+                    'lang' => $lang,
+                    'sessionid' => $sessionid,
+                    'gametype' => $gametype,
+                    'key' => $key,
+                ]);
         }
 
-        $json = file_get_contents($url);
-        $json_data = json_decode($json, true);
+        $json_data = json_decode($response->body());
 
-        if (isset($json_data['data']['Message'])) {
-            return redirect('/')->with('Fail', $json_data['data']['Message']);
+        if (isset($json_data->data->Message)) {
+            return redirect('/')->with('Fail', $$json_data->data->Message);
         }
         return match($gamekind) {
-            '5', '30', '38' => redirect($json_data['data'][0]['html5']),
-        default=> redirect($json_data['data'][0]['pc']),
+            '5', '30', '38' => redirect($json_data->data[0]->html5),
+        default=> redirect($json_data->data[0]->pc),
         };
     }
 

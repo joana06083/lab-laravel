@@ -98,10 +98,10 @@
         <div class="card-body">
             <form role="form" action="/GameIndex" method="post">
             @csrf
-                <h6 class="card-title">遊戲名稱： {{$gtl['GameTypeName']}}</h6>
+                <h6 class="card-title">遊戲名稱： {{$gtl->GameTypeName}}</h6>
                 <input id="gamekind" name="gamekind" type="text" value="{{$gamekind}}" style="display: none;">
-                <input id="SessionID" name="SessionID" type="text" value="{{$ApiData}}" style="display: none;">
-                <input id="GameType" name="GameType" type="text" value="{{$gtl['GameType']}}" style="display: none;">
+                <input id="SessionID" name="SessionID" type="text" value="{{$sessionId}}" style="display: none;">
+                <input id="GameType" name="GameType" type="text" value="{{$gtl->GameType}}" style="display: none;">
                 <select class="form-select" id="lang" name="lang" >
                     <option value="zh-cn">简体中文</option>
                     <option selected value="zh-tw">繁體中文</option>

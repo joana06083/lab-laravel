@@ -29,7 +29,7 @@
         <div class="flex-fill bd-highlight">
             <select id="gametype" name="gametype" class="form-control">
             @foreach($GameTypeList as $gtl )
-            <option value="{{$gtl['GameType']}}">{{$gtl['GameTypeName']}}{{$gtl['GameType']}}</option>
+            <option value="{{$gtl->GameType}}">{{$gtl->GameTypeName}}{{$gtl->GameType}}</option>
             @endforeach
             </select>
         </div>

@@ -31,9 +31,9 @@ class WagersRecordController extends Controller
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data = [
                 'LoggedUserInfo' => $user,
-                'ApiData' => session('ApiData'),
+                'sessionId' => session('sessionId'),
                 'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
-                'GameTypeList' => $this->GetGameTypeList($lang, $gamekind),
+                'GameTypeList' => $this->GetGameTypeList($request),
                 'gamekind' => $gamekind,
                 'DateList' => $this->dateList(),
                 'lang' => $lang,
@@ -48,32 +48,28 @@ class WagersRecordController extends Controller
     }
     public function WagersRecord(Request $request)
     {
-        $request->validate([
-            'starttime' => 'required|',
-            'endtime' => 'required|',
-        ]);
         ['gamekind' => $gamekind, 'gametype' => $gametype, 'action' => $action, 'lang' => $lang,
             'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
         $recordData = [];
         $arr = $this->GetWagersRecord($request);
 
-        if (!isset($arr['Message'])) {
+        if (!isset($arr->Message)) {
             foreach ($arr as $key => $value) {
                 $data = [
-                    'WagersID' => $value['WagersID'],
-                    'WagersDate' => $value['WagersDate'],
-                    'SerialID' => $value['SerialID'],
-                    'GameType' => $value['GameType'],
-                    'Result' => $value['Result'],
-                    'BetAmount' => $value['BetAmount'],
-                    'Commissionable' => $value['Commissionable'],
-                    'Payoff' => $value['Payoff'],
-                    'Currency' => $value['Currency'],
-                    'ExchangeRate' => $value['ExchangeRate'],
-                    'ModifiedDate' => $value['ModifiedDate'],
-                    'Origin' => $value['Origin'],
-                    'Star' => $value['Star'],
-                    'userNo' => $value['UserName'],
+                    'WagersID' => $value->WagersID,
+                    'WagersDate' => $value->WagersDate,
+                    'SerialID' => $value->SerialID,
+                    'GameType' => $value->GameType,
+                    'Result' => $value->Result,
+                    'BetAmount' => $value->BetAmount,
+                    'Commissionable' => $value->Commissionable,
+                    'Payoff' => $value->Payoff,
+                    'Currency' => $value->Currency,
+                    'ExchangeRate' => $value->ExchangeRate,
+                    'ModifiedDate' => $value->ModifiedDate,
+                    'Origin' => $value->Origin,
+                    'Star' => $value->Star,
+                    'userNo' => $value->UserName,
                 ];
                 array_push($recordData, $data);
             }
@@ -96,9 +92,9 @@ class WagersRecordController extends Controller
                 }
                 $data = [
                     'LoggedUserInfo' => $user,
-                    'ApiData' => session('ApiData'),
+                    'sessionId' => session('sessionId'),
                     'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
-                    'GameTypeList' => $this->GetGameTypeList($lang, $gamekind),
+                    'GameTypeList' => $this->GetGameTypeList($request),
                     'gamekind' => $gamekind,
                     'DateList' => $this->dateList(),
                     'RecordInfo' => $recordInfo,
@@ -107,7 +103,7 @@ class WagersRecordController extends Controller
             }
             return view('wagersRecord/wagersRecord', $data);
         } else {
-            return redirect('/')->with('Fail', $arr['Message']);
+            return redirect('/')->with('Fail', $arr->Message);
         }
     }
 

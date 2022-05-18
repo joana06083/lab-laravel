@@ -23,12 +23,10 @@ class coinsController extends Controller
     //處理轉帳請求
     public function getTransfer(Request $request)
     {
-        ['account' => $username, 'action' => $action, 'remit' => $remit] = $request;
-
-        if ($this->Transfer($username, $action, $remit)['Code'] == 11100) {
+        if ($this->Transfer($request)->Code == 11100) {
             return redirect('/transferIndex')->with('Success', 'Transfer successfully!');
         } else {
-            return redirect('/transferIndex')->with('Fail', 'Transfer failfully!Message：' . $this->Transfer($username, $action, $remit)['Message']);
+            return redirect('/transferIndex')->with('Fail', 'Transfer failfully!Message：' . $this->Transfer($request)->Message);
         }
     }
 }
