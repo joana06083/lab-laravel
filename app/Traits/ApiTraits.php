@@ -105,24 +105,17 @@ trait ApiTraits
         $apiName = 'GameUrlBy' . $gamekind;
         $KeyB = '09fJb0vYem';
         $key = "11111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222";
+        $data = [
+            'website' => $param['website'],
+            'lang' => $lang,
+            'sessionid' => $sessionid,
+            'key' => $key,
+        ];
 
-        if ($gamekind == '3' || $gamekind == '75' || $gamekind == '93') {
-            $data = [
-                'website' => $param['website'],
-                'lang' => $lang,
-                'sessionid' => $sessionid,
-                'key' => $key,
-            ];
-        } else {
-            $data = [
-                'website' => $param['website'],
-                'lang' => $lang,
-                'sessionid' => $sessionid,
-                'gametype' => $gametype,
-                'key' => $key,
-            ];
-        }
-
+        match($gamekind) {
+            '3', '75', '93' => $data,
+        default=> $data['gametype'] = $gametype,
+        };
         return $this->Api($apiName, $data);
     }
     //wager
@@ -144,6 +137,12 @@ trait ApiTraits
             'key' => $key,
         ];
 
+        match($gametype) {
+            '5902' => $data['subgamekind'] = '2',
+            '5901', '5904', '5012' => $data['subgamekind'] = '3',
+            '5908' => $data['subgamekind'] = '5',
+        default=> $data['subgamekind'] = '1',
+        };
         return $this->Api($apiName, $data)->data;
     }
 
@@ -162,6 +161,7 @@ trait ApiTraits
             'gametype' => $gametype,
             'key' => $key,
         ];
+
         foreach ($this->Api($apiName, $data)->data as $arr => $value) {
             return $value;
         }
