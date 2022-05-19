@@ -99,13 +99,15 @@ class UserAuthController extends Controller
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
             ];
         }
-        return $data;
+
         return view('index', $data);
     }
 
     //顯示首頁查詢後畫面
     public function search(Request $request)
     {
+        $balance = new Balance;
+
         $data = [
             'LoggedUserInfo' => [],
             'GameTypeList' => [],
@@ -115,7 +117,7 @@ class UserAuthController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('sessionId'),
-                'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
                 'GameTypeList' => $this->GetGameTypeList($request),
                 'gamekind' => $request->gamekind,
             ];

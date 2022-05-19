@@ -9,8 +9,8 @@ class Session extends Kernel
     public function CreateSession($request)
     {
         $param = $this->param();
-        $KeyB = '4GZ2qQ';
-        $key = $this->key(2, $param['website'] . $request . $KeyB . $param['Date'], 7);
+        $key_b = '4GZ2qQ';
+        $key = $this->key(2, $param['website'] . $request . $key_b . $param['Date'], 7);
 
         $api_name = 'CreateSession';
         $data = [

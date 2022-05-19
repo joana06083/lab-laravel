@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ExternalApi\user\Balance;
+use App\ExternalApi\user\Transfer;
 use App\Models\UserInfo;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
@@ -12,23 +14,25 @@ class CoinsController extends Controller
     //顯示轉帳畫面
     public function index()
     {
+        $balance = new Balance;
         $user = UserInfo::where('userNo', session('LoggedUser'))->first();
         $data = [
             'LoggedUserInfo' => $user,
-            'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
+            'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
         ];
         return view('transfer/transfer', $data);
     }
     //處理轉帳請求
     public function getTransfer(Request $request)
     {
+        $transfer = new Transfer;
         $request->validate([
             'remit' => 'required|numeric',
         ]);
-        if ($this->Transfer($request)->Code == 11100) {
+        if ($transfer->GetTransfer($request)->Code == 11100) {
             return redirect('/transferIndex')->with('Success', 'Transfer successfully!');
         } else {
-            return redirect('/transferIndex')->with('Fail', 'Transfer failfully!Message：' . $this->Transfer($request)->Message);
+            return redirect('/transferIndex')->with('Fail', 'Transfer failfully!Message：' . $transfer->GetTransfer($request)->Message);
         }
     }
 }

@@ -4,17 +4,18 @@ namespace App\ExternalApi\user;
 
 use App\ExternalApi\Kernel;
 
-class transfer extends Kernel
+class Transfer extends Kernel
 {
 
-    public function Transfer($request)
+    public function GetTransfer($request)
     {
         $param = $this->param();
+        $key_b = 'yb89lxTRVB';
+        $remitno = date('YmdHis', time()) . sprintf("%05d", rand(0, 99999));
         ['account' => $username, 'action' => $action, 'remit' => $remit] = $request;
-        $apiName = 'Transfer';
-        $remitno = date('YmdHis', time()) . sprintf("%05d", rand(0, 99999)); //int(19)( 1~9223372036854775806)來做設定
-        $KeyB = 'yb89lxTRVB';
-        $key = "11" . md5($param['website'] . $username . $remitno . $KeyB . $param['Date'], false) . "222";
+        $key = $this->key(2, $param['website'] . $username . $remitno . $key_b . $param['Date'], 3);
+
+        $api_name = 'Transfer';
         $data = [
             'website' => $param['website'],
             'username' => $username,
@@ -24,6 +25,6 @@ class transfer extends Kernel
             'remit' => $remit,
             'key' => $key,
         ];
-        return $this->Api($apiName, $data)->data;
+        return $this->Api($api_name, $data)->data;
     }
 }
