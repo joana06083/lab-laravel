@@ -6,7 +6,7 @@ use App\Models\UserInfo;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
 
-class coinsController extends Controller
+class CoinsController extends Controller
 {
     use ApiTraits;
     //顯示轉帳畫面
@@ -15,7 +15,6 @@ class coinsController extends Controller
         $user = UserInfo::where('userNo', session('LoggedUser'))->first();
         $data = [
             'LoggedUserInfo' => $user,
-            'ApiData' => session('ApiData'),
             'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
         ];
         return view('transfer/transfer', $data);
@@ -23,6 +22,9 @@ class coinsController extends Controller
     //處理轉帳請求
     public function getTransfer(Request $request)
     {
+        $request->validate([
+            'remit' => 'required|numeric',
+        ]);
         if ($this->Transfer($request)->Code == 11100) {
             return redirect('/transferIndex')->with('Success', 'Transfer successfully!');
         } else {

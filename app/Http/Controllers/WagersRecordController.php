@@ -39,23 +39,25 @@ class WagersRecordController extends Controller
                 'lang' => $lang,
             ];
         }
-
-        if (!isset($data['GameTypeList']['result'])) {
+        if (!isset($data['GameTypeList']->result)) {
             return view('wagersRecord/wagersRecord', $data);
         } else {
-            return redirect('/')->with('Fail', $data['GameTypeList']['data']['Message']);
+            return redirect('/')->with('Fail', $data['GameTypeList']->data->Message);
         }
     }
-    public function WagersRecord(Request $request)
+    public function RecordInsert(Request $request)
     {
-        ['gamekind' => $gamekind, 'gametype' => $gametype, 'action' => $action, 'lang' => $lang,
-            'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
+        // $request->validate([
+        //     'starttime' => 'date_format:H:i:s',
+        //     'endtime' => 'date_format:H:i:s|after:starttime',
+        // ]);
+        ['gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
         $recordData = [];
         $arr = $this->GetWagersRecord($request);
 
         if (!isset($arr->Message)) {
             foreach ($arr as $key => $value) {
-                $data = [
+                $arrdata = [
                     'WagersID' => $value->WagersID,
                     'WagersDate' => $value->WagersDate,
                     'SerialID' => $value->SerialID,
@@ -71,7 +73,7 @@ class WagersRecordController extends Controller
                     'Star' => $value->Star,
                     'userNo' => $value->UserName,
                 ];
-                array_push($recordData, $data);
+                array_push($recordData, $arrdata);
             }
 
             $recordCheck = wagersRecordInfo::whereIn('WagersID', array_column($recordData, 'WagersID'))->get();
@@ -80,31 +82,41 @@ class WagersRecordController extends Controller
             $result = array_map('unserialize', $diff);
             wagersRecordInfo::insert($result);
 
-            //導回查詢畫面
-            if (session()->has('LoggedUser')) {
-                $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-                if ($action == 'BetTime') {
-                    $recordInfo = wagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
-                        ->where('GameType', $gametype)->get();
-                } else {
-                    $recordInfo = wagersRecordInfo::whereBetween('ModifiedDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
-                        ->where('GameType', $gametype)->get();
-                }
-                $data = [
-                    'LoggedUserInfo' => $user,
-                    'sessionId' => session('sessionId'),
-                    'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
-                    'GameTypeList' => $this->GetGameTypeList($request),
-                    'gamekind' => $gamekind,
-                    'DateList' => $this->dateList(),
-                    'RecordInfo' => $recordInfo,
-                    'lang' => $lang,
-                ];
+            //recordInfo
+            if ($gametype == 'all') {
+                $recordInfo = wagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
+                    ->get();
+            } elseif ($action == 'BetTime') {
+                $recordInfo = wagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
+                    ->where('GameType', $gametype)->get();
+            } else {
+                $recordInfo = wagersRecordInfo::whereBetween('ModifiedDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
+                    ->where('GameType', $gametype)->get();
             }
-            return view('wagersRecord/wagersRecord', $data);
+            return $recordInfo;
         } else {
             return redirect('/')->with('Fail', $arr->Message);
         }
+    }
+    public function WagersRecord(Request $request)
+    {
+        ['gamekind' => $gamekind, 'lang' => $lang] = $request;
+
+        if (session()->has('LoggedUser')) {
+            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
+            $data = [
+                'LoggedUserInfo' => $user,
+                'sessionId' => session('sessionId'),
+                'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
+                'GameTypeList' => $this->GetGameTypeList($request),
+                'gamekind' => $gamekind,
+                'DateList' => $this->dateList(),
+                'lang' => $lang,
+            ];
+            $data['RecordInfo'] = $this->RecordInsert($request);
+        }
+
+        return view('wagersRecord/wagersRecord', $data);
     }
 
     public function WagersRecordDetail(Request $request)

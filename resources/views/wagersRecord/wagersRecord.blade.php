@@ -28,9 +28,10 @@
         @if(!empty($GameTypeList))
         <div class="flex-fill bd-highlight">
             <select id="gametype" name="gametype" class="form-control">
-            @foreach($GameTypeList as $gtl )
-            <option value="{{$gtl->GameType}}">{{$gtl->GameTypeName}}{{$gtl->GameType}}</option>
-            @endforeach
+                <option value="all">All</option>
+                @foreach($GameTypeList as $gtl )
+                <option value="{{$gtl->GameType}}">{{$gtl->GameTypeName}}{{$gtl->GameType}}</option>
+                @endforeach
             </select>
         </div>
         @endif
@@ -42,10 +43,12 @@
             </select>
         </div>
         <div class="flex-fill bd-highlight">
-            <input id="starttime" name="starttime" type="text" class="form-control" value="00:00:00" placeholder="00:00:00"/>
+            <input id="starttime" name="starttime" type="text" class="form-control @error('starttime') is-invalid @enderror" placeholder="00:00:00" required autocomplete="starttime" autofocus/>
+            <span class="text-danger">@error('starttime'){{$message}} @enderror </span>
         </div>
         <div class="flex-fill bd-highlight">
-            <input id="endtime" name="endtime" type="text" class="form-control" value="23:59:59" placeholder="23:59:59"/>
+            <input id="endtime" name="endtime" type="text" class="form-control @error('endtime') is-invalid @enderror" placeholder="23:59:59" required autocomplete="starttime" autofocus/>
+            <span class="text-danger">@error('endtime'){{$message}} @enderror </span>
         </div>
         <button type="submit" class="btn btn-secondary"> 查詢 </button>
     </div>
@@ -75,7 +78,6 @@
     @foreach($RecordInfo as $rec)
     <tbody>
         <tr>
-
         <form method="post" action="WagersRecordDetail">
             @csrf
             <input id="gamekind" name="gamekind" type="text" value="{{$gamekind}}" style="display: none;">

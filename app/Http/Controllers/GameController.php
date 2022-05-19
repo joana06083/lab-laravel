@@ -15,7 +15,7 @@ class GameController extends Controller
         $json_data = $this->GameUrlBy($request);
 
         if (isset($json_data->data->Message)) {
-            return redirect('/')->with('Fail', $$json_data->data->Message);
+            return redirect('/')->with('Fail', $json_data->data->Message);
         }
         return match($request->gamekind) {
             '5', '30', '38' => redirect($json_data->data[0]->html5),

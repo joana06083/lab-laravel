@@ -17,6 +17,7 @@
 @endif
 
 @section('content')
+@if(!empty($LoggedUserInfo))
 <!-- 選擇遊戲類型/語言 -->
 <h5>選擇遊戲類型/語言</h5>
 <form  method="post" action="search">
@@ -53,7 +54,6 @@
     <button type="submit" class="btn btn-primary">查詢</button>
 </div>
 </form>
-{{$sessionId}}
 <!-- 取得明細 -->
 <form  method="post" action="WagersRecordIndex">
     @csrf
@@ -121,5 +121,5 @@
   @endforeach
 </div>
 @endif
-
+@endif
 @endsection

@@ -47,7 +47,8 @@
                     <div class="row mb-3">
                         <label for="remit" class="col-md-4 col-form-label text-md-end">額度 ：</label>
                         <div class="col-md-6">
-                            <input id="remit" name="remit" type="text" class="form-control" placeholder="請輸入正數，支援至小數點後四位">
+                            <input id="remit" name="remit" type="text" class="form-control @error('remit') is-invalid @enderror" placeholder="請輸入正數，支援至小數點後四位" required autocomplete="remit" autofocus>
+                            <span class="text-danger">@error('remit'){{$message}} @enderror </span>
                         </div>
                     </div>
                     <div class="row mb-2">
