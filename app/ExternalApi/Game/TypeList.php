@@ -1,18 +1,19 @@
 <?php
 
-namespace App\ExternalApi\game;
+namespace App\ExternalApi\Game;
 
 use App\ExternalApi\Kernel;
 
-class typelist extends Kernel
+class TypeList extends Kernel
 {
     public function GetGameTypeList($request)
     {
         $param = $this->param();
         ['lang' => $lang, 'gamekind' => $gamekind] = $request;
-        $apiName = 'GetGameTypeList';
-        $KeyB = '601gyM';
-        $key = "11111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222";
+        $key_b = '601gyM';
+        $key = $this->key(8, $param['website'] . $key_b . $param['Date'], 4);
+
+        $api_name = 'GetGameTypeList';
         $data = [
             'website' => $param['website'],
             'lang' => $lang,
@@ -20,10 +21,10 @@ class typelist extends Kernel
             'key' => $key,
         ];
 
-        if ($this->Api($apiName, $data)->result == false) {
-            return $this->Api($apiName, $data);
+        if ($this->Api($api_name, $data)->result == false) {
+            return $this->Api($api_name, $data);
         } else {
-            return $this->Api($apiName, $data)->data;
+            return $this->Api($api_name, $data)->data;
         }
 
     }

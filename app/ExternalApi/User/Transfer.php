@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ExternalApi\user;
+namespace App\ExternalApi\User;
 
 use App\ExternalApi\Kernel;
 

@@ -1,18 +1,19 @@
 <?php
 
-namespace App\ExternalApi\wagers;
+namespace App\ExternalApi\Wagers;
 
 use App\ExternalApi\Kernel;
 
-class record extends Kernel
+class Record extends Kernel
 {
     public function GetWagersRecord($request)
     {
         $param = $this->param();
         ['gamekind' => $gamekind, 'gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
-        $apiName = 'WagersRecordBy' . $gamekind;
-        $KeyB = '7uK3nZ6Y9';
-        $key = "1111111" . md5($param['website'] . $KeyB . $param['Date'], false) . "2222222";
+        $key_b = '7uK3nZ6Y9';
+        $key = $this->key(7, $param['website'] . $key_b . $param['Date'], 7);
+
+        $api_name = 'WagersRecordBy' . $gamekind;
         $data = [
             'website' => $param['website'],
             'action' => $action,
@@ -32,7 +33,7 @@ class record extends Kernel
             default=> $data['subgamekind'] = '1',
             };
         }
-        return $this->Api($apiName, $data)->data;
+        return $this->Api($api_name, $data)->data;
     }
 
 }

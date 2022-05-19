@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ExternalApi\Game\GetUrl;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class GameController extends Controller
     //進入遊戲
     public function GameIndex(Request $request)
     {
-        $json_data = $this->GameUrlBy($request);
+        $get_url = new GetUrl;
+        $json_data = $get_url->GameUrlBy($request);
 
         if (isset($json_data->data->Message)) {
             return redirect('/')->with('Fail', $json_data->data->Message);

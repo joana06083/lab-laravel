@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\ExternalApi\user\Balance;
-use App\ExternalApi\user\Session;
+use App\ExternalApi\Game\TypeList;
+use App\ExternalApi\User\Balance;
+use App\ExternalApi\User\Session;
 use App\Models\UserInfo;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
@@ -107,6 +108,7 @@ class UserAuthController extends Controller
     public function search(Request $request)
     {
         $balance = new Balance;
+        $type_list = new TypeList;
 
         $data = [
             'LoggedUserInfo' => [],
@@ -118,7 +120,7 @@ class UserAuthController extends Controller
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('sessionId'),
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
-                'GameTypeList' => $this->GetGameTypeList($request),
+                'GameTypeList' => $type_list->GetGameTypeList($request),
                 'gamekind' => $request->gamekind,
             ];
         }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\ExternalApi\user\Balance;
-use App\ExternalApi\user\Transfer;
+use App\ExternalApi\User\Balance;
+use App\ExternalApi\User\Transfer;
 use App\Models\UserInfo;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;

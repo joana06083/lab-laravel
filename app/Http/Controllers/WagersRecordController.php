@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\ExternalApi\Game\TypeList;
+use App\ExternalApi\User\Balance;
+use App\ExternalApi\Wagers\Record;
+use App\ExternalApi\Wagers\RecordDetail;
 use App\Models\UserInfo;
 use App\Models\wagersRecordInfo;
 use App\Traits\ApiTraits;
@@ -22,6 +26,9 @@ class WagersRecordController extends Controller
 
     public function WagersRecordIndex(Request $request)
     {
+        $balance = new Balance;
+        $type_list = new TypeList;
+
         ['gamekind' => $gamekind, 'lang' => $lang] = $request;
         $data = [
             'LoggedUserInfo' => [],
@@ -32,8 +39,8 @@ class WagersRecordController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('sessionId'),
-                'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
-                'GameTypeList' => $this->GetGameTypeList($request),
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
+                'GameTypeList' => $type_list->GetGameTypeList($request),
                 'gamekind' => $gamekind,
                 'DateList' => $this->dateList(),
                 'lang' => $lang,
@@ -47,13 +54,15 @@ class WagersRecordController extends Controller
     }
     public function RecordInsert(Request $request)
     {
+
+        $record = new Record;
         // $request->validate([
         //     'starttime' => 'date_format:H:i:s',
         //     'endtime' => 'date_format:H:i:s|after:starttime',
         // ]);
         ['gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
         $recordData = [];
-        $arr = $this->GetWagersRecord($request);
+        $arr = $record->GetWagersRecord($request);
 
         if (!isset($arr->Message)) {
             foreach ($arr as $key => $value) {
@@ -100,6 +109,8 @@ class WagersRecordController extends Controller
     }
     public function WagersRecord(Request $request)
     {
+        $balance = new Balance;
+        $type_list = new TypeList;
         ['gamekind' => $gamekind, 'lang' => $lang] = $request;
 
         if (session()->has('LoggedUser')) {
@@ -107,8 +118,8 @@ class WagersRecordController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('sessionId'),
-                'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
-                'GameTypeList' => $this->GetGameTypeList($request),
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
+                'GameTypeList' => $type_list->GetGameTypeList($request),
                 'gamekind' => $gamekind,
                 'DateList' => $this->dateList(),
                 'lang' => $lang,
@@ -121,7 +132,8 @@ class WagersRecordController extends Controller
 
     public function WagersRecordDetail(Request $request)
     {
-        return redirect($this->GetWagersRecordDetail($request));
+        $record_detail = new RecordDetail;
+        return redirect($record_detail->GetWagersRecordDetail($request));
     }
 
 }
