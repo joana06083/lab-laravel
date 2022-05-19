@@ -4,23 +4,23 @@ namespace App\ExternalApi\user;
 
 use App\ExternalApi\Kernel;
 
-class session extends Kernel
+class Session extends Kernel
 {
     public function CreateSession($request)
     {
         $param = $this->param();
-        $username = $request;
-        $apiName = 'CreateSession';
         $KeyB = '4GZ2qQ';
-        $key = "11" . md5($param['website'] . $username . $KeyB . $param['Date'], false) . "2222222";
+        $key = $this->key(2, $param['website'] . $request . $KeyB . $param['Date'], 7);
+
+        $api_name = 'CreateSession';
         $data = [
             'website' => $param['website'],
-            'username' => $username,
+            'username' => $request,
             'uppername' => $param['uppername'],
             'key' => $key,
         ];
 
-        $sessionid = $this->Api($apiName, $data)->data->sessionid;
+        $sessionid = $this->Api($api_name, $data)->data->sessionid;
         session()->put('sessionId', $sessionid);
     }
 }

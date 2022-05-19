@@ -17,6 +17,7 @@
 @endif
 
 @section('content')
+{{$sessionId}}
 @if(!empty($LoggedUserInfo))
 <!-- 選擇遊戲類型/語言 -->
 <h5>選擇遊戲類型/語言</h5>

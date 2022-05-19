@@ -4,21 +4,22 @@ namespace App\ExternalApi\user;
 
 use App\ExternalApi\Kernel;
 
-class balance extends Kernel
+class Balance extends Kernel
 {
     public function CheckUsrBalance($request)
     {
         $param = $this->param();
-        $username = $request;
-        $apiName = 'CheckUsrBalance';
         $KeyB = 'D5zIM6';
-        $key = "1" . md5($param['website'] . $username . $KeyB . $param['Date'], false) . "2222";
+        $key = $this->key(1, $param['website'] . $request . $KeyB . $param['Date'], 4);
+
+        $api_name = 'CheckUsrBalance';
         $data = [
             'website' => $param['website'],
-            'username' => $username,
+            'username' => $request,
             'uppername' => $param['uppername'],
             'key' => $key,
         ];
-        return $this->Api($apiName, $data)->data[0];
+
+        return $this->Api($api_name, $data)->data[0];
     }
 }

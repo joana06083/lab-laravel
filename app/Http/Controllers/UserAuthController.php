@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ExternalApi\user\Balance;
+use App\ExternalApi\user\Session;
 use App\Models\UserInfo;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
@@ -71,7 +73,8 @@ class UserAuthController extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('LoggedUser', $user->userNo);
-                $this->CreateSession($user->userNo);
+                $session = new Session;
+                $session->CreateSession($user->userNo);
                 return redirect('/')->with('Success', 'Login successfully!');
             } else {
                 return back()->with('Fail', 'Login failfully!Password error!');
@@ -84,6 +87,7 @@ class UserAuthController extends Controller
     //顯示首頁畫面
     public function index()
     {
+        $balance = new Balance;
         $data = [
             'LoggedUserInfo' => [],
         ];
@@ -92,9 +96,10 @@ class UserAuthController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('sessionId'),
-                'UsrBalance' => $this->CheckUsrBalance(session('LoggedUser')),
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
             ];
         }
+        return $data;
         return view('index', $data);
     }
 
