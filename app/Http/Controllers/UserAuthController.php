@@ -6,13 +6,11 @@ use App\ExternalApi\Game\TypeList;
 use App\ExternalApi\User\Balance;
 use App\ExternalApi\User\Session;
 use App\Models\UserInfo;
-use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserAuthController extends Controller
 {
-    use ApiTraits;
     //顯示登入畫面
     public function Login()
     {
@@ -100,7 +98,6 @@ class UserAuthController extends Controller
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
             ];
         }
-
         return view('Index', $data);
     }
 
