@@ -17,8 +17,9 @@
 @endif
 
 @section('content')
-{{$sessionId}}
+
 @if(!empty($LoggedUserInfo))
+{{$sessionId}}
 <!-- 選擇遊戲類型/語言 -->
 <h5>選擇遊戲類型/語言</h5>
 <form  method="post" action="search">

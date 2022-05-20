@@ -19,20 +19,18 @@ class Record extends Kernel
             'action' => $action,
             'uppername' => $param['uppername'],
             'date' => $date,
+            'gametype' => $gametype,
             'starttime' => $starttime,
             'endtime' => $endtime,
             'key' => $key,
         ];
-        if ($gametype == 'all') {
-            $data['gametype'] = $gametype;
 
-            match($gametype) {
-                '5902' => $data['subgamekind'] = '2',
-                '5901', '5904', '5012' => $data['subgamekind'] = '3',
-                '5908' => $data['subgamekind'] = '5',
-            default=> $data['subgamekind'] = '1',
-            };
-        }
+        match($gametype) {
+            '5902' => $data['subgamekind'] = '2',
+            '5901', '5904', '5012' => $data['subgamekind'] = '3',
+            '5908' => $data['subgamekind'] = '5',
+        default=> $data['subgamekind'] = '1',
+        };
         return $this->Api($api_name, $data)->data;
     }
 
