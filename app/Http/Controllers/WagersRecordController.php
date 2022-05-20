@@ -46,7 +46,7 @@ class WagersRecordController extends Controller
             ];
         }
         if (!isset($data['GameTypeList']->result)) {
-            return view('wagersRecord/wagersRecord', $data);
+            return view('WagersRecord/WagersRecord', $data);
         } else {
             return redirect('/')->with('Fail', $data['GameTypeList']->data->Message);
         }
@@ -85,7 +85,7 @@ class WagersRecordController extends Controller
                 'RecordInfo' => $recordInfo,
             ];
         }
-        return view('wagersRecord/wagersRecord', $data);
+        return view('WagersRecord/WagersRecord', $data);
     }
 
     public function WagersRecordDetail(Request $request)

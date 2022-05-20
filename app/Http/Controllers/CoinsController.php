@@ -20,7 +20,7 @@ class CoinsController extends Controller
             'LoggedUserInfo' => $user,
             'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
         ];
-        return view('transfer/transfer', $data);
+        return view('Transfer/Transfer', $data);
     }
     //處理轉帳請求
     public function GetTransfer(Request $request)

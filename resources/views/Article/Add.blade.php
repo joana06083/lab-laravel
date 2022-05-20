@@ -1,10 +1,10 @@
-@extends('blade.navbar')
+@extends('Blade.Navbar')
 
 @section('title', '新增文章')
 
 @section('content')
 <h4>新增文章</h4>
-<form role="form" action="{{route('art.store')}}" enctype="multipart/form-data" method="post">
+<form role="form" action="{{route('Art.store')}}" enctype="multipart/form-data" method="post">
 @csrf
     <div class="results">
         @if(session('Fail'))

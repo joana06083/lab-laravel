@@ -42,7 +42,7 @@ class MessageController extends Controller
         $query = $mes->save();
 
         if ($query) {
-            return redirect('/art/' . $request->articleNo)->with('Success', 'Message successfully add!');
+            return redirect('/Art/' . $request->articleNo)->with('Success', 'Message successfully add!');
         } else {
             return back()->with('Fail', 'Message failfully add!');
         }
@@ -65,7 +65,7 @@ class MessageController extends Controller
                 'LoggedUserInfo' => $user,
                 'mesInfo' => $mesInfo,
             ];
-            return view('message.update', $data);
+            return view('Message.Update', $data);
         }
     }
 
@@ -86,7 +86,7 @@ class MessageController extends Controller
         $results->update($validatedData);
 
         if ($results) {
-            return redirect('/art/' . $request->articleNo)->with('Success', 'Message successfully modify!');
+            return redirect('/Art/' . $request->articleNo)->with('Success', 'Message successfully modify!');
         } else {
             return back()->with('Fail', 'Message failfully modify!');
         }
@@ -106,7 +106,7 @@ class MessageController extends Controller
         $result->delete();
 
         if ($result) {
-            return redirect('/art/' . $request->articleNo)->with('Success', 'Message successfully deleted!');
+            return redirect('/Art/' . $request->articleNo)->with('Success', 'Message successfully deleted!');
         } else {
             return back()->with('Fail', 'Message failfully deleted!');
         }

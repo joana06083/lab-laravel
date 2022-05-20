@@ -22,7 +22,7 @@ class ArticleController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
             ];
-            return view('article.add', $data);
+            return view('Article.Add', $data);
         }
 
     }
@@ -92,7 +92,7 @@ class ArticleController extends Controller
             $data['LoggedUserInfo'] = $user;
         }
 
-        return view('article.show', $data);
+        return view('Article.Show', $data);
     }
     /**
      * Show the form for editing the specified resource.
@@ -112,7 +112,7 @@ class ArticleController extends Controller
                 'LoggedUserInfo' => $user,
                 'artvalue' => $artvalue,
             ];
-            return view('article.update', $data);
+            return view('Article.Update', $data);
         }
 
     }

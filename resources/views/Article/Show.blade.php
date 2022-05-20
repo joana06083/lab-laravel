@@ -1,4 +1,4 @@
-@extends('blade.navbar')
+@extends('Blade.Navbar')
 
 @section('title', $ArtLists->articleTitle)
 
@@ -65,8 +65,8 @@
 
     @if(!empty($LoggedUserInfo))
         @if($mes->userNo==$LoggedUserInfo->userNo)
-        <form role="form" action="{{ route('mes.destroy', $mes->messageNo)}}" method="post">
-            <a class="btn btn-primary" href="{{ route('mes.edit', $mes->messageNo)}}">編輯</a>
+        <form role="form" action="{{ route('Mes.destroy', $mes->messageNo)}}" method="post">
+            <a class="btn btn-primary" href="{{ route('Mes.edit', $mes->messageNo)}}">編輯</a>
             @csrf
             @method('DELETE')
 
@@ -83,7 +83,7 @@
 <!-- 新增留言 -->
 <div class="container">
     <h5>新增留言</h5>
-    <form role="form" action="{{route('mes.store')}}" enctype="multipart/form-data" method="post">
+    <form role="form" action="{{route('Mes.store')}}" enctype="multipart/form-data" method="post">
     @csrf
         <div class="results">
             @if(Session::get('Fail'))

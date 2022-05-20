@@ -28,11 +28,11 @@
                     </a>
                 @endif
                 &nbsp;
-                <a href="/logout" class="btn btn-secondary" >登出</a>
+                <a href="/Logout" class="btn btn-secondary" >登出</a>
                 @else
-                <a href="/register" class="btn btn-primary">註冊</a>
+                <a href="/Register" class="btn btn-primary">註冊</a>
                 &nbsp;
-                <a href="/login" class="btn btn-secondary">登入</a>
+                <a href="/Login" class="btn btn-secondary">登入</a>
                 @endif
             @show
             </div>

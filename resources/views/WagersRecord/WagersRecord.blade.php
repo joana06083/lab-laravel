@@ -1,5 +1,5 @@
 
-@extends('blade.navbar')
+@extends('Blade.Navbar')
 
 @section('title', '下注紀錄查詢')
 

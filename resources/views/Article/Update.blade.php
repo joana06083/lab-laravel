@@ -1,4 +1,4 @@
-@extends('blade.navbar')
+@extends('Blade.Navbar')
 
 @section('title', '修改文章')
 
@@ -11,7 +11,7 @@
 @section('content')
 <div class="container">
     <h4>修改文章</h4>
-    <form role="form" action="{{ route('art.update', $artvalue->articleNo ) }}" method="post">
+    <form role="form" action="{{ route('Art.update', $artvalue->articleNo ) }}" method="post">
         @csrf
         @method('PATCH')
         <div class="mb-3">

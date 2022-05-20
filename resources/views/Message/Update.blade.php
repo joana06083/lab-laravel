@@ -1,4 +1,4 @@
-@extends('blade.navbar')
+@extends('Blade.Navbar')
 
 @section('title', '修改留言')
 
@@ -10,7 +10,7 @@
 
 @section('content')
 <h4>修改留言</h4>
-<form role="form" action="{{ route('mes.update', $mesInfo->messageNo ) }}" method="post">
+<form role="form" action="{{ route('Mes.update', $mesInfo->messageNo ) }}" method="post">
     @csrf
     @method('PATCH')
     <div class="mb-3">
@@ -32,6 +32,6 @@
     </div>
 
     <button type="submit" class="btn btn-primary">修改</button>
-    <a href="{{ route('art.show', $mesInfo->articleNo)}}" class="btn btn-primary">返回文章</a>
+    <a href="{{ route('Art.show', $mesInfo->articleNo)}}" class="btn btn-primary">返回文章</a>
 </form>
 @endsection

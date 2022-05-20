@@ -1,4 +1,4 @@
-@extends('blade.navbar')
+@extends('Blade.Navbar')
 
 @section('title', '首頁')
 

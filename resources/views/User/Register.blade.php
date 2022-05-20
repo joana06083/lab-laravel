@@ -1,4 +1,4 @@
-@extends('blade.navbar')
+@extends('Blade.Navbar')
 
 @section('title', '註冊')
 
@@ -12,7 +12,7 @@
             <div class="card-header">註冊</div>
 
             <div class="card-body">
-                <form method="POST" action="{{route('user.create')}}">
+                <form method="POST" action="{{route('User.Create')}}">
                     @csrf
                     <div class="results">
                         @if(session('Success'))
@@ -71,7 +71,7 @@
                         <div class="col-md-8 offset-md-4">
                             <button type="submit" class="btn btn-primary">註冊</button>
                             <button type="reset"  value="reset" class="btn btn-outline-secondary">重置</button>
-                            <a id ="character" href="login">我已經有帳號！</a>
+                            <a id ="character" href="Login">我已經有帳號！</a>
                         </div>
                     </div>
                 </form>

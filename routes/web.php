@@ -20,23 +20,23 @@ use Illuminate\Support\Facades\Route;
 //顯示網站首頁驗證使用者是否登入
 Route::get('/', [UserAuthController::class, 'Index']);
 //處理登出請求
-Route::get('logout', [UserAuthController::class, 'Logout']);
+Route::get('Logout', [UserAuthController::class, 'Logout']);
 //顯示註冊畫面,處理註冊新增資料&顯示登入畫面,處理登入請求
 Route::middleware('user.login')->group(function () {
-    Route::get('register', [UserAuthController::class, 'Register']);
-    Route::get('login', [UserAuthController::class, 'Login']);
+    Route::get('Register', [UserAuthController::class, 'Register']);
+    Route::get('Login', [UserAuthController::class, 'Login']);
 });
 
-Route::post('create', [UserAuthController::class, 'Create'])->name('user.create');
-Route::post('check', [UserAuthController::class, 'Check'])->name('user.check');
+Route::post('Create', [UserAuthController::class, 'Create'])->name('User.Create');
+Route::post('Check', [UserAuthController::class, 'Check'])->name('User.Check');
 
 //處理查詢請求
 Route::match(['get', 'post'], 'Search', [UserAuthController::class, 'Search']);
 
 // 文章/留言 route
-Route::middleware('user.logout')->resource('art', 'ArticleController')->except(['show']);
-Route::resource('art', 'ArticleController')->only(['show']);
-Route::middleware('user.logout')->resource('mes', 'MessageController');
+Route::middleware('user.logout')->resource('Art', 'ArticleController')->except(['show']);
+Route::resource('Art', 'ArticleController')->only(['show']);
+Route::middleware('user.logout')->resource('Mes', 'MessageController');
 
 //處理轉帳請求
 Route::middleware('user.logout')->get('TransferIndex', [CoinsController::class, 'Index']);

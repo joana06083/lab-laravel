@@ -16,13 +16,13 @@ class UserAuthController extends Controller
     //顯示登入畫面
     public function Login()
     {
-        return view('user/login');
+        return view('User/Login');
     }
 
     //顯示註冊畫面
     public function Register()
     {
-        return view('user/register');
+        return view('User/Register');
     }
 
     //處理註冊請求
@@ -56,7 +56,7 @@ class UserAuthController extends Controller
     public function Logout()
     {
         session()->flush();
-        return redirect('login')->with('logout', 'Logout Successfully !');
+        return redirect('Login')->with('logout', 'Logout Successfully !');
     }
 
     //處理登入請求
@@ -101,7 +101,7 @@ class UserAuthController extends Controller
             ];
         }
 
-        return view('index', $data);
+        return view('Index', $data);
     }
 
     //顯示首頁查詢後畫面
@@ -125,7 +125,7 @@ class UserAuthController extends Controller
             ];
         }
         if (!isset($data['GameTypeList']->result)) {
-            return view('index', $data);
+            return view('Index', $data);
         } else {
             return redirect('/')->with('Fail', $data['GameTypeList']->data->Message);
         }
