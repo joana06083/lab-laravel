@@ -11,7 +11,7 @@ class GameController extends Controller
     use ApiTraits;
 
     //進入遊戲
-    public function GameIndex(Request $request)
+    public function Index(Request $request)
     {
         $get_url = new GetUrl;
         $json_data = $get_url->GameUrlBy($request);

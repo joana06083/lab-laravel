@@ -3,7 +3,7 @@
 namespace App\Jobs\Wagers;
 
 use App\ExternalApi\Wagers\Record;
-use App\Models\wagersRecordInfo;
+use App\Models\WagersRecordInfo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -66,12 +66,12 @@ class InsertRecod implements ShouldQueue
             }
             print_r($record_data);
 
-            $recordCheck = wagersRecordInfo::whereIn('WagersID', array_column($record_data, 'WagersID'))->get();
+            $recordCheck = WagersRecordInfo::whereIn('WagersID', array_column($record_data, 'WagersID'))->get();
             print_r($recordCheck);
             $recordCheckarr = json_decode($recordCheck, true);
             $diff = array_diff(array_map('serialize', $record_data), array_map('serialize', $recordCheckarr));
             $result = array_map('unserialize', $diff);
-            wagersRecordInfo::insert($result);
+            WagersRecordInfo::insert($result);
 
             printf("Insert into article success!");
         } else {

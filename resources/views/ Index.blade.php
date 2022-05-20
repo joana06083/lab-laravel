@@ -22,7 +22,7 @@
 {{$sessionId}}
 <!-- 選擇遊戲類型/語言 -->
 <h5>選擇遊戲類型/語言</h5>
-<form  method="post" action="search">
+<form  method="post" action="Search">
     @csrf
 <div class="d-flex bd-highlight">
     <div class="flex-fill bd-highlight">

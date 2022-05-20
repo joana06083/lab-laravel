@@ -12,7 +12,7 @@ class CoinsController extends Controller
 {
     use ApiTraits;
     //顯示轉帳畫面
-    public function index()
+    public function Index()
     {
         $balance = new Balance;
         $user = UserInfo::where('userNo', session('LoggedUser'))->first();
@@ -23,16 +23,16 @@ class CoinsController extends Controller
         return view('transfer/transfer', $data);
     }
     //處理轉帳請求
-    public function getTransfer(Request $request)
+    public function GetTransfer(Request $request)
     {
         $transfer = new Transfer;
         $request->validate([
             'remit' => 'required|numeric',
         ]);
         if ($transfer->GetTransfer($request)->Code == 11100) {
-            return redirect('/transferIndex')->with('Success', 'Transfer successfully!');
+            return redirect('/TransferIndex')->with('Success', 'Transfer successfully!');
         } else {
-            return redirect('/transferIndex')->with('Fail', 'Transfer failfully!Message：' . $transfer->GetTransfer($request)->Message);
+            return redirect('/TransferIndex')->with('Fail', 'Transfer failfully!Message：' . $transfer->GetTransfer($request)->Message);
         }
     }
 }

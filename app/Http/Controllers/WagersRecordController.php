@@ -6,14 +6,14 @@ use App\ExternalApi\Game\TypeList;
 use App\ExternalApi\User\Balance;
 use App\ExternalApi\Wagers\RecordDetail;
 use App\Models\UserInfo;
-use App\Models\wagersRecordInfo;
+use App\Models\WagersRecordInfo;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
 
 class WagersRecordController extends Controller
 {
     use ApiTraits;
-    public function dateList()
+    public function DateList()
     {
         //date
         $datelist = [];
@@ -41,7 +41,7 @@ class WagersRecordController extends Controller
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
                 'GameTypeList' => $type_list->GetGameTypeList($request),
                 'gamekind' => $gamekind,
-                'DateList' => $this->dateList(),
+                'DateList' => $this->DateList(),
                 'lang' => $lang,
             ];
         }
@@ -65,13 +65,13 @@ class WagersRecordController extends Controller
         if (session()->has('LoggedUser')) {
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             if ($gametype == 'all') {
-                $recordInfo = wagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
+                $recordInfo = WagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
                     ->get();
             } elseif ($action == 'BetTime') {
-                $recordInfo = wagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
+                $recordInfo = WagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
                     ->where('GameType', $gametype)->get();
             } else {
-                $recordInfo = wagersRecordInfo::whereBetween('ModifiedDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
+                $recordInfo = WagersRecordInfo::whereBetween('ModifiedDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
                     ->where('GameType', $gametype)->get();
             }
             $data = [
@@ -81,7 +81,7 @@ class WagersRecordController extends Controller
                 'lang' => $lang,
                 'GameTypeList' => $type_list->GetGameTypeList($request),
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
-                'DateList' => $this->dateList(),
+                'DateList' => $this->DateList(),
                 'RecordInfo' => $recordInfo,
             ];
         }

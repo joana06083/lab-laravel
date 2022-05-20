@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class wagersRecordInfo extends Model
+class WagersRecordInfo extends Model
 {
     protected $table = 'wagersRecord'; // 資料表名稱
     protected $primaryKey = 'WagersID'; // 主鍵

@@ -14,19 +14,19 @@ class UserAuthController extends Controller
 {
     use ApiTraits;
     //顯示登入畫面
-    public function login()
+    public function Login()
     {
         return view('user/login');
     }
 
     //顯示註冊畫面
-    public function register()
+    public function Register()
     {
         return view('user/register');
     }
 
     //處理註冊請求
-    public function create(Request $request)
+    public function Create(Request $request)
     {
         // 檢驗註冊內容
         $request->validate([
@@ -53,14 +53,14 @@ class UserAuthController extends Controller
     }
 
     //處理登出請求
-    public function logout()
+    public function Logout()
     {
         session()->flush();
         return redirect('login')->with('logout', 'Logout Successfully !');
     }
 
     //處理登入請求
-    public function check(Request $request)
+    public function Check(Request $request)
     {
         // 檢驗註冊內容
         $request->validate([
@@ -86,7 +86,7 @@ class UserAuthController extends Controller
     }
 
     //顯示首頁畫面
-    public function index()
+    public function Index()
     {
         $balance = new Balance;
         $data = [
@@ -105,7 +105,7 @@ class UserAuthController extends Controller
     }
 
     //顯示首頁查詢後畫面
-    public function search(Request $request)
+    public function Search(Request $request)
     {
         $balance = new Balance;
         $type_list = new TypeList;

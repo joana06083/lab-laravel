@@ -27,7 +27,7 @@
             <div class="card-header">轉帳</div>
 
             <div class="card-body">
-                <form method="POST" action="/transfer">
+                <form method="POST" action="/Transfer">
                     @csrf
                     <div class="row mb-3">
                         <label for="account" class="col-md-4 col-form-label text-md-end">帳號 ：</label>
