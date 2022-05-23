@@ -9,8 +9,8 @@ class Balance extends Kernel
     public function CheckUsrBalance(String $request)
     {
         $param = $this->param();
-        $key_b = 'D5zIM6';
         $api_name = 'CheckUsrBalance';
+        $key_b = $this->ApiKeyB($api_name);
 
         $key_param = [
             'key_a' => 1,

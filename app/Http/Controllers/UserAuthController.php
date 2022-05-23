@@ -73,8 +73,12 @@ class UserAuthController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('LoggedUser', $user->userNo);
                 $session = new Session;
-                $session->CreateSession($user->userNo);
-                return redirect('/')->with('Success', 'Login successfully!');
+                $result_data = $session->CreateSession($user->userNo);
+                if (isset($result_data['message'])) {
+                    return redirect('/')->with('Fail', $result_data['code'] . $result_data['message']);
+                } else {
+                    return redirect('/')->with('Success', 'Login successfully!');
+                }
             } else {
                 return back()->with('Fail', 'Login failfully!Password error!');
             }
@@ -94,10 +98,11 @@ class UserAuthController extends Controller
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data = [
                 'LoggedUserInfo' => $user,
-                'sessionId' => session('sessionId'),
+                'sessionId' => session('session_id'),
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
             ];
         }
+        // return $data;
         return view('Index', $data);
     }
 
@@ -111,13 +116,18 @@ class UserAuthController extends Controller
             'LoggedUserInfo' => [],
             'GameTypeList' => [],
         ];
+
         if (session()->has('LoggedUser')) {
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
+            $request_data = [
+                'gamekind' => $request->gamekind,
+                'lang' => $request->lang,
+            ];
             $data = [
                 'LoggedUserInfo' => $user,
-                'sessionId' => session('sessionId'),
+                'sessionId' => session('session_id'),
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
-                'GameTypeList' => $type_list->GetGameTypeList($request),
+                'GameTypeList' => $type_list->GetGameTypeList($request_data),
                 'gamekind' => $request->gamekind,
             ];
         }

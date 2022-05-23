@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Http;
 
 trait ApiTraits
 {
-    public function Api(String $apiName, array $data)
+    public function Api(String $api_name, array $data)
     {
-        $response = Http::get('http://apollo.vir777.net/app/WebService/JSON/display.php/' . $apiName . '?', $data);
+        $response = Http::get('http://apollo.vir777.net/app/WebService/JSON/display.php/' . $api_name . '?', $data);
         $json_data = json_decode($response->body());
         return $json_data;
     }

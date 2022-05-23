@@ -11,8 +11,8 @@ class Transfer extends Kernel
     {
         ['username' => $username, 'action' => $action, 'remit' => $remit] = $request;
         $param = $this->param();
-        $key_b = 'yb89lxTRVB';
         $api_name = 'Transfer';
+        $key_b = $this->ApiKeyB($api_name);
         $remitno = date('YmdHis', time()) . sprintf("%05d", rand(0, 99999));
 
         $key_param = [

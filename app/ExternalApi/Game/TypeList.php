@@ -6,12 +6,12 @@ use App\ExternalApi\Kernel;
 
 class TypeList extends Kernel
 {
-    public function GetGameTypeList($request)
+    public function GetGameTypeList(array $request)
     {
         ['lang' => $lang, 'gamekind' => $gamekind] = $request;
         $param = $this->param();
-        $key_b = '601gyM';
         $api_name = 'GetGameTypeList';
+        $key_b = $this->ApiKeyB($api_name);
 
         $key_param = [
             'key_a' => 8,

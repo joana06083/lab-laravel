@@ -9,8 +9,8 @@ class Session extends Kernel
     public function CreateSession(String $request)
     {
         $param = $this->param();
-        $key_b = '4GZ2qQ';
         $api_name = 'CreateSession';
+        $key_b = $this->ApiKeyB($api_name);
 
         $key_param = [
             'key_a' => 2,
@@ -18,7 +18,7 @@ class Session extends Kernel
             'key_c' => 7,
         ];
 
-        $key = $this->key($key_param);
+        $key = $this->Key($key_param);
 
         $data = [
             'website' => $param['website'],
@@ -27,8 +27,16 @@ class Session extends Kernel
             'key' => $key,
         ];
 
-        $sessionid = $this->Api($api_name, $data)->data->sessionid;
+        $result = $this->Api($api_name, $data)->data;
+        if (isset($result->Message)) {
+            $result_data = [
+                'code' => $result->Code, 'message' => $result->Message,
+            ];
+            return $result_data;
+        } else {
+            $session_id = $this->Api($api_name, $data)->data->sessionid;
+            session()->put('session_id', $session_id);
+        }
 
-        session()->put('sessionId', $sessionid);
     }
 }

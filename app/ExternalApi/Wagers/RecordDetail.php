@@ -6,12 +6,12 @@ use App\ExternalApi\Kernel;
 
 class RecordDetail extends Kernel
 {
-    public function GetWagersRecordDetail($request)
+    public function GetWagersRecordDetail(array $request)
     {
         ['gamekind' => $gamekind, 'lang' => $lang, 'username' => $username, 'wagersid' => $wagersid, 'gametype' => $gametype] = $request;
         $param = $this->param();
-        $key_b = '51Rk82i';
-        $api_name = 'GetWagersSubDetailUrlBy' . $gamekind;
+        $api_name = 'GetWagersSubDetailUrlBy';
+        $key_b = $this->ApiKeyB($api_name);
 
         $key_param = [
             'key_a' => 6,
@@ -30,7 +30,7 @@ class RecordDetail extends Kernel
             'key' => $key,
         ];
 
-        foreach ($this->Api($api_name, $data)->data as $arr => $value) {
+        foreach ($this->Api($api_name . $gamekind, $data)->data as $arr => $value) {
             return $value;
         }
     }

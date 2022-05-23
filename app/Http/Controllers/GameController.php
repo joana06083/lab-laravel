@@ -14,7 +14,13 @@ class GameController extends Controller
     public function Index(Request $request)
     {
         $get_url = new GetUrl;
-        $json_data = $get_url->GameUrlBy($request);
+        $request_data = [
+            'gamekind' => $request->gamekind,
+            'sessionid' => $request->sessionid,
+            'gametype' => $request->gametype,
+            'lang' => $request->lang,
+        ];
+        $json_data = $get_url->GameUrlBy($request_data);
 
         if (isset($json_data->data->Message)) {
             return redirect('/')->with('Fail', $json_data->data->Message);
