@@ -33,6 +33,6 @@ class Transfer extends Kernel
             'key' => $key,
         ];
 
-        return $this->Api($api_name, $data)->data;
+        return $this->Api($api_name, $data);
     }
 }

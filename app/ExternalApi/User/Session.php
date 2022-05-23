@@ -27,16 +27,7 @@ class Session extends Kernel
             'key' => $key,
         ];
 
-        $result = $this->Api($api_name, $data)->data;
-        if (isset($result->Message)) {
-            $result_data = [
-                'code' => $result->Code, 'message' => $result->Message,
-            ];
-            return $result_data;
-        } else {
-            $session_id = $this->Api($api_name, $data)->data->sessionid;
-            session()->put('session_id', $session_id);
-        }
+        return $this->Api($api_name, $data);
 
     }
 }

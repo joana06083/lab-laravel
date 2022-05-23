@@ -40,7 +40,7 @@ class WagersRecordController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('session_id'),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser'))[0],
                 'GameTypeList' => $type_list->GetGameTypeList($request_data),
                 'gamekind' => $request_data['gamekind'],
                 'DateList' => $this->DateList(),
@@ -86,7 +86,7 @@ class WagersRecordController extends Controller
                 'gamekind' => $request_data['gamekind'],
                 'lang' => $request_data['lang'],
                 'GameTypeList' => $type_list->GetGameTypeList($request_data),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser'))[0],
                 'DateList' => $this->DateList(),
                 'RecordInfo' => $recordInfo,
             ];

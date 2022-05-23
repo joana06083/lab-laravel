@@ -73,10 +73,12 @@ class UserAuthController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('LoggedUser', $user->userNo);
                 $session = new Session;
-                $result_data = $session->CreateSession($user->userNo);
-                if (isset($result_data['message'])) {
-                    return redirect('/')->with('Fail', $result_data['code'] . $result_data['message']);
+                $session_id = $session->CreateSession($user->userNo);
+
+                if (isset($session_id->Message)) {
+                    return redirect('/')->with('Fail', $session_id->Code . '-' . $session_id->Message);
                 } else {
+                    session()->put('session_id', $session_id);
                     return redirect('/')->with('Success', 'Login successfully!');
                 }
             } else {
@@ -99,10 +101,9 @@ class UserAuthController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('session_id'),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser'))[0],
             ];
         }
-        // return $data;
         return view('Index', $data);
     }
 
@@ -126,7 +127,7 @@ class UserAuthController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('session_id'),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser'))[0],
                 'GameTypeList' => $type_list->GetGameTypeList($request_data),
                 'gamekind' => $request->gamekind,
             ];

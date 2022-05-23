@@ -63,8 +63,4 @@ class Kernel implements Action
         return Str::random($key_param['key_a']) . md5($param['website'] . $key_param['key_b'] . $param['Date'], false) . Str::random($key_param['key_c']);
 
     }
-    public function ErrorMessage()
-    {
-
-    }
 }

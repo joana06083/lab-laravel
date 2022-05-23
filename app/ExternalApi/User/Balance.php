@@ -27,6 +27,6 @@ class Balance extends Kernel
             'key' => $key,
         ];
 
-        return $this->Api($api_name, $data)->data[0];
+        return $this->Api($api_name, $data);
     }
 }
