@@ -8,12 +8,19 @@ class TypeList extends Kernel
 {
     public function GetGameTypeList($request)
     {
-        $param = $this->param();
         ['lang' => $lang, 'gamekind' => $gamekind] = $request;
+        $param = $this->param();
         $key_b = '601gyM';
-        $key = $this->key(8, $param['website'] . $key_b . $param['Date'], 4);
-
         $api_name = 'GetGameTypeList';
+
+        $key_param = [
+            'key_a' => 8,
+            'key_b' => $key_b,
+            'key_c' => 4,
+        ];
+
+        $key = $this->key($key_param);
+
         $data = [
             'website' => $param['website'],
             'lang' => $lang,

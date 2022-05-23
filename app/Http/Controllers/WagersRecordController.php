@@ -53,12 +53,14 @@ class WagersRecordController extends Controller
     }
     public function WagersRecord(Request $request)
     {
-        // $request->validate([
-        //     'starttime' => 'date_format:H:i:s',
-        //     'endtime' => 'date_format:H:i:s|after:starttime',
-        // ]);
         $balance = new Balance;
         $type_list = new TypeList;
+
+        $request->validate([
+            'starttime' => 'date_format:H:i:s',
+            'endtime' => 'date_format:H:i:s|after:starttime',
+        ]);
+
         ['gamekind' => $gamekind, 'lang' => $lang, 'gametype' => $gametype, 'action' => $action,
             'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
 

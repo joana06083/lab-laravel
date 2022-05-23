@@ -6,13 +6,20 @@ use App\ExternalApi\Kernel;
 
 class Balance extends Kernel
 {
-    public function CheckUsrBalance($request)
+    public function CheckUsrBalance(String $request)
     {
         $param = $this->param();
         $key_b = 'D5zIM6';
-        $key = $this->key(1, $param['website'] . $request . $key_b . $param['Date'], 4);
-
         $api_name = 'CheckUsrBalance';
+
+        $key_param = [
+            'key_a' => 1,
+            'key_b' => $request . $key_b,
+            'key_c' => 4,
+        ];
+
+        $key = $this->key($key_param);
+
         $data = [
             'website' => $param['website'],
             'username' => $request,

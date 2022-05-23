@@ -8,12 +8,19 @@ class Record extends Kernel
 {
     public function GetWagersRecord($request)
     {
-        $param = $this->param();
         ['gamekind' => $gamekind, 'gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
+        $param = $this->param();
         $key_b = '7uK3nZ6Y9';
-        $key = $this->key(7, $param['website'] . $key_b . $param['Date'], 7);
-
         $api_name = 'WagersRecordBy' . $gamekind;
+
+        $key_param = [
+            'key_a' => 7,
+            'key_b' => $key_b,
+            'key_c' => 7,
+        ];
+
+        $key = $this->key($key_param);
+
         $data = [
             'website' => $param['website'],
             'action' => $action,

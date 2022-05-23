@@ -11,9 +11,16 @@ class GetUrl extends Kernel
         $param = $this->param();
         ['gamekind' => $gamekind, 'lang' => $lang, 'SessionID' => $sessionid, 'GameType' => $gametype] = $request;
         $key_b = '09fJb0vYem';
-        $key = $this->key(8, $param['website'] . $key_b . $param['Date'], 4);
-
         $api_name = 'GameUrlBy' . $gamekind;
+
+        $key_param = [
+            'key_a' => 8,
+            'key_b' => $key_b,
+            'key_c' => 4,
+        ];
+
+        $key = $this->key($key_param);
+
         $data = [
             'website' => $param['website'],
             'lang' => $lang,

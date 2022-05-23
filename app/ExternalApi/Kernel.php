@@ -2,13 +2,15 @@
 
 namespace App\ExternalApi;
 
+use App\Library\Action;
 use App\Traits\ApiTraits;
 use Illuminate\Support\Str;
 
-class Kernel
+class Kernel implements Action
 {
     use ApiTraits;
-    public function param()
+
+    public function Param()
     {
         date_default_timezone_set("America/New_York");
 
@@ -19,13 +21,13 @@ class Kernel
         ];
         return $data;
     }
-    public function key(int $key_a, string $key_b, int $key_c)
+    public function Key(array $key_param)
     {
-        // $key_b
         // $website . $username . $key_b . $date //Session,Balance
         // $website . $username . $remitno . $key_b . $date //Transfer
         // $website . $key_b . $date //other
-        return Str::random($key_a) . md5($key_b, false) . Str::random($key_c);
+        $param = $this->param();
+        return Str::random($key_param['key_a']) . md5($param['website'] . $key_param['key_b'] . $param['Date'], false) . Str::random($key_param['key_c']);
 
     }
 }

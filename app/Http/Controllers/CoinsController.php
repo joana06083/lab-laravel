@@ -29,10 +29,17 @@ class CoinsController extends Controller
         $request->validate([
             'remit' => 'required|numeric',
         ]);
-        if ($transfer->GetTransfer($request)->Code == 11100) {
+
+        $request_data = [
+            'username' => $request->account,
+            'action' => $request->action,
+            'remit' => $request->remit,
+        ];
+
+        if ($transfer->GetTransfer($request_data)->Code == 11100) {
             return redirect('/TransferIndex')->with('Success', 'Transfer successfully!');
         } else {
-            return redirect('/TransferIndex')->with('Fail', 'Transfer failfully!Message：' . $transfer->GetTransfer($request)->Message);
+            return redirect('/TransferIndex')->with('Fail', 'Transfer failfully!Message：' . $transfer->GetTransfer($request_data)->Message);
         }
     }
 }
