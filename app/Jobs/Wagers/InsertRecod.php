@@ -64,10 +64,8 @@ class InsertRecod implements ShouldQueue
                 }
                 array_push($record_data, $arr_data);
             }
-            print_r($record_data);
 
             $recordCheck = WagersRecordInfo::whereIn('WagersID', array_column($record_data, 'WagersID'))->get();
-            print_r($recordCheck);
             $recordCheckarr = json_decode($recordCheck, true);
             $diff = array_diff(array_map('serialize', $record_data), array_map('serialize', $recordCheckarr));
             $result = array_map('unserialize', $diff);

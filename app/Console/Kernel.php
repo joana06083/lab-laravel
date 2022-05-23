@@ -13,13 +13,15 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+    protected $commands = [
+        Commands\Wagers\SendRecod::class,
+    ];
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-        //->dailyAt('13:00');於每天 13:00 執行該任務
-        $schedule->command('Record')->dailyAt('15:36');
-    }
+        // $schedule->command('Record')->dailyAt('16:06');
+        $schedule->command('Record')->hourly();
 
+    }
     /**
      * Register the commands for the application.
      *
