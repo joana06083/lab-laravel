@@ -28,11 +28,7 @@ class TypeList extends Kernel
             'key' => $key,
         ];
 
-        if ($this->Api($api_name, $data)->result == false) {
-            return $this->Api($api_name, $data);
-        } else {
-            return $this->Api($api_name, $data)->data;
-        }
+        return $this->Api($api_name, $data);
 
     }
 }

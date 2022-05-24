@@ -23,6 +23,7 @@ class Kernel implements Action
     }
     public function ApiKeyB(String $api_name)
     {
+        $api_name = preg_replace("/\\d+/", '', $api_name);
         switch ($api_name) {
             case 'CreateSession':
                 $key_b = '4GZ2qQ';
@@ -56,11 +57,8 @@ class Kernel implements Action
     }
     public function Key(array $key_param)
     {
-        // $website . $username . $key_b . $date //Session,Balance
-        // $website . $username . $remitno . $key_b . $date //Transfer
-        // $website . $key_b . $date //other
         $param = $this->param();
         return Str::random($key_param['key_a']) . md5($param['website'] . $key_param['key_b'] . $param['Date'], false) . Str::random($key_param['key_c']);
-
     }
+
 }

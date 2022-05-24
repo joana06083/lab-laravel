@@ -9,20 +9,28 @@ trait ApiTraits
     {
         $response = Http::get('http://apollo.vir777.net/app/WebService/JSON/display.php/' . $api_name . '?', $data);
         $json_data = json_decode($response->body());
-        return $this->Message($api_name, $json_data);
-    }
 
+        if (!isset($json_data->data->Message)) {
+            return $this->Message($api_name, $json_data);
+        } else {
+            return $this->Error($api_name, $json_data);
+        }
+    }
     public function Message($api_name, $json_data)
     {
-        if (!isset($json_data->Message)) {
-            return match($api_name) {
-                'CreateSession' => $json_data->data,
-                'CheckUsrBalance' => $json_data->data[0],
-                'Transfer' => $json_data->data,
+        $api_name = preg_replace("/\\d+/", '', $api_name);
 
-            };
-
-        }
-
+        return match($api_name) {
+            'CreateSession' => $json_data->data->sessionid,
+            'CheckUsrBalance' => $json_data->data[0],
+            'GameUrlBy', 'GetGameTypeList' => $json_data,
+            'GetWagersSubDetailUrlBy' => $json_data->data->Url,
+        default=> $json_data->data,
+        };
+    }
+    public function Error($api_name, $json_data)
+    {
+        $api_name = preg_replace("/\\d+/", '', $api_name);
+        return $json_data->data;
     }
 }

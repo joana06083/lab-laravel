@@ -10,7 +10,7 @@ class RecordDetail extends Kernel
     {
         ['gamekind' => $gamekind, 'lang' => $lang, 'username' => $username, 'wagersid' => $wagersid, 'gametype' => $gametype] = $request;
         $param = $this->param();
-        $api_name = 'GetWagersSubDetailUrlBy';
+        $api_name = 'GetWagersSubDetailUrlBy' . $gamekind;
         $key_b = $this->ApiKeyB($api_name);
 
         $key_param = [
@@ -30,8 +30,6 @@ class RecordDetail extends Kernel
             'key' => $key,
         ];
 
-        foreach ($this->Api($api_name . $gamekind, $data)->data as $arr => $value) {
-            return $value;
-        }
+        return $this->Api($api_name, $data);
     }
 }

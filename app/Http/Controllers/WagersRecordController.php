@@ -7,15 +7,12 @@ use App\ExternalApi\User\Balance;
 use App\ExternalApi\Wagers\RecordDetail;
 use App\Models\UserInfo;
 use App\Models\WagersRecordInfo;
-use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
 
 class WagersRecordController extends Controller
 {
-    use ApiTraits;
     public function DateList()
     {
-        //date
         $date_list = [];
         for ($i = 0; $i <= 6; $i++) {
             array_push($date_list, date('Y-m-d', strtotime("-{$i} day")));
@@ -40,7 +37,7 @@ class WagersRecordController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('session_id'),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser'))[0],
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
                 'GameTypeList' => $type_list->GetGameTypeList($request_data),
                 'gamekind' => $request_data['gamekind'],
                 'DateList' => $this->DateList(),
@@ -86,7 +83,7 @@ class WagersRecordController extends Controller
                 'gamekind' => $request_data['gamekind'],
                 'lang' => $request_data['lang'],
                 'GameTypeList' => $type_list->GetGameTypeList($request_data),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser'))[0],
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
                 'DateList' => $this->DateList(),
                 'RecordInfo' => $recordInfo,
             ];
@@ -104,7 +101,9 @@ class WagersRecordController extends Controller
             'wagersid' => $request->wagersid,
             'gametype' => $request->gametype,
         ];
-        return redirect($record_detail->GetWagersRecordDetail($data));
+        return $record_detail->GetWagersRecordDetail($data);
+
+        // return redirect($record_detail->GetWagersRecordDetail($data));
     }
 
 }

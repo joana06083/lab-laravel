@@ -10,7 +10,7 @@ class Record extends Kernel
     {
         ['gamekind' => $gamekind, 'gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
         $param = $this->param();
-        $api_name = 'WagersRecordBy';
+        $api_name = 'WagersRecordBy' . $gamekind;
         $key_b = $this->ApiKeyB($api_name);
 
         $key_param = [
@@ -38,7 +38,7 @@ class Record extends Kernel
             '5908' => $data['subgamekind'] = '5',
         default=> $data['subgamekind'] = '1',
         };
-        return $this->Api($api_name . $gamekind, $data)->data;
+        return $this->Api($api_name, $data);
     }
 
 }

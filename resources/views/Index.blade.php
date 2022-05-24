@@ -90,7 +90,6 @@
     <button type="submit" class="btn btn-danger">下注紀錄查詢</button>
 </div>
 </form>
-
 @if(!empty($GameTypeList))
 <div class="row">
 @foreach($GameTypeList as $gtl )

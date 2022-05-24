@@ -101,9 +101,10 @@ class UserAuthController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('session_id'),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser'))[0],
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
             ];
         }
+        // return $data;
         return view('Index', $data);
     }
 
@@ -127,7 +128,7 @@ class UserAuthController extends Controller
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('session_id'),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser'))[0],
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
                 'GameTypeList' => $type_list->GetGameTypeList($request_data),
                 'gamekind' => $request->gamekind,
             ];
