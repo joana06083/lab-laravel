@@ -33,11 +33,6 @@ Route::post('Check', [UserAuthController::class, 'Check'])->name('User.Check');
 //處理查詢請求
 Route::match(['get', 'post'], 'Search', [UserAuthController::class, 'Search']);
 
-// 文章/留言 route
-Route::middleware('User.Logout')->resource('Art', 'ArticleController')->except(['show']);
-Route::resource('Art', 'ArticleController')->only(['show']);
-Route::middleware('User.Logout')->resource('Mes', 'MessageController');
-
 //處理轉帳請求
 Route::middleware('User.Logout')->get('TransferIndex', [CoinsController::class, 'Index']);
 Route::post('Transfer', [CoinsController::class, 'GetTransfer']);
