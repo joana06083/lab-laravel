@@ -29,18 +29,18 @@ class UserAuthController extends Controller
         // 檢驗註冊內容
         $request->validate([
             'email' => 'required|email|unique:userData',
-            'account' => 'required|min:5|max:25',
+            'userNo' => 'required|min:5|max:25|unique:userData',
             'password' => 'required|min:5|max:25',
             'name' => 'required',
             'sex' => 'required',
         ]);
         // 檢驗完成寫入資料庫
         $user = new UserInfo;
-        $user->userNo = $request->account;
-        $user->userName = $request->name;
-        $user->password = Hash::make($request->password);
-        $user->sex = $request->sex;
         $user->email = $request->email;
+        $user->userNo = $request->userNo;
+        $user->password = Hash::make($request->password);
+        $user->userName = $request->name;
+        $user->sex = $request->sex;
         $query = $user->save();
 
         if ($query) {
@@ -48,6 +48,7 @@ class UserAuthController extends Controller
         } else {
             return back()->with('Fail', 'Registration failed!');
         }
+
     }
 
     //處理登出請求
@@ -74,19 +75,13 @@ class UserAuthController extends Controller
                 $request->session()->put('LoggedUser', $user->userNo);
                 $session = new Session;
                 $session_id = $session->CreateSession($user->userNo);
-
-                if (isset($session_id->Message)) {
-                    return redirect('/')->with('Fail', $session_id->Code . '-' . $session_id->Message);
-                } else {
-                    session()->put('session_id', $session_id);
-                    return redirect('/')->with('Success', 'Login successfully!');
-                }
-            } else {
-                return back()->with('Fail', 'Login failfully!Password error!');
+                session()->put('session_id', $session_id);
+                return redirect('/')->with('Success', 'Login successfully!');
             }
-        } else {
-            return back()->with('Fail', 'Login failfully!This account is not registered！');
+            return back()->with('Fail', 'Login failfully!Password error!');
         }
+        return back()->with('Fail', 'Login failfully!This account is not registered！');
+
     }
 
     //顯示首頁畫面
@@ -96,7 +91,7 @@ class UserAuthController extends Controller
         $data = [
             'LoggedUserInfo' => [],
         ];
-        if (session()->has('LoggedUser')) {
+        if (session()->has('LoggedUser') && session()->has('session_id')) {
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data = [
                 'LoggedUserInfo' => $user,
@@ -104,7 +99,6 @@ class UserAuthController extends Controller
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
             ];
         }
-        // return $data;
         return view('Index', $data);
     }
 
@@ -119,7 +113,7 @@ class UserAuthController extends Controller
             'GameTypeList' => [],
         ];
 
-        if (session()->has('LoggedUser')) {
+        if (session()->has('LoggedUser') && session()->has('session_id')) {
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $request_data = [
                 'gamekind' => $request->gamekind,

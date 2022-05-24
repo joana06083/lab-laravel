@@ -16,7 +16,7 @@ class CheckLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!empty(session('LoggedUser'))) {
+        if (!empty(session()->has('LoggedUser')) && !empty(session()->has('session_id'))) {
             //已登入狀態導回首頁
             return redirect('/')->with('login', 'Signed in! Coming back to the homepage soon!');
         }

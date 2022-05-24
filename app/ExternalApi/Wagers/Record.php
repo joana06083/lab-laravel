@@ -38,6 +38,7 @@ class Record extends Kernel
             '5908' => $data['subgamekind'] = '5',
         default=> $data['subgamekind'] = '1',
         };
+
         return $this->Api($api_name, $data);
     }
 

@@ -40,10 +40,11 @@ class SendRecod extends Command
 
         $data = [
             'action' => 'BetTime',
-            'date' => date("Y-m-d"), //2022-05-20
+            'date' => date("Y-m-d"),
             'starttime' => '00:00:00',
             'endtime' => '23:59:59',
         ];
+
         foreach ($game_kinds as $kind) {
             $data['gamekind'] = $kind;
             $type_request = ['lang' => 'zh-tw', 'gamekind' => $kind];

@@ -20,53 +20,25 @@ class WagersRecordController extends Controller
         return $date_list;
     }
 
-    public function WagersRecordIndex(Request $request)
-    {
-        $balance = new Balance;
-        $type_list = new TypeList;
-        $request_data = [
-            'gamekind' => $request->gamekind,
-            'lang' => $request->lang,
-        ];
-        $data = [
-            'LoggedUserInfo' => [],
-            'DateList' => [],
-        ];
-        if (session()->has('LoggedUser')) {
-            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-            $data = [
-                'LoggedUserInfo' => $user,
-                'sessionId' => session('session_id'),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
-                'GameTypeList' => $type_list->GetGameTypeList($request_data),
-                'gamekind' => $request_data['gamekind'],
-                'DateList' => $this->DateList(),
-                'lang' => $request_data['lang'],
-            ];
-        }
-        if (!isset($data['GameTypeList']->result)) {
-            return view('WagersRecord/WagersRecord', $data);
-        } else {
-            return redirect('/')->with('Fail', $data['GameTypeList']->data->Message);
-        }
-    }
     public function WagersRecord(Request $request)
     {
         $balance = new Balance;
         $type_list = new TypeList;
 
-        $request->validate([
-            'starttime' => 'date_format:H:i:s',
-            'endtime' => 'date_format:H:i:s|after:starttime',
-        ]);
-
         ['gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
-        $request_data = [
-            'gamekind' => $request->gamekind,
-            'lang' => $request->lang,
-        ];
-        if (session()->has('LoggedUser')) {
+
+        // $request->validate([
+        //     'starttime' => 'required|date_format:H:i:s',
+        //     'endtime' => 'required|date_format:H:i:s|after:starttime',
+        // ]);
+
+        if (session()->has('LoggedUser') && session()->has('session_id')) {
+            $request_data = [
+                'gamekind' => $request->gamekind,
+                'lang' => $request->lang,
+            ];
             $user = UserInfo::where('userNo', session('LoggedUser'))->first();
+
             if ($gametype == 'all') {
                 $recordInfo = WagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
                     ->get();
@@ -77,17 +49,19 @@ class WagersRecordController extends Controller
                 $recordInfo = WagersRecordInfo::whereBetween('ModifiedDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
                     ->where('GameType', $gametype)->get();
             }
+
             $data = [
                 'LoggedUserInfo' => $user,
                 'sessionId' => session('session_id'),
                 'gamekind' => $request_data['gamekind'],
                 'lang' => $request_data['lang'],
-                'GameTypeList' => $type_list->GetGameTypeList($request_data),
-                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
                 'DateList' => $this->DateList(),
+                'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
+                'GameTypeList' => $type_list->GetGameTypeList($request_data),
                 'RecordInfo' => $recordInfo,
             ];
         }
+
         return view('WagersRecord/WagersRecord', $data);
     }
 
@@ -102,8 +76,6 @@ class WagersRecordController extends Controller
             'gametype' => $request->gametype,
         ];
         return $record_detail->GetWagersRecordDetail($data);
-
-        // return redirect($record_detail->GetWagersRecordDetail($data));
     }
 
 }

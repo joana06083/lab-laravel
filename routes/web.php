@@ -45,8 +45,6 @@ Route::post('Transfer', [CoinsController::class, 'GetTransfer']);
 //處理進入遊戲大廳請求
 Route::post('GameIndex', [GameController::class, 'Index']);
 //明細
-Route::post('WagersRecordIndex', [WagersRecordController::class, 'WagersRecordIndex']);
-// Route::post('WagersRecord', [WagersRecordController::class, 'WagersRecord']);
 Route::match(['get', 'post'], 'WagersRecord', [WagersRecordController::class, 'WagersRecord']);
 
 Route::post('WagersRecordDetail', [WagersRecordController::class, 'WagersRecordDetail']);

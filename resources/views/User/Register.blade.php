@@ -39,10 +39,10 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="account" class="col-md-4 col-form-label text-md-end">帳號 ：</label>
+                        <label for="userNo" class="col-md-4 col-form-label text-md-end">帳號 ：</label>
                         <div class="col-md-6">
-                            <input id="account" type="text" class="form-control @error('account') is-invalid @enderror" name="account" value="{{ old('account') }}" required autocomplete="account">
-                            <span class="text-danger">@error('account'){{$message}} @enderror </span>
+                            <input id="userNo" type="text" class="form-control @error('userNo') is-invalid @enderror" name="userNo" value="{{ old('userNo') }}" required autocomplete="userNo">
+                            <span class="text-danger">@error('userNo'){{$message}} @enderror </span>
                         </div>
                     </div>
 

@@ -56,7 +56,7 @@
 </div>
 </form>
 <!-- 取得明細 -->
-<form  method="post" action="WagersRecordIndex">
+<form  method="post" action="WagersRecord">
     @csrf
 <div class="d-flex bd-highlight">
     <div class="flex-fill bd-highlight">

@@ -17,7 +17,7 @@ class CheckLogout
     public function handle(Request $request, Closure $next)
     {
 
-        if (empty(session('LoggedUser'))) {
+        if (empty(session()->has('LoggedUser')) && empty(session()->has('session_id'))) {
             //已登出狀態導回登入頁
             return redirect('Login')->with('logout', 'Currently not logged in! Please login first!');
         }
