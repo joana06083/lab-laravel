@@ -3,7 +3,6 @@
 namespace App\ExternalApi;
 
 use App\Enums\ApiName;
-use App\Enums\Param;
 use App\Exceptions\ApiException;
 use App\Library\Action;
 use Illuminate\Support\Facades\Http;
@@ -11,10 +10,18 @@ use Illuminate\Support\Str;
 
 class Kernel implements Action
 {
+    public static $website = 'bbinbgp';
+    public static $upper_name = 'dpidtest';
+
+    public function date()
+    {
+        date_default_timezone_set("America/New_York");
+        return date("Ymd");
+    }
 
     public function Key(array $key_param)
     {
-        return Str::random($key_param['key_a']) . md5(Param::WEBSITE->Param() . $key_param['key_b'] . Param::DATE->Param(), false) . Str::random($key_param['key_c']);
+        return Str::random($key_param['key_a']) . md5(Kernel::$website . $key_param['key_b'] . Kernel::date(), false) . Str::random($key_param['key_c']);
     }
 
     public function Api(String $api_name, array $data)

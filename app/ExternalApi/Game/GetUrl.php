@@ -4,7 +4,6 @@ namespace App\ExternalApi\Game;
 
 use App\Enums\ApiName;
 use App\Enums\Key;
-use App\Enums\Param;
 use App\ExternalApi\Kernel;
 
 class GetUrl extends Kernel
@@ -16,7 +15,7 @@ class GetUrl extends Kernel
         $key = $this->key(['key_a' => 8, 'key_b' => Key::GAMEURL->KeyB(), 'key_c' => 4]);
 
         $data = [
-            'website' => Param::WEBSITE->Param(),
+            'website' => Kernel::$website,
             'lang' => $lang,
             'sessionid' => $sessionid,
             'key' => $key,

@@ -4,7 +4,6 @@ namespace App\ExternalApi\User;
 
 use App\Enums\ApiName;
 use App\Enums\Key;
-use App\Enums\Param;
 use App\ExternalApi\Kernel;
 
 class Balance extends Kernel
@@ -15,9 +14,9 @@ class Balance extends Kernel
         $key = $this->key(['key_a' => 1, 'key_b' => $request . Key::BALANCE->KeyB(), 'key_c' => 4]);
 
         $data = [
-            'website' => Param::WEBSITE->Param(),
+            'website' => Kernel::$website,
             'username' => $request,
-            'uppername' => Param::UPPERNAME->Param(),
+            'uppername' => Kernel::$upper_name,
             'key' => $key,
         ];
 

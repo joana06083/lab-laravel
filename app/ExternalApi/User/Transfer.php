@@ -4,7 +4,6 @@ namespace App\ExternalApi\User;
 
 use App\Enums\ApiName;
 use App\Enums\Key;
-use App\Enums\Param;
 use App\ExternalApi\Kernel;
 
 class Transfer extends Kernel
@@ -17,9 +16,9 @@ class Transfer extends Kernel
         $key = $this->key(['key_a' => 2, 'key_b' => $username . $remitno . Key::TRANSFER->KeyB(), 'key_c' => 3]);
 
         $data = [
-            'website' => Param::WEBSITE->Param(),
+            'website' => Kernel::$website,
             'username' => $username,
-            'uppername' => Param::UPPERNAME->Param(),
+            'uppername' => Kernel::$upper_name,
             'remitno' => $remitno,
             'action' => $action,
             'remit' => $remit,

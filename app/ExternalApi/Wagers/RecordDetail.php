@@ -4,7 +4,6 @@ namespace App\ExternalApi\Wagers;
 
 use App\Enums\ApiName;
 use App\Enums\Key;
-use App\Enums\Param;
 use App\ExternalApi\Kernel;
 
 class RecordDetail extends Kernel
@@ -16,7 +15,7 @@ class RecordDetail extends Kernel
         $key = $this->key(['key_a' => 6, 'key_b' => Key::RECORDDETAIL->KeyB(), 'key_c' => 7]);
 
         $data = [
-            'website' => Param::WEBSITE->Param(),
+            'website' => Kernel::$website,
             'wagersid' => $wagersid,
             'lang' => $lang,
             'username' => $username,
