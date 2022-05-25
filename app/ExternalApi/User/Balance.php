@@ -2,28 +2,22 @@
 
 namespace App\ExternalApi\User;
 
+use App\Enums\ApiName;
+use App\Enums\Key;
+use App\Enums\Param;
 use App\ExternalApi\Kernel;
 
 class Balance extends Kernel
 {
     public function CheckUsrBalance(String $request)
     {
-        $param = $this->param();
-        $api_name = 'CheckUsrBalance';
-        $key_b = $this->ApiKeyB($api_name);
-
-        $key_param = [
-            'key_a' => 1,
-            'key_b' => $request . $key_b,
-            'key_c' => 4,
-        ];
-
-        $key = $this->key($key_param);
+        $api_name = ApiName::BALANCE->Name();
+        $key = $this->key(['key_a' => 1, 'key_b' => $request . Key::BALANCE->KeyB(), 'key_c' => 4]);
 
         $data = [
-            'website' => $param['website'],
+            'website' => Param::WEBSITE->Param(),
             'username' => $request,
-            'uppername' => $param['uppername'],
+            'uppername' => Param::UPPERNAME->Param(),
             'key' => $key,
         ];
 

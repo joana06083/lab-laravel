@@ -2,28 +2,22 @@
 
 namespace App\ExternalApi\User;
 
+use App\Enums\ApiName;
+use App\Enums\Key;
+use App\Enums\Param;
 use App\ExternalApi\Kernel;
 
 class Session extends Kernel
 {
     public function CreateSession(String $request)
     {
-        $param = $this->param();
-        $api_name = 'CreateSession';
-        $key_b = $this->ApiKeyB($api_name);
-
-        $key_param = [
-            'key_a' => 2,
-            'key_b' => $request . $key_b,
-            'key_c' => 7,
-        ];
-
-        $key = $this->Key($key_param);
+        $api_name = ApiName::SESSION->Name();
+        $key = $this->Key(['key_a' => 2, 'key_b' => $request . Key::SESSION->KeyB(), 'key_c' => 7]);
 
         $data = [
-            'website' => $param['website'],
+            'website' => Param::WEBSITE->Param(),
             'username' => $request,
-            'uppername' => $param['uppername'],
+            'uppername' => Param::UPPERNAME->Param(),
             'key' => $key,
         ];
 

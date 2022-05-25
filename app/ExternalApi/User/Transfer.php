@@ -2,31 +2,24 @@
 
 namespace App\ExternalApi\User;
 
+use App\Enums\ApiName;
+use App\Enums\Key;
+use App\Enums\Param;
 use App\ExternalApi\Kernel;
 
 class Transfer extends Kernel
 {
-
     public function GetTransfer(array $request)
     {
         ['username' => $username, 'action' => $action, 'remit' => $remit] = $request;
-        $param = $this->param();
-        $api_name = 'Transfer';
-        $key_b = $this->ApiKeyB($api_name);
+        $api_name = ApiName::TRANSFER->Name();
         $remitno = date('YmdHis', time()) . sprintf("%05d", rand(0, 99999));
-
-        $key_param = [
-            'key_a' => 2,
-            'key_b' => $username . $remitno . $key_b,
-            'key_c' => 3,
-        ];
-
-        $key = $this->key($key_param);
+        $key = $this->key(['key_a' => 2, 'key_b' => $username . $remitno . Key::TRANSFER->KeyB(), 'key_c' => 3]);
 
         $data = [
-            'website' => $param['website'],
+            'website' => Param::WEBSITE->Param(),
             'username' => $username,
-            'uppername' => $param['uppername'],
+            'uppername' => Param::UPPERNAME->Param(),
             'remitno' => $remitno,
             'action' => $action,
             'remit' => $remit,

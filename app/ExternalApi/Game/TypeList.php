@@ -2,6 +2,9 @@
 
 namespace App\ExternalApi\Game;
 
+use App\Enums\ApiName;
+use App\Enums\Key;
+use App\Enums\Param;
 use App\ExternalApi\Kernel;
 
 class TypeList extends Kernel
@@ -9,20 +12,11 @@ class TypeList extends Kernel
     public function GetGameTypeList(array $request)
     {
         ['lang' => $lang, 'gamekind' => $gamekind] = $request;
-        $param = $this->param();
-        $api_name = 'GetGameTypeList';
-        $key_b = $this->ApiKeyB($api_name);
-
-        $key_param = [
-            'key_a' => 8,
-            'key_b' => $key_b,
-            'key_c' => 4,
-        ];
-
-        $key = $this->key($key_param);
+        $api_name = ApiName::GAMETYPE->Name();
+        $key = $this->key(['key_a' => 8, 'key_b' => Key::GAMETYPE->KeyB(), 'key_c' => 4]);
 
         $data = [
-            'website' => $param['website'],
+            'website' => Param::WEBSITE->Param(),
             'lang' => $lang,
             'gamekind' => $gamekind,
             'key' => $key,

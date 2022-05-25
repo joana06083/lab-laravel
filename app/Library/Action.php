@@ -3,8 +3,8 @@ namespace App\Library;
 
 interface Action
 {
-    public function Param();
     public function Key(array $key_param);
-    public function ApiKeyB(String $api_name);
-
+    public function Api(String $api_name, array $data);
+    public function Message($api_name, $json_data);
+    public function Error($json_data);
 }
