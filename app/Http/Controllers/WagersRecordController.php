@@ -27,11 +27,6 @@ class WagersRecordController extends Controller
 
         ['gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
 
-        // $request->validate([
-        //     'starttime' => 'required|date_format:H:i:s',
-        //     'endtime' => 'required|date_format:H:i:s|after:starttime',
-        // ]);
-
         if (session()->has('LoggedUser') && session()->has('session_id')) {
             $request_data = [
                 'gamekind' => $request->gamekind,
@@ -41,13 +36,13 @@ class WagersRecordController extends Controller
 
             if ($gametype == 'all') {
                 $recordInfo = WagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
-                    ->get();
+                    ->where('userNo', session('LoggedUser'))->get();
             } elseif ($action == 'BetTime') {
                 $recordInfo = WagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
-                    ->where('GameType', $gametype)->get();
+                    ->where('userNo', session('LoggedUser'))->where('GameType', $gametype)->get();
             } else {
                 $recordInfo = WagersRecordInfo::whereBetween('ModifiedDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
-                    ->where('GameType', $gametype)->get();
+                    ->where('userNo', session('LoggedUser'))->where('GameType', $gametype)->get();
             }
 
             $data = [
@@ -75,6 +70,7 @@ class WagersRecordController extends Controller
             'wagersid' => $request->wagersid,
             'gametype' => $request->gametype,
         ];
+
         return $record_detail->GetWagersRecordDetail($data);
     }
 
