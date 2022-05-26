@@ -24,37 +24,29 @@ class WagersRecordController extends Controller
     {
         $balance = new Balance;
         $type_list = new TypeList;
-
-        ['gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
+        ['gametype' => $gametype, 'action' => $action,
+            'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
 
         if (session()->has('LoggedUser') && session()->has('session_id')) {
             $request_data = [
                 'gamekind' => $request->gamekind,
                 'lang' => $request->lang,
             ];
-            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-
-            if ($gametype == 'all') {
-                $recordInfo = WagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
-                    ->where('userNo', session('LoggedUser'))->get();
-            } elseif ($action == 'BetTime') {
-                $recordInfo = WagersRecordInfo::whereBetween('WagersDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
-                    ->where('userNo', session('LoggedUser'))->where('GameType', $gametype)->get();
-            } else {
-                $recordInfo = WagersRecordInfo::whereBetween('ModifiedDate', [$date . ' ' . $starttime, $date . ' ' . $endtime])
-                    ->where('userNo', session('LoggedUser'))->where('GameType', $gametype)->get();
-            }
 
             $data = [
-                'LoggedUserInfo' => $user,
+                'LoggedUserInfo' => UserInfo::where('userNo', session('LoggedUser'))->first(),
                 'sessionId' => session('session_id'),
                 'gamekind' => $request_data['gamekind'],
                 'lang' => $request_data['lang'],
                 'DateList' => $this->DateList(),
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
                 'GameTypeList' => $type_list->GetGameTypeList($request_data),
-                'RecordInfo' => $recordInfo,
             ];
+            if (isset($gametype)) {
+                $recordInfo = WagersRecordInfo::whereBetween($action, [$date . ' ' . $starttime, $date . ' ' . $endtime])
+                    ->where('userNo', session('LoggedUser'))->where('GameType', 'like', $gametype)->get();
+                $data['RecordInfo'] = $recordInfo;
+            }
         }
 
         return view('WagersRecord/WagersRecord', $data);

@@ -92,9 +92,8 @@ class UserAuthController extends Controller
             'LoggedUserInfo' => [],
         ];
         if (session()->has('LoggedUser') && session()->has('session_id')) {
-            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data = [
-                'LoggedUserInfo' => $user,
+                'LoggedUserInfo' => UserInfo::where('userNo', session('LoggedUser'))->first(),
                 'sessionId' => session('session_id'),
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
             ];
@@ -110,28 +109,23 @@ class UserAuthController extends Controller
 
         $data = [
             'LoggedUserInfo' => [],
-            'GameTypeList' => [],
         ];
 
         if (session()->has('LoggedUser') && session()->has('session_id')) {
-            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $request_data = [
                 'gamekind' => $request->gamekind,
                 'lang' => $request->lang,
             ];
             $data = [
-                'LoggedUserInfo' => $user,
+                'LoggedUserInfo' => UserInfo::where('userNo', session('LoggedUser'))->first(),
                 'sessionId' => session('session_id'),
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
                 'GameTypeList' => $type_list->GetGameTypeList($request_data),
                 'gamekind' => $request->gamekind,
             ];
         }
-        if (!isset($data['GameTypeList']->result)) {
-            return view('Index', $data);
-        } else {
-            return redirect('/')->with('Fail', $data['GameTypeList']->data->Message);
-        }
+
+        return view('Index', $data);
 
     }
 

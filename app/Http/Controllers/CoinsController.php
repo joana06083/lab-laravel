@@ -14,9 +14,8 @@ class CoinsController extends Controller
     {
         $balance = new Balance;
         if (session()->has('LoggedUser') && session()->has('session_id')) {
-            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
             $data = [
-                'LoggedUserInfo' => $user,
+                'LoggedUserInfo' => UserInfo::where('userNo', session('LoggedUser'))->first(),
                 'UsrBalance' => $balance->CheckUsrBalance(session('LoggedUser')),
             ];
         }

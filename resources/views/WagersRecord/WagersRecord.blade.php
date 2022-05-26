@@ -21,14 +21,14 @@
     <div class="d-flex bd-highlight">
         <div class="flex-fill bd-highlight">
             <select class="form-select" id="action" name="action" >
-                <option value="BetTime" selected>下注時間</option>
-                <option value="ModifiedTime">異動時間</option>
+                <option value="WagersDate" selected>下注時間</option>
+                <option value="ModifiedDate">異動時間</option>
             </select>
         </div>
         @if(!empty($GameTypeList))
         <div class="flex-fill bd-highlight">
             <select id="gametype" name="gametype" class="form-control">
-                <option value="all">All</option>
+                <option value="%%">All</option>
                 @foreach($GameTypeList as $gtl )
                 <option value="{{$gtl->GameType}}">{{$gtl->GameTypeName}}{{$gtl->GameType}}</option>
                 @endforeach
