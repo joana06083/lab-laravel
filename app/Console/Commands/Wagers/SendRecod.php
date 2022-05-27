@@ -14,8 +14,9 @@ class SendRecod extends Command
      *
      * @var string
      */
-    //command 指令 example php artisan Record
-    protected $signature = 'Record';
+    //command 指令 example
+    //改成自行輸入時間php artisan Record:Time 2022-05-25 00:00:00 23:59:59
+    protected $signature = 'Record:Time{date} {starttime} {endtime}';
 
     /**
      * The console command description.
@@ -36,15 +37,18 @@ class SendRecod extends Command
     public function handle()
     {
         $type_list = new TypeList;
+        $date = $this->argument('date');
+        $starttime = $this->argument('starttime');
+        $endtime = $this->argument('endtime');
         $game_kinds = ['3', '5', '12', '30', '31', '38', '66', '73', '75', '76', '93', '107', '109'];
 
         $data = [
             'action' => 'BetTime',
-            'date' => date("Y-m-d"),
-            'starttime' => '00:00:00',
-            'endtime' => '23:59:59',
+            'date' => $date ?? date("Y-m-d"),
+            'starttime' => $starttime ?? '00:00:00',
+            'endtime' => $endtime ?? '23:59:59',
         ];
-
+        //918
         foreach ($game_kinds as $kind) {
             $data['gamekind'] = $kind;
             $type_request = ['lang' => 'zh-tw', 'gamekind' => $kind];
@@ -52,7 +56,6 @@ class SendRecod extends Command
                 $data['gametype'] = $list->GameType;
                 InsertRecod::dispatch($data)->onQueue('InsertRecod');
             }
-
         }
 
     }

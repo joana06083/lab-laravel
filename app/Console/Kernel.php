@@ -18,8 +18,8 @@ class Kernel extends ConsoleKernel
     ];
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('Record')->dailyAt('16:06');
-        $schedule->command('Record')->hourly();
+        $schedule->command('Record:Time{date} {starttime} {endtime}')->dailyAt('16:06');
+        // $schedule->command('Record')->hourly();
 
     }
     /**

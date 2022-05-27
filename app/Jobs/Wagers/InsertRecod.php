@@ -33,13 +33,15 @@ class InsertRecod implements ShouldQueue
     {
         $record = new Record;
         $arr = $record->GetWagersRecord($this->data);
-        $record_data = [];
-
         if (!isset($arr->Message)) {
-            foreach ($arr as $key => $value) {
+            $insert_data = [];
+            $update_data = [];
+
+            foreach ($arr as $value) {
                 $arr_data = [
                     'WagersID' => $value->WagersID,
                     'WagersDate' => $value->WagersDate,
+                    'SerialID' => $value->SerialID ?? null,
                     'GameType' => $value->GameType,
                     'Result' => $value->Result,
                     'BetAmount' => $value->BetAmount,
@@ -49,27 +51,37 @@ class InsertRecod implements ShouldQueue
                     'ExchangeRate' => $value->ExchangeRate,
                     'ModifiedDate' => $value->ModifiedDate,
                     'Origin' => $value->Origin,
+                    'Star' => $value->Star ?? null,
                     'userNo' => $value->UserName,
                 ];
+                $record_check = WagersRecordInfo::where('WagersID', $value->WagersID)->get();
+                $check_arr = json_decode($record_check, true);
+                if (empty($check_arr)) {
+                    array_push($insert_data, $arr_data);
+                } else {
+                    array_push($update_data, $arr_data);
+                }
 
-                if (!isset($value->Star)) {
-                    $arr_data['Star'] = null;
-                } else {
-                    $arr_data['Star'] = $value->Star;
-                }
-                if (!isset($value->SerialID)) {
-                    $arr_data['SerialID'] = null;
-                } else {
-                    $arr_data['Star'] = $value->SerialID;
-                }
-                array_push($record_data, $arr_data);
             }
-
-            $recordCheck = WagersRecordInfo::whereIn('WagersID', array_column($record_data, 'WagersID'))->get();
-            $recordCheckarr = json_decode($recordCheck, true);
-            $diff = array_diff(array_map('serialize', $record_data), array_map('serialize', $recordCheckarr));
-            $result = array_map('unserialize', $diff);
-            WagersRecordInfo::insert($result);
+            // 非重複id insert ,重複id＆資料異動 update
+            WagersRecordInfo::insert($insert_data);
+            foreach ($update_data as $key => $value) {
+                WagersRecordInfo::where('WagersID', $update_data[$key]['WagersID'])
+                    ->update([
+                        'WagersDate' => $update_data[$key]['WagersDate'],
+                        'SerialID' => $update_data[$key]['SerialID'],
+                        'Result' => $update_data[$key]['Result'],
+                        'BetAmount' => $update_data[$key]['BetAmount'],
+                        'Commissionable' => $update_data[$key]['Commissionable'],
+                        'Payoff' => $update_data[$key]['Payoff'],
+                        'Currency' => $update_data[$key]['Currency'],
+                        'ExchangeRate' => $update_data[$key]['ExchangeRate'],
+                        'ModifiedDate' => $update_data[$key]['ModifiedDate'],
+                        'Origin' => $update_data[$key]['Origin'],
+                        'Star' => $update_data[$key]['Star'],
+                        'userNo' => $update_data[$key]['userNo'],
+                    ]);
+            }
 
             printf("Insert into article success!");
         } else {
