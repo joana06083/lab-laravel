@@ -48,7 +48,7 @@ class SendRecod extends Command
             'starttime' => $starttime ?? '00:00:00',
             'endtime' => $endtime ?? '23:59:59',
         ];
-        //918
+
         foreach ($game_kinds as $kind) {
             $data['gamekind'] = $kind;
             $type_request = ['lang' => 'zh-tw', 'gamekind' => $kind];

@@ -65,27 +65,25 @@ class InsertRecod implements ShouldQueue
             }
             // 非重複id insert ,重複id＆資料異動 update
             WagersRecordInfo::insert($insert_data);
-            foreach ($update_data as $key => $value) {
-                WagersRecordInfo::where('WagersID', $update_data[$key]['WagersID'])
-                    ->update([
-                        'WagersDate' => $update_data[$key]['WagersDate'],
-                        'SerialID' => $update_data[$key]['SerialID'],
-                        'Result' => $update_data[$key]['Result'],
-                        'BetAmount' => $update_data[$key]['BetAmount'],
-                        'Commissionable' => $update_data[$key]['Commissionable'],
-                        'Payoff' => $update_data[$key]['Payoff'],
-                        'Currency' => $update_data[$key]['Currency'],
-                        'ExchangeRate' => $update_data[$key]['ExchangeRate'],
-                        'ModifiedDate' => $update_data[$key]['ModifiedDate'],
-                        'Origin' => $update_data[$key]['Origin'],
-                        'Star' => $update_data[$key]['Star'],
-                        'userNo' => $update_data[$key]['userNo'],
-                    ]);
-            }
 
-            printf("Insert into article success!");
+            foreach ($update_data as $key => $value) {
+                $update[] = collect($update_data[$key]);
+                $table = WagersRecordInfo::where('WagersID', $update_data[$key]['WagersID'])->get();
+                $diff = collect($table[0])->diff($update[$key])->keys();
+
+                foreach ($diff as $k => $v) {
+                    $key_arr[] = $diff[$k];
+                    $value_arr[] = $update_data[$key][$v];
+                }
+                if (!empty($key_arr) && !empty($value_arr)) {
+                    $merge_list = array_combine($key_arr, $value_arr);
+                    WagersRecordInfo::where('WagersID', $update_data[$key]['WagersID'])
+                        ->update($merge_list);
+                }
+            }
+            printf("Insert/update WagersRecord success!");
         } else {
-            printf("Insert into article fail!");
+            printf("Insert/update  WagersRecord fail!");
         }
 
     }
