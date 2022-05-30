@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\ExternalApi\Game\GetUrl;
+use App\Traits\SessionTraits;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
+    use SessionTraits;
+
     //進入遊戲
     public function Index(Request $request)
     {
+        $this->ClearSession();
         $get_url = new GetUrl;
         $request_data = [
             'gamekind' => $request->gamekind,

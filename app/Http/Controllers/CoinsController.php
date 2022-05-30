@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\ExternalApi\User\Balance;
 use App\ExternalApi\User\Transfer;
 use App\Models\UserInfo;
+use App\Traits\SessionTraits;
 use Illuminate\Http\Request;
 
 class CoinsController extends Controller
 {
+    use SessionTraits;
     //顯示轉帳畫面
     public function Index()
     {
+        $this->ClearSession();
         $balance = new Balance;
         if (session()->has('LoggedUser') && session()->has('session_id')) {
             $data = [

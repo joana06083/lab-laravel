@@ -6,11 +6,13 @@ use App\ExternalApi\Game\TypeList;
 use App\ExternalApi\User\Balance;
 use App\ExternalApi\User\Session;
 use App\Models\UserInfo;
+use App\Traits\SessionTraits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserAuthController extends Controller
 {
+    use SessionTraits;
     //顯示登入畫面
     public function Login()
     {
@@ -88,6 +90,7 @@ class UserAuthController extends Controller
     public function Index()
     {
         $balance = new Balance;
+        $this->ClearSession();
         $data = [
             'LoggedUserInfo' => [],
         ];
@@ -106,6 +109,7 @@ class UserAuthController extends Controller
     {
         $balance = new Balance;
         $type_list = new TypeList;
+        $this->ClearSession();
 
         $data = [
             'LoggedUserInfo' => [],
