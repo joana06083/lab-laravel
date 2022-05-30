@@ -44,7 +44,7 @@ class Kernel implements Action
         }
     }
 
-    public function Message($api_name, $json_data)
+    public function Message(String $api_name, object $json_data)
     {
         return match($api_name) {
             ApiName::SESSION->Name() => $json_data->data->sessionid,
@@ -55,7 +55,7 @@ class Kernel implements Action
         };
     }
 
-    public function Error($json_data)
+    public function Error(object $json_data)
     {
         $data = $json_data->data->Code . '-' . $json_data->data->Message;
         throw new ApiException('Api Error:' . $data);

@@ -29,7 +29,7 @@ class CoinsController extends Controller
     {
         $transfer = new Transfer;
         $request->validate([
-            'remit' => 'required|numeric',
+            'remit' => 'required|numeric|min:0.0001',
         ]);
 
         $request_data = [

@@ -29,7 +29,7 @@
             <div class="card-body">
                 <form method="POST" action="/Transfer">
                     @csrf
-                    <div class="row mb-3">
+                    <div class="row mb-3" style="display: none;">
                         <label for="account" class="col-md-4 col-form-label text-md-end">帳號 ：</label>
                         <div class="col-md-6">
                             <input id="account" name="account" type="text" class="form-control"  value="{{$LoggedUserInfo->userNo}}" readonly="true">
