@@ -12,7 +12,7 @@ class TypeList extends Kernel
     {
         ['lang' => $lang, 'gamekind' => $gamekind] = $request;
         $api_name = ApiName::GAMETYPE->Name();
-        $key = $this->key(['key_a' => 8, 'key_b' => Key::GAMETYPE->KeyB(), 'key_c' => 4]);
+        $key = parent::key(['key_a' => 8, 'key_b' => Key::GAMETYPE->KeyB(), 'key_c' => 4]);
 
         $data = [
             'website' => Kernel::$website,

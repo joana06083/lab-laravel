@@ -13,7 +13,7 @@ class Transfer extends Kernel
         ['username' => $username, 'action' => $action, 'remit' => $remit] = $request;
         $api_name = ApiName::TRANSFER->Name();
         $remitno = date('YmdHis', time()) . sprintf("%05d", rand(0, 99999));
-        $key = $this->key(['key_a' => 2, 'key_b' => $username . $remitno . Key::TRANSFER->KeyB(), 'key_c' => 3]);
+        $key = parent::key(['key_a' => 2, 'key_b' => $username . $remitno . Key::TRANSFER->KeyB(), 'key_c' => 3]);
 
         $data = [
             'website' => Kernel::$website,

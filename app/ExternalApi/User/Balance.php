@@ -11,7 +11,7 @@ class Balance extends Kernel
     public function CheckUsrBalance(String $request)
     {
         $api_name = ApiName::BALANCE->Name();
-        $key = $this->key(['key_a' => 1, 'key_b' => $request . Key::BALANCE->KeyB(), 'key_c' => 4]);
+        $key = parent::key(['key_a' => 1, 'key_b' => $request . Key::BALANCE->KeyB(), 'key_c' => 4]);
 
         $data = [
             'website' => Kernel::$website,

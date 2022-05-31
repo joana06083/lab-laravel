@@ -12,8 +12,7 @@ class GetUrl extends Kernel
     {
         ['gamekind' => $gamekind, 'lang' => $lang, 'sessionid' => $sessionid, 'gametype' => $gametype] = $request;
         $api_name = ApiName::GAMEURL->Name() . $gamekind;
-        $key = $this->key(['key_a' => 8, 'key_b' => Key::GAMEURL->KeyB(), 'key_c' => 4]);
-
+        $key = parent::key(['key_a' => 8, 'key_b' => Key::GAMEURL->KeyB(), 'key_c' => 4]);
         $data = [
             'website' => Kernel::$website,
             'lang' => $lang,

@@ -12,7 +12,7 @@ class Record extends Kernel
     {
         ['gamekind' => $gamekind, 'gametype' => $gametype, 'action' => $action, 'date' => $date, 'starttime' => $starttime, 'endtime' => $endtime] = $request;
         $api_name = ApiName::RECORD->Name() . $gamekind;
-        $key = $this->key(['key_a' => 7, 'key_b' => Key::RECORD->KeyB(), 'key_c' => 7]);
+        $key = parent::key(['key_a' => 7, 'key_b' => Key::RECORD->KeyB(), 'key_c' => 7]);
 
         $data = [
             'website' => Kernel::$website,

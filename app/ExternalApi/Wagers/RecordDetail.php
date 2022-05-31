@@ -12,7 +12,7 @@ class RecordDetail extends Kernel
     {
         ['gamekind' => $gamekind, 'lang' => $lang, 'username' => $username, 'wagersid' => $wagersid, 'gametype' => $gametype] = $request;
         $api_name = ApiName::RECORDDETAIL->Name() . $gamekind;
-        $key = $this->key(['key_a' => 6, 'key_b' => Key::RECORDDETAIL->KeyB(), 'key_c' => 7]);
+        $key = parent::key(['key_a' => 6, 'key_b' => Key::RECORDDETAIL->KeyB(), 'key_c' => 7]);
 
         $data = [
             'website' => Kernel::$website,

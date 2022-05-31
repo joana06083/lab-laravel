@@ -11,7 +11,7 @@ class Session extends Kernel
     public function CreateSession(String $request)
     {
         $api_name = ApiName::SESSION->Name();
-        $key = $this->Key(['key_a' => 2, 'key_b' => $request . Key::SESSION->KeyB(), 'key_c' => 7]);
+        $key = parent::key(['key_a' => 2, 'key_b' => $request . Key::SESSION->KeyB(), 'key_c' => 7]);
 
         $data = [
             'website' => Kernel::$website,
