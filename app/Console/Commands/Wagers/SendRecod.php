@@ -16,7 +16,7 @@ class SendRecod extends Command
      */
     //command 指令 example
     //改成自行輸入時間php artisan Record:Time 2022-05-25 00:00:00 23:59:59
-    protected $signature = 'Record:Time{date? } {starttime? } {endtime? }';
+    protected $signature = 'Record:Time {date? } {starttime? } {endtime? }';
 
     /**
      * The console command description.
