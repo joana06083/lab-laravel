@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     ];
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('Record:Time{date} {starttime} {endtime}')->dailyAt('16:06');
+        $schedule->command('Record:Time')->dailyAt('09:59');
         // $schedule->command('Record')->hourly();
 
     }
