@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ArticleInfo;
-use App\Models\MessageInfo;
-use App\Models\UserInfo;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends Controller
 {
@@ -14,17 +13,38 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //顯示新增頁面
-        if (session()->has('LoggedUser')) {
-            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-            $data = [
-                'LoggedUserInfo' => $user,
-            ];
-            return view('article.add', $data);
+    public function index(Request $request)
+    { 
+        // 設定預設值
+        $limit = isset($request->limit) ? $request->limit : 10;
+
+        $query = ArticleInfo::query();
+
+        // 篩選欄位條件
+        if (isset($request->filters)) {
+            $filters = explode(',', $request->filters);
+            foreach ($filters as $key => $filter) {
+                list($criteria, $value) = explode(':', $filter);
+                $query->where($criteria, 'like', "%$value%");
+            }
         }
 
+        //排列順序
+        if (isset($request->sorts)) {
+            $sorts = explode(',', $request->sorts);
+            foreach ($sorts as $key => $sort) {
+                list($criteria, $value) = explode(':', $sort);
+                if ($value == 'asc' || $value == 'desc') {
+                    $query->orderBy($criteria, $value);
+                }
+            }
+        } else {
+            $query->orderBy('articleNo', 'asc');
+        }
+
+        $articles = $query->paginate($limit);
+
+        return response($articles, Response::HTTP_OK);
     }
 
     /**
@@ -33,129 +53,64 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
-    // 新增文章
     public function store(Request $request)
     {
         // 檢驗文章內容
         $request->validate([
-            'title' => 'required|min:5|max:50',
-            'content' => 'required|min:5',
+            'articleTitle' => 'required|min:5|max:50',
+            'articleTitle' => 'required|min:5',
         ]);
 
-        if ($request->file('image')) {
-            $file = $request->file('image');
-            $filename = date('YmdHi') . $file->getClientOriginalName();
-            $file->move(public_path('Image'), $filename);
-            $data['image'] = $filename;
-        }
+        //新增文章
+        $article = ArticleInfo::create($request->all());
 
-        // 檢驗完成寫入資料庫
-        $art = new ArticleInfo;
-        $art->articleNo = date('YmdHis', time());
-        $art->articleTitle = $request->title;
-        $art->articleContent = $request->content;
-        $art->userNo = $request->userNo;
-        if (isset($data['image'])) {
-            $art->imgUrl = 'Image/' . $data['image'];
-        } else {
-            $art->imgUrl = null;
+        if (Response::HTTP_CREATED == 201) {
+            return response(Response::HTTP_CREATED . "Response:Success articleNo=$request->articleNo!!");
         }
-        $query = $art->save();
-
-        if ($query) {
-            return redirect('/')->with('Success', 'Article successfully add!');
-        } else {
-            return back()->with('Fail', 'Article failfully add!');
-        }
+        return $article['message'];
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param ArticleInfo $article
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ArticleInfo $article)
     {
-        // 顯示特定文章頁面
-        $data = [
-            'ArtLists' => ArticleInfo::where('articleNo', $id)
-                ->leftJoin('userData', 'article.userNo', 'userData.userNo')->first(),
-            'MesLists' => MessageInfo::where('articleNo', $id)
-                ->leftJoin('userData', 'message.userNo', 'userData.userNo')->get(),
-            'LoggedUserInfo' => [],
-        ];
-
-        if (session()->has('LoggedUser')) {
-            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-            $data['LoggedUserInfo'] = $user;
-        }
-
-        return view('article.show', $data);
-    }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
-    public function edit($id)
-    {
-        // 顯示特定文章修改頁面
-        if (session()->has('LoggedUser')) {
-            $user = UserInfo::where('userNo', session('LoggedUser'))->first();
-            $artvalue = ArticleInfo::findOrFail($id);
-
-            $data = [
-                'LoggedUserInfo' => $user,
-                'artvalue' => $artvalue,
-            ];
-            return view('article.update', $data);
-        }
-
+        //查詢特定文章
+        return response($article, Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  ArticleInfo $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ArticleInfo $article)
     {
-        //檢核修改內容
-        $validatedData = $request->validate([
-            'articleTitle' => 'required|min:5|max:50',
-            'articleContent' => 'required|min:5',
-        ]);
+        //修改文章
+        $article->update($request->all());
 
-        $results = ArticleInfo::where('articleNo', $id);
-        $results->update($validatedData);
-        if ($results) {
-            return redirect('/')->with('Success', 'Article successfully modify!');
-        } else {
-            return back()->with('Fail', 'Article failfully modify!');
-        }
+        return response($article, Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param ArticleInfo $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ArticleInfo $article)
     {
-        //刪除文章＋刪除留言(關聯Article＆message)
-        $artresult = ArticleInfo::findOrFail($id);
-        $artresult->delete();
-        if ($artresult) {
-            return redirect('/')->with('Success', 'Article successfully deleted!');
-        } else {
-            return back()->with('Fail', 'Article failfully deleted!');
+        // 刪除文章
+        $article->delete();
+
+        // 刪除成功  狀態碼204
+        if(Response::HTTP_NO_CONTENT==204){
+            return response("Response:Success articleNo=$article->articleNo del!!");
         }
     }
 }

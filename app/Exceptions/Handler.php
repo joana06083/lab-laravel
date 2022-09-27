@@ -3,7 +3,12 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+use Exception;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -22,7 +27,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        InvalidOrderException::class,
     ];
 
     /**
@@ -43,8 +48,50 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function(Exception $e, $request) {
+            return $this->handleException($request, $e);
         });
+    }
+
+    /**
+     * Handle response from exception.
+     *
+     * @param Request $request
+     * @param \Exception $exception
+     * @return JsonResponse
+     */
+    private function handleException($request, Exception $exception)
+    {
+        // dd($exception);
+        if ($request->expectsJson()) {
+            if ($exception instanceof NotFoundHttpException) {
+                return response()->json(
+                    [
+                        'error' => 'Http not found.'
+                    ],
+                    Response::HTTP_NOT_FOUND
+                );
+            }
+        }
+        // switch (true) {
+        //     case $exception instanceof NotFoundHttpException:
+        //         return response()->json([
+        //             'message' => 'Http not found.'
+        //         ], 404);
+        //     case $exception instanceof MethodNotAllowedHttpException:
+        //         return response()->json([
+        //             'message' => 'Method not allowed.'
+        //         ], 405);
+        //     case $exception instanceof UnauthorizedHttpException:
+        //         return response()->json([
+        //             'message' => 'Unauthorized.'
+        //         ], 401);
+        //     case $exception instanceof ModelNotFoundException:
+        //         return response()->json([
+        //             'message' => 'ModelNotFound.'
+        //         ], 6001);    
+        // }
+
+        return parent::render($request, $exception);
     }
 }
